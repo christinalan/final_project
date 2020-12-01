@@ -41,6 +41,7 @@ mod.on("connection", (socket) => {
 });
 
 let names = [];
+let sounds = [];
 
 //listening for users to connect
 user.on("connection", (socket) => {
@@ -48,10 +49,11 @@ user.on("connection", (socket) => {
 
   //getting bat sound
   socket.on("animalSounds", (data) => {
-    console.log(data.sound.file);
     let dataSound = data.sound.file;
+    sounds.push(dataSound);
+    console.log(sounds);
 
-    user.emit("dataSound", dataSound);
+    user.emit("dataSound", sounds);
   });
   //getting username and score
   socket.on("clientObject", (data) => {

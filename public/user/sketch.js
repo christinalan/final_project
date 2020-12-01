@@ -22,6 +22,7 @@ let sendButton;
 let curName;
 let toggleButton;
 let hearClicked;
+let hearButton;
 
 //variables for the Instructions window
 let modal = document.getElementById("info-modal");
@@ -73,13 +74,13 @@ window.addEventListener("load", () => {
   });
 
   //ScoreButton receives the scoreboard data from the server
-  let hearButton = document.getElementById("hear-button");
+  hearButton = document.getElementById("hear-button");
   let receivedSound;
   let receivedMsg;
   let msgEl;
 
   hearButton.addEventListener("click", () => {
-    hearClicked = true;
+    // hearClicked = true;
     msgEl = document.createElement("p");
     msgEl.innerHTML = "";
     //sends the score data to the server first
@@ -88,13 +89,8 @@ window.addEventListener("load", () => {
       date: clientDate,
     };
     socket.emit("clientObject", clientObject);
-
-    //listening for bat sound to come from server
-    socket.on("dataSound", (data) => {
-      console.log(data);
-      receivedSound = data;
-    });
-
+    console.log(receivedSound);
+    // receivedSound.play();
     //listen for data from the server
     socket.on("scoreBoard", (data) => {
       // let scoreBoardBox = document.getElementById("score");
@@ -169,38 +165,42 @@ function setup() {
     bat14,
     bat15
   );
-  console.log(batSounds);
 
   cnv = createCanvas(windowWidth, windowHeight);
 
-  // cnv.mousePressed(playOscillator);
+  cnv.mousePressed(playSounds);
   background(0);
 
   analyzer = new p5.FFT();
   bat1.amp(0.3, 0.5);
 
   freqAnalyzer = new p5.FFT();
+
+  //listening for bat sound to come from server
+  socket.on("dataSound", (data) => {
+    receivedSound = data;
+    console.log(receivedSound);
+  });
 }
 
 function draw() {
-  if (hearClicked == true) {
-    waveform = analyzer.waveform();
-    waveFreq = freqAnalyzer.analyze();
-
-    for (let i = 0; i < waveform.length; i++) {
-      let angle = map(i, 0, waveform.length, 0, 360);
-      let amp = waveform[i];
-      let r = map(amp, 0, 128, 100, 5);
-      let x = r * cos(angle);
-      let y = r * sin(angle);
-      // let x = map(i, 0, waveform.length, 0, width);
-      // let y = map(waveform[i], -1, 1, 0, height);
-      // let radius = map(amp, 0, 0.5, 300, 5);
-      fill(255, 100, r, r);
-      // vertex(x, y);
-      ellipse(windowWidth / 3 + x, windowHeight / 2 + y, r);
-    }
-  }
+  // if (hearClicked == true) {
+  //   waveform = analyzer.waveform();
+  //   waveFreq = freqAnalyzer.analyze();
+  //   for (let i = 0; i < waveform.length; i++) {
+  //     let angle = map(i, 0, waveform.length, 0, 360);
+  //     let amp = waveform[i];
+  //     let r = map(amp, 0, 128, 100, 5);
+  //     let x = r * cos(angle);
+  //     let y = r * sin(angle);
+  //     // let x = map(i, 0, waveform.length, 0, width);
+  //     // let y = map(waveform[i], -1, 1, 0, height);
+  //     // let radius = map(amp, 0, 0.5, 300, 5);
+  //     fill(255, 100, r, r);
+  //     // vertex(x, y);
+  //     ellipse(windowWidth / 3 + x, windowHeight / 2 + y, r);
+  //   }
+  // }
 }
 function freqFromMouse() {
   // return map(mouseX, 0, width - 1, freq2 * 0.9, freq2 * 1.1);
@@ -223,18 +223,11 @@ function mouseMoved(event) {
   // endShape();
 }
 
-function mouseClicked() {
-  clicked = !clicked;
-
-  waveform = analyzer.waveform();
-  waveFreq = freqAnalyzer.analyze();
-
+function playSounds() {
   let i = 0;
   let rBatSound = Math.floor(Math.random(i) * batSounds.length);
   batSounds[rBatSound].play();
   console.log(rBatSound);
-
-  // bat1.play();
 
   //send sound to server
   let animalSounds = {
@@ -242,6 +235,13 @@ function mouseClicked() {
   };
   console.log(animalSounds.sound.file);
   socket.emit("animalSounds", animalSounds);
+}
+
+function mouseClicked() {
+  clicked = !clicked;
+
+  waveform = analyzer.waveform();
+  waveFreq = freqAnalyzer.analyze();
 
   for (let i = 0; i < waveform.length; i++) {
     let angle = map(i, 0, waveform.length, 0, 360);
