@@ -108,9 +108,22 @@ window.addEventListener("load", () => {
   });
 });
 
-let bat1;
-let bat2;
-let bat3;
+let batSounds = [];
+
+let bat1,
+  bat2,
+  bat3,
+  bat4,
+  bat5,
+  bat6,
+  bat7,
+  bat8,
+  bat9,
+  bat10,
+  bat12,
+  bat13,
+  bat14,
+  bat15;
 
 // global variables for p5 Sketch
 let cnv;
@@ -123,17 +136,40 @@ function preload() {
   bat1 = loadSound("../Audio/bat1.mp3");
   bat2 = loadSound("../Audio/bat2.mp3");
   bat3 = loadSound("../Audio/bat3.mp3");
+  bat4 = loadSound("../Audio/bat4.mp3");
+  bat5 = loadSound("../Audio/bat5.mp3");
+  bat6 = loadSound("../Audio/bat6.mp3");
+  bat7 = loadSound("../Audio/bat7.mp3");
+  bat8 = loadSound("../Audio/bat8.mp3");
+  bat9 = loadSound("../Audio/bat9.mp3");
+  bat10 = loadSound("../Audio/bat10.mp3");
+  bat12 = loadSound("../Audio/bat12.mp3");
+  bat13 = loadSound("../Audio/bat13.mp3");
+  bat14 = loadSound("../Audio/bat14.mp3");
+  bat15 = loadSound("../Audio/bat15.mp3");
 }
 
+function loadSounds() {
+  loadSoundCall++;
+}
 function setup() {
-  //listen for freq data from the modulator page
-  socket.on("freqData", (data) => {
-    // console.log(data.freq);
-    // freq1 = data.freq;
-    // osc1.freq(freq1);
-    // freq2 = freq1 * random(0.9, 1.1);
-    // osc2.freq(freq2);
-  });
+  batSounds.push(
+    bat1,
+    bat2,
+    bat3,
+    bat4,
+    bat5,
+    bat6,
+    bat7,
+    bat8,
+    bat9,
+    bat10,
+    bat12,
+    bat13,
+    bat14,
+    bat15
+  );
+  console.log(batSounds);
 
   cnv = createCanvas(windowWidth, windowHeight);
 
@@ -171,12 +207,6 @@ function freqFromMouse() {
 }
 
 function mouseMoved(event) {
-  //send the sound to the mod page
-  // let modFreq = {
-  //   osc1: osc1,
-  //   osc2: osc2,
-  // };
-  // modSocket.emit("modFreq", modFreq);
   // waveform = analyzer.waveform();
   // noStroke();
   // beginShape();
@@ -196,18 +226,22 @@ function mouseMoved(event) {
 function mouseClicked() {
   clicked = !clicked;
 
-  //send sound to server
-  let animalSounds = {
-    sound: bat1,
-  };
-
-  console.log(animalSounds.sound.file);
-  socket.emit("animalSounds", animalSounds);
-
-  bat1.play();
-
   waveform = analyzer.waveform();
   waveFreq = freqAnalyzer.analyze();
+
+  let i = 0;
+  let rBatSound = Math.floor(Math.random(i) * batSounds.length);
+  batSounds[rBatSound].play();
+  console.log(rBatSound);
+
+  // bat1.play();
+
+  //send sound to server
+  let animalSounds = {
+    sound: batSounds[rBatSound],
+  };
+  console.log(animalSounds.sound.file);
+  socket.emit("animalSounds", animalSounds);
 
   for (let i = 0; i < waveform.length; i++) {
     let angle = map(i, 0, waveform.length, 0, 360);
