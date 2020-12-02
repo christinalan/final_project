@@ -50,18 +50,9 @@ user.on("connection", (socket) => {
 
   //getting bat sound
   socket.on("animalSounds", (data) => {
-    let dataSound = data.sound.url;
-    sounds.push(dataSound);
-    console.log(sounds);
-    user.emit("dataSound", sounds);
-  });
-  //getting username and score
-  socket.on("clientObject", (data) => {
-    //sending name and score back to nameSpace '/freq2'
-    names.push(data);
-    console.log(names);
-
-    socket.emit("names", names);
-    // mod.emit("scoreBoard", scoreBoard);
+    let dataSound = data;
+    
+    console.log(dataSound);
+    user.emit("dataSound", dataSound);
   });
 });

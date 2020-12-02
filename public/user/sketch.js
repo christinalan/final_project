@@ -24,6 +24,7 @@ let toggleButton;
 let hearClicked;
 let hearButton;
 let serverBatSound;
+let batMusic1;
 
 //variables for the Instructions window
 let modal = document.getElementById("info-modal");
@@ -51,18 +52,6 @@ window.addEventListener("load", () => {
   toggleButton = document.getElementById("play-button");
   toggleButton.addEventListener("click", () => {
     playing = !playing;
-
-    // if (playing) {
-    //   osc1.start();
-    //   osc2.start(1);
-    //   toggleButton.style.background = "green";
-    //   toggleButton.innerHTML = "On";
-    // } else {
-    //   osc1.stop();
-    //   osc2.stop();
-    //   toggleButton.innerHTML = "Off";
-    //   toggleButton.style.background = "red";
-    // }
   });
 
   nameInput = document.getElementById("uname");
@@ -75,39 +64,27 @@ window.addEventListener("load", () => {
   });
 
   //ScoreButton receives the scoreboard data from the server
-  hearButton = document.getElementById("hear-button");
-  let receivedMsg;
-  let msgEl;
+  // hearButton = document.getElementById("hear-button");
+  // let receivedMsg;
+  // let msgEl;
 
-  hearButton.addEventListener("click", () => {
-    // hearClicked = true;
-    msgEl = document.createElement("p");
-    msgEl.innerHTML = "";
-    //sends the score data to the server first
-    let clientObject = {
-      name: curName,
-      date: clientDate,
-    };
-    socket.emit("clientObject", clientObject);
+  // hearButton.addEventListener("click", () => {
+  //   // hearClicked = true;
+  //   msgEl = document.createElement("p");
+  //   msgEl.innerHTML = "";
+  //   //sends the score data to the server first
+  //   let clientObject = {
+  //     name: curName,
+  //     date: clientDate,
+  //   };
+  //   socket.emit("clientObject", clientObject);
 
-    for (let j = 0; j < serverMusic.length; j++) {
-      serverBatSound = new Audio(serverMusic[j]);
-      console.log(serverBatSound[j]);
-      serverBatSound.play();
-    }
-
-    // receivedSound.play();
-    //listen for data from the server
-    socket.on("scoreBoard", (data) => {
-      // let scoreBoardBox = document.getElementById("score");
-      // for (let i = 0; i < data.length; i++) {
-      //   receivedMsg = data[i].name + ": " + data[i].score;
-      //   msgEl.innerHTML = receivedMsg;
-      //   //add this element to the page
-      //   scoreBoardBox.appendChild(msgEl);
-      // }
-    });
-  });
+    
+  //     serverBatSound = new Audio(serverMusic[j]);
+      
+  //     serverBatSound.play();
+    
+  // });
 });
 
 let batSounds = [];
@@ -142,6 +119,10 @@ function preload() {
     batMusic[i - 1] = loadSound("../Audio/bat" + i + ".mp3");
   }
 }
+
+
+
+
 
 let divX, divY;
 
@@ -183,67 +164,35 @@ function setup() {
   //listening for bat sound to come from server
   socket.on("dataSound", (data) => {
     sentSound = true;
-    receivedSound = data;
-    serverMusic.push(receivedSound);
-    console.log(serverMusic);
+    console.log(data.sound)
+
+
+    
+
+    hearButton = document.getElementById("hear-button")
+    hearButton.addEventListener("click", () => {
+      batMusic[data.sound].play()
+    })
   });
 }
 
-function draw() {
-  // if (hearClicked == true) {
-  //   waveform = analyzer.waveform();
-  //   waveFreq = freqAnalyzer.analyze();
-  //   for (let i = 0; i < waveform.length; i++) {
-  //     let angle = map(i, 0, waveform.length, 0, 360);
-  //     let amp = waveform[i];
-  //     let r = map(amp, 0, 128, 100, 5);
-  //     let x = r * cos(angle);
-  //     let y = r * sin(angle);
-  //     // let x = map(i, 0, waveform.length, 0, width);
-  //     // let y = map(waveform[i], -1, 1, 0, height);
-  //     // let radius = map(amp, 0, 0.5, 300, 5);
-  //     fill(255, 100, r, r);
-  //     // vertex(x, y);
-  //     ellipse(windowWidth / 3 + x, windowHeight / 2 + y, r);
-  //   }
-  // }
-}
 
-function freqFromMouse() {
-  // return map(mouseX, 0, width - 1, freq2 * 0.9, freq2 * 1.1);
-}
-
-function mouseMoved(event) {
-  // waveform = analyzer.waveform();
-  // noStroke();
-  // beginShape();
-  // for (let i = 0; i < waveform.length; i += 10) {
-  //   let x = map(i, 0, waveform.length - 1, 0, windowWidth);
-  //   var y = map(waveform[i], -0.5, 0.5, 0, windowHeight);
-  //   let col = map(waveform[i], -1, 1, 0, 255);
-  //   // stroke(0, 0, i);
-  //   noStroke();
-  //   // noFill();
-  //   vertex(x, y);
-  //   fill(255, col, 100, col);
-  // }
-  // endShape();
-}
 
 function playSounds() {
   let batNote = Math.round((mouseX + divX / 2) / divX) - 1;
-  console.log(batMusic[batNote]);
   batMusic[batNote].play();
-
+  // console.log(batMusic[batNote]);
   // let i = 0;
   // let rBatSound = Math.floor(Math.random(i) * batMusic.length);
   // batMusic[rBatSound].play();
 
   //send sound to server
   let animalSounds = {
-    sound: batMusic[batNote],
+    sound: batNote
   };
   socket.emit("animalSounds", animalSounds);
+  console.log(batNote)
+  
 }
 
 function mouseClicked() {
