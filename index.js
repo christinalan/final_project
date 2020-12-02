@@ -1,6 +1,7 @@
 //initializing the express 'sketch' object
 let express = require("express");
 let app = express();
+
 app.use("/", express.static("public"));
 
 //initialize the HTTP server
@@ -49,10 +50,9 @@ user.on("connection", (socket) => {
 
   //getting bat sound
   socket.on("animalSounds", (data) => {
-    let dataSound = data.sound.file;
+    let dataSound = data.sound.url;
     sounds.push(dataSound);
     console.log(sounds);
-
     user.emit("dataSound", sounds);
   });
   //getting username and score

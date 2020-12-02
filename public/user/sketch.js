@@ -23,6 +23,7 @@ let curName;
 let toggleButton;
 let hearClicked;
 let hearButton;
+let serverBatSound;
 
 //variables for the Instructions window
 let modal = document.getElementById("info-modal");
@@ -75,7 +76,6 @@ window.addEventListener("load", () => {
 
   //ScoreButton receives the scoreboard data from the server
   hearButton = document.getElementById("hear-button");
-  let receivedSound;
   let receivedMsg;
   let msgEl;
 
@@ -89,7 +89,13 @@ window.addEventListener("load", () => {
       date: clientDate,
     };
     socket.emit("clientObject", clientObject);
-    console.log(receivedSound);
+
+    for (let j = 0; j < serverMusic.length; j++) {
+      serverBatSound = new Audio(serverMusic[j]);
+      console.log(serverBatSound[j]);
+      serverBatSound.play();
+    }
+
     // receivedSound.play();
     //listen for data from the server
     socket.on("scoreBoard", (data) => {
@@ -105,6 +111,10 @@ window.addEventListener("load", () => {
 });
 
 let batSounds = [];
+let batMusic = [];
+let serverMusic = [];
+let preLoadServer = [];
+let sentSound = false;
 
 let bat1,
   bat2,
@@ -128,26 +138,13 @@ let analyzer, waveform, freqAnalyzer, waveFreq;
 let x, y;
 
 function preload() {
-  // soundFormats("mp3");
-  bat1 = loadSound("../Audio/bat1.mp3");
-  bat2 = loadSound("../Audio/bat2.mp3");
-  bat3 = loadSound("../Audio/bat3.mp3");
-  bat4 = loadSound("../Audio/bat4.mp3");
-  bat5 = loadSound("../Audio/bat5.mp3");
-  bat6 = loadSound("../Audio/bat6.mp3");
-  bat7 = loadSound("../Audio/bat7.mp3");
-  bat8 = loadSound("../Audio/bat8.mp3");
-  bat9 = loadSound("../Audio/bat9.mp3");
-  bat10 = loadSound("../Audio/bat10.mp3");
-  bat12 = loadSound("../Audio/bat12.mp3");
-  bat13 = loadSound("../Audio/bat13.mp3");
-  bat14 = loadSound("../Audio/bat14.mp3");
-  bat15 = loadSound("../Audio/bat15.mp3");
+  for (let i = 1; i < 14; i++) {
+    batMusic[i - 1] = loadSound("../Audio/bat" + i + ".mp3");
+  }
 }
 
-function loadSounds() {
-  loadSoundCall++;
-}
+let divX, divY;
+
 function setup() {
   batSounds.push(
     bat1,
@@ -166,20 +163,29 @@ function setup() {
     bat15
   );
 
-  cnv = createCanvas(windowWidth, windowHeight);
+  let width = window.innerWidth;
+  let height = window.innerHeight;
+  canvas = createCanvas(width, height);
+  divX = width / batMusic.length;
+  // divY = height / octaves.length;
+  for (i = 0; i < 8; i++) {
+    line(0, divY * i, width, divY * i);
+    line(divX * i, 0, divX * i, height);
+  }
 
-  cnv.mousePressed(playSounds);
+  canvas.mousePressed(playSounds);
   background(0);
 
   analyzer = new p5.FFT();
-  bat1.amp(0.3, 0.5);
 
   freqAnalyzer = new p5.FFT();
 
   //listening for bat sound to come from server
   socket.on("dataSound", (data) => {
+    sentSound = true;
     receivedSound = data;
-    console.log(receivedSound);
+    serverMusic.push(receivedSound);
+    console.log(serverMusic);
   });
 }
 
@@ -202,6 +208,7 @@ function draw() {
   //   }
   // }
 }
+
 function freqFromMouse() {
   // return map(mouseX, 0, width - 1, freq2 * 0.9, freq2 * 1.1);
 }
@@ -224,16 +231,18 @@ function mouseMoved(event) {
 }
 
 function playSounds() {
-  let i = 0;
-  let rBatSound = Math.floor(Math.random(i) * batSounds.length);
-  batSounds[rBatSound].play();
-  console.log(rBatSound);
+  let batNote = Math.round((mouseX + divX / 2) / divX) - 1;
+  console.log(batMusic[batNote]);
+  batMusic[batNote].play();
+
+  // let i = 0;
+  // let rBatSound = Math.floor(Math.random(i) * batMusic.length);
+  // batMusic[rBatSound].play();
 
   //send sound to server
   let animalSounds = {
-    sound: batSounds[rBatSound],
+    sound: batMusic[batNote],
   };
-  console.log(animalSounds.sound.file);
   socket.emit("animalSounds", animalSounds);
 }
 
