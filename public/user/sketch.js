@@ -12,7 +12,6 @@ modSocket.on("connect", () => {
 
 //global socket variables
 let score;
-let receivedSound;
 let clientName;
 let clientDate;
 let playing, clicked;
@@ -25,6 +24,7 @@ let hearClicked;
 let hearButton;
 let serverBatSound;
 let batMusic1;
+let receivedSound;
 
 //variables for the Instructions window
 let modal = document.getElementById("info-modal");
@@ -68,23 +68,12 @@ window.addEventListener("load", () => {
   // let receivedMsg;
   // let msgEl;
 
-  // hearButton.addEventListener("click", () => {
-  //   // hearClicked = true;
-  //   msgEl = document.createElement("p");
-  //   msgEl.innerHTML = "";
-  //   //sends the score data to the server first
-  //   let clientObject = {
-  //     name: curName,
-  //     date: clientDate,
-  //   };
-  //   socket.emit("clientObject", clientObject);
-
-    
-  //     serverBatSound = new Audio(serverMusic[j]);
-      
-  //     serverBatSound.play();
-    
-  // });
+  hearButton = document.getElementById("hear-button")
+    hearButton.addEventListener("click", () => {
+      batMusic[receivedSound].play();
+      console.log(batMusic[receivedSound])
+      console.log(batMusic)
+    });
 });
 
 let batSounds = [];
@@ -92,6 +81,7 @@ let batMusic = [];
 let serverMusic = [];
 let preLoadServer = [];
 let sentSound = false;
+let last = [serverMusic.length - 1]
 
 let bat1,
   bat2,
@@ -119,10 +109,6 @@ function preload() {
     batMusic[i - 1] = loadSound("../Audio/bat" + i + ".mp3");
   }
 }
-
-
-
-
 
 let divX, divY;
 
@@ -164,35 +150,24 @@ function setup() {
   //listening for bat sound to come from server
   socket.on("dataSound", (data) => {
     sentSound = true;
-    console.log(data.sound)
-
-
-    
-
-    hearButton = document.getElementById("hear-button")
-    hearButton.addEventListener("click", () => {
-      batMusic[data.sound].play()
-    })
+    receivedSound = data;
+    serverMusic.push(receivedSound);
+    console.log(receivedSound);
   });
 }
 
 
-
+//array of sounds evenly mapped to windowWidth
 function playSounds() {
   let batNote = Math.round((mouseX + divX / 2) / divX) - 1;
   batMusic[batNote].play();
-  // console.log(batMusic[batNote]);
-  // let i = 0;
-  // let rBatSound = Math.floor(Math.random(i) * batMusic.length);
-  // batMusic[rBatSound].play();
 
-  //send sound to server
   let animalSounds = {
-    sound: batNote
+    sound: batMusic[batNote],
+    number : batNote
   };
+
   socket.emit("animalSounds", animalSounds);
-  console.log(batNote)
-  
 }
 
 function mouseClicked() {
