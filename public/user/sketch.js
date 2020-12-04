@@ -75,10 +75,11 @@ let level;
 let singleBatNote;
 let batMusic = [];
 let treehopperMusic = [];
+let singleTreeNote;
 let serverMusic = [];
-let sentSound = false;
 
 let newBatSound;
+let newTreeSound;
 // global variables for p5 Sketch
 let cnv;
 let mouseFreq;
@@ -99,26 +100,27 @@ var toCol;
 let tree;
 
 function preload() {
-  for (let i = 1; i < 14; i++) {
+  for (let i = 1; i <= 14; i++) {
     batMusic[i - 1] = loadSound("../Audio/bat" + i + ".mp3");
   }
-  for (let i = 1; i < 15; i++) {
+  for (let i = 1; i <= 15; i++) {
     treehopperMusic[i - 1] = loadSound("../Audio/treehopper" + i + ".mp3");
   }
 }
 
+let width, height;
 let divX, divY;
 
 function setup() {
-  let width = window.innerWidth;
-  let height = window.innerHeight;
+  width = window.innerWidth / 2;
+  height = (2 * window.innerHeight) / 3;
   canvas = createCanvas(width, height);
-  divX = width / batMusic.length;
+  canvas.parent("chat-canvas");
+  divX = width / 15;
   // divY = height / octaves.length;
   for (i = 0; i < 8; i++) {
     line(0, divY * i, width, divY * i);
-
-    stroke(10);
+    stroke(15);
     fill(100, 100, 100);
     line(divX * i, 0, divX * i, height);
   }
@@ -172,9 +174,9 @@ function draw() {
   for (let i = 0; i < waveFreq.length; i++) {
     j = 0;
     let amp = waveFreq[i];
-    let x = map(amp, 0, 200, windowHeight, 0);
+    let x = map(amp, 0, 200, height, 0);
     // let x = map(i, 0, waveFreq.length, 0, width);
-    let y = map(i, 0, 200, windowHeight / 2, 0);
+    let y = map(i, 0, 200, height / 2, 0);
     let c = constrain(freqAnalyzer.getEnergy(i), 0, 255);
     let l = map(c, 0, 255, 0, 1);
     let col = lerpColor(fromCol, toCol, l);
@@ -209,10 +211,17 @@ function draw() {
 function playSounds() {
   let batNote = Math.round((mouseX + divX / 2) / divX) - 1;
   singleBatNote = batMusic[batNote];
-  singleBatNote.play();
-  soundIsPlaying = true;
-  // batMusic[batNote].play();
+  if (soundtriggered == true) {
+    singleBatNote.play();
+  }
 
+  let treeNote = Math.round((mouseX + divX / 2) / divX) - 1;
+  singleTreeNote = treehopperMusic[treeNote];
+  if (soundtriggered1 == true) {
+    singleTreeNote.play();
+  }
+
+  soundIsPlaying = true;
   let animalSounds = {
     sound: batNote,
     soundURL: batMusic[batNote],

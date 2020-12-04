@@ -8,12 +8,25 @@
   </head>
   <body>
     <div id="top-container">
-      <input type="text" id="uname" name="fname" placeholder="username"/>
+      <input type="text" id="uname" name="fname" placeholder="username" />
       <button id="send-name" class="send-name">send</button>
       <button id="hear-button" class="button hear-button">Hear Messages</button>
     </div>
     <div id="animal-dropdown">
-      <select id="select-animal">select animal</select>
+      <select id="select-animal">
+        select animal
+      </select>
+    </div>
+    <div id="chat-canvas">
+      <form id="chat-box" action="">
+        <textarea
+          id="input-chat"
+          class="chat"
+          name="address"
+          rows="3"
+          cols="30"
+        ></textarea>
+      </form>
     </div>
     <script type="text/javascript" src="/socket.io/socket.io.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.1.0/p5.min.js"></script>

@@ -42,7 +42,7 @@ user.on("connection", (socket) => {
   //getting bat sound
   socket.on("animalSounds", (data) => {
     let dataSound = data.sound;
-    let dataURL = data.soundURL.url;
+    let dataURL = data.sound.url;
     console.log(data.sound);
 
     console.log(dataSound);
