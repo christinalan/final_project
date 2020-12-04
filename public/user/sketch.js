@@ -16,7 +16,6 @@ let receivedSound;
 let clientName;
 let clientDate;
 let playing, clicked;
-let p5playing;
 let nameInput;
 let sendButton;
 let curName;
@@ -62,88 +61,46 @@ window.addEventListener("load", () => {
     let msgObj = { name: curName };
     socket.emit("msg", msgObj);
   });
-
-  //ScoreButton receives the scoreboard data from the server
-  // hearButton = document.getElementById("hear-button");
-  // let receivedMsg;
-  // let msgEl;
-
-  // hearButton.addEventListener("click", () => {
-  //   // hearClicked = true;
-  //   msgEl = document.createElement("p");
-  //   msgEl.innerHTML = "";
-  //   //sends the score data to the server first
-  //   let clientObject = {
-  //     name: curName,
-  //     date: clientDate,
-  //   };
-  //   socket.emit("clientObject", clientObject);
-
-    
-  //     serverBatSound = new Audio(serverMusic[j]);
-      
-  //     serverBatSound.play();
-    
-  // });
 });
 
-let batSounds = [];
+let soundIsPlaying = false;
+let level;
+let singleBatNote;
 let batMusic = [];
+let batNumber;
 let serverMusic = [];
-let preLoadServer = [];
 let sentSound = false;
 
-let bat1,
-  bat2,
-  bat3,
-  bat4,
-  bat5,
-  bat6,
-  bat7,
-  bat8,
-  bat9,
-  bat10,
-  bat12,
-  bat13,
-  bat14,
-  bat15;
-
+let newBatSound;
 // global variables for p5 Sketch
 let cnv;
 let mouseFreq;
 let analyzer, waveform, freqAnalyzer, waveFreq;
 let x, y;
 
+let soundLength = 30;
+
+var MinFreq = 20;
+var MaxFreq = 15000;
+var FreqStep = 10;
+let w;
+let yStart = 0;
+
+var fromCol;
+var toCol;
+
+let tree;
+
 function preload() {
   for (let i = 1; i < 14; i++) {
     batMusic[i - 1] = loadSound("../Audio/bat" + i + ".mp3");
   }
+  tree = loadSound("../Audio/treehopper1.mp3");
 }
-
-
-
-
 
 let divX, divY;
 
 function setup() {
-  batSounds.push(
-    bat1,
-    bat2,
-    bat3,
-    bat4,
-    bat5,
-    bat6,
-    bat7,
-    bat8,
-    bat9,
-    bat10,
-    bat12,
-    bat13,
-    bat14,
-    bat15
-  );
-
   let width = window.innerWidth;
   let height = window.innerHeight;
   canvas = createCanvas(width, height);
@@ -158,62 +115,105 @@ function setup() {
   background(0);
 
   analyzer = new p5.FFT();
+  freqAnalyzer = new p5.FFT(0, 64);
+  amplitude = new p5.Amplitude();
 
-  freqAnalyzer = new p5.FFT();
+  w = width / 64;
+  // freqAnalyzer.setInput(batMusic);
 
   //listening for bat sound to come from server
   socket.on("dataSound", (data) => {
-    sentSound = true;
-    console.log(data.sound)
+    // batNumber = data.sound;
+    // console.log(batNumber);
+    serverMusic.push(data);
+    // console.log(serverMusic);
 
-
-    
-
-    hearButton = document.getElementById("hear-button")
-    hearButton.addEventListener("click", () => {
-      batMusic[data.sound].play()
-    })
+    for (let i = 0; i < serverMusic.length; i++) {
+      newBatSound = new Audio(serverMusic[i]);
+      // console.log(newBatSound);
+    }
+    // let newBatSound = new Audio(data);
   });
+
+  hearButton = document.getElementById("hear-button");
+  hearButton.addEventListener("click", () => {
+    // batMusic[batNumber].play();
+    newBatSound.play();
+  });
+
+  fromCol = color(50, 250, 155);
+  toCol = color(50, 100, 200);
+  fromCol2 = color(0, 100, 255);
+  toCol2 = color(250, 100, 50);
 }
 
+let j;
+function draw() {
+  // background(0);
+  waveFreq = freqAnalyzer.analyze();
+  level = amplitude.getLevel();
 
+  let rectWidth = 1; //(soundLength * fps) / windowWidth;
+  let rectHeight = (MaxFreq - MinFreq) / windowHeight;
+
+  noStroke();
+  for (let i = 0; i < waveFreq.length; i++) {
+    j = 0;
+    let amp = waveFreq[i];
+    let x = map(amp, 0, 200, windowHeight, 0);
+    // let x = map(i, 0, waveFreq.length, 0, width);
+    let y = map(i, 0, 200, windowHeight / 2, 0);
+    let c = constrain(freqAnalyzer.getEnergy(i), 0, 255);
+    let l = map(c, 0, 255, 0, 1);
+    let col = lerpColor(fromCol, toCol, l);
+    fill(col);
+    rect(x, y + j, i, amp);
+
+    if (level > 0) {
+      push();
+      stroke(col);
+      line(x, y, 0, height / i);
+      pop();
+    }
+    j += 10;
+  }
+  if (waveFreq.length > width) {
+    waveFreq.splice(0, 1);
+  }
+
+  beginShape();
+  for (let i = 0; i < waveFreq.length; i++) {
+    let c = constrain(freqAnalyzer.getEnergy(i), 0, 255);
+    let l = map(c, 0, 255, 0, 1);
+    let col = lerpColor(fromCol2, toCol2, l);
+    let alpha = map(level, 0, 0.5, 50, 150);
+    noStroke();
+    // fill(col, alpha);
+    // vertex(i * w, map(waveFreq[i], 0, 256, height, 0));
+  }
+  endShape();
+}
 
 function playSounds() {
   let batNote = Math.round((mouseX + divX / 2) / divX) - 1;
-  batMusic[batNote].play();
-  // console.log(batMusic[batNote]);
-  // let i = 0;
-  // let rBatSound = Math.floor(Math.random(i) * batMusic.length);
-  // batMusic[rBatSound].play();
+  singleBatNote = batMusic[batNote];
+  singleBatNote.play();
+  soundIsPlaying = true;
+  // batMusic[batNote].play();
 
   //send sound to server
   let animalSounds = {
-    sound: batNote
+    sound: batNote,
+    soundURL: batMusic[batNote],
   };
   socket.emit("animalSounds", animalSounds);
-  console.log(batNote)
-  
+  // console.log(batNote);
 }
 
 function mouseClicked() {
   clicked = !clicked;
 
   waveform = analyzer.waveform();
-  waveFreq = freqAnalyzer.analyze();
-
-  for (let i = 0; i < waveform.length; i++) {
-    let angle = map(i, 0, waveform.length, 0, 360);
-    let amp = waveform[i];
-    let r = map(amp, 0, 128, 100, 5);
-    let x = r * cos(angle);
-    let y = r * sin(angle);
-    // let x = map(i, 0, waveform.length, 0, width);
-    // let y = map(waveform[i], -1, 1, 0, height);
-    // let radius = map(amp, 0, 0.5, 300, 5);
-    fill(255, r);
-    // vertex(x, y);
-    ellipse(windowWidth / 2 + x, windowHeight / 2 + y, r);
-  }
 
   // draw the shape of the waveform
   push();
@@ -231,9 +231,9 @@ function mouseClicked() {
     // stroke(200, 255, i);
     if (amp != 0) {
       stroke(constrain(col, 100, 255), random(255), 155);
-      line(width / 2, height / 2, x, y);
-      vertex(x, y + height / 2);
-      vertex(x + width / 2, y);
+      // line(width / 2, height / 2, x, y);
+      // vertex(x, y + height / 2);
+      // vertex(x + width / 2, y);
     }
   }
   endShape();
