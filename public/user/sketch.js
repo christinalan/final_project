@@ -12,7 +12,6 @@ modSocket.on("connect", () => {
 
 //global socket variables
 let score;
-let receivedSound;
 let clientName;
 let clientDate;
 let playing, clicked;
@@ -24,6 +23,10 @@ let hearClicked;
 let hearButton;
 let serverBatSound;
 let batMusic1;
+let receivedSound;
+let animals = ["bat", "treehopper", "walrus"];
+let animalOption;
+let soundtriggered, soundtriggered1;
 
 //variables for the Instructions window
 let modal = document.getElementById("info-modal");
@@ -32,27 +35,31 @@ let infoButton = document.getElementById("info-button");
 let span = document.getElementsByClassName("close")[0];
 
 window.addEventListener("load", () => {
-  //instructions window
-  infoButton.onclick = function () {
-    modal.style.display = "block";
-  };
+  // animal dropdown
+  let dropdown = document.getElementById("select-animal");
+  let defaultoption = document.createElement("option");
+  defaultoption.text = "select animal";
+  dropdown.add(defaultoption);
 
-  span.onclick = function () {
-    modal.style.display = "none";
-  };
+  for (let i = 0; i < animals.length; i++) {
+    let animalOption = document.createElement("option");
+    animalOption.text = animals[i];
+    dropdown.add(animalOption);
+  }
+  dropdown.selectedIndex = 0;
 
-  window.onclick = function (event) {
-    if (event.target == modal) {
-      modal.style.display = "none";
+  //change of dropdown
+  dropdown.addEventListener("change", function (e) {
+    if (e.target.value == "bat") {
+      soundtriggered = true;
+      soundtriggered1 = false;
+    } else if (e.target.value == "treehopper") {
+      soundtriggered1 = true;
+      soundtriggered = false;
     }
-  };
-
-  //start the oscillators
-  toggleButton = document.getElementById("play-button");
-  toggleButton.addEventListener("click", () => {
-    playing = !playing;
   });
 
+  //username info
   nameInput = document.getElementById("uname");
   sendButton = document.getElementById("send-name");
 
@@ -67,7 +74,7 @@ let soundIsPlaying = false;
 let level;
 let singleBatNote;
 let batMusic = [];
-let batNumber;
+let treehopperMusic = [];
 let serverMusic = [];
 let sentSound = false;
 
@@ -95,7 +102,9 @@ function preload() {
   for (let i = 1; i < 14; i++) {
     batMusic[i - 1] = loadSound("../Audio/bat" + i + ".mp3");
   }
-  tree = loadSound("../Audio/treehopper1.mp3");
+  for (let i = 1; i < 15; i++) {
+    treehopperMusic[i - 1] = loadSound("../Audio/treehopper" + i + ".mp3");
+  }
 }
 
 let divX, divY;
@@ -108,6 +117,9 @@ function setup() {
   // divY = height / octaves.length;
   for (i = 0; i < 8; i++) {
     line(0, divY * i, width, divY * i);
+
+    stroke(10);
+    fill(100, 100, 100);
     line(divX * i, 0, divX * i, height);
   }
 
@@ -201,13 +213,12 @@ function playSounds() {
   soundIsPlaying = true;
   // batMusic[batNote].play();
 
-  //send sound to server
   let animalSounds = {
     sound: batNote,
     soundURL: batMusic[batNote],
   };
+
   socket.emit("animalSounds", animalSounds);
-  // console.log(batNote);
 }
 
 function mouseClicked() {

@@ -13,15 +13,12 @@ server.listen(port, () => {
 });
 
 //initialize socket.io
-// let io = require('socket.io').listen(server);
 let io = require("socket.io")();
 io.listen(server);
 
 //different nameSpaces
 let mod = io.of("/mod");
 let user = io.of("/user");
-
-let frequencies = [];
 
 //listening for users to connect
 mod.on("connection", (socket) => {
@@ -32,17 +29,11 @@ mod.on("connection", (socket) => {
 
     user.emit("freqData", data);
   });
-
-  //   socket.on("modFreq", (data) => {
-
-  //     frequencies.push(data);
-
-  //     mod.emit("modFreq", frequencies);
-  //   });
 });
 
 let names = [];
 let sounds = [];
+let numbers = [];
 
 //listening for users to connect
 user.on("connection", (socket) => {
