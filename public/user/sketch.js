@@ -25,6 +25,9 @@ let hearButton;
 let serverBatSound;
 let batMusic1;
 let receivedSound;
+let animals = ["bat", "treehopper", "walrus"];
+let animalOption;
+let soundtriggered, soundtriggered1
 
 //variables for the Instructions window
 let modal = document.getElementById("info-modal");
@@ -33,27 +36,37 @@ let infoButton = document.getElementById("info-button");
 let span = document.getElementsByClassName("close")[0];
 
 window.addEventListener("load", () => {
-  //instructions window
-  infoButton.onclick = function () {
-    modal.style.display = "block";
-  };
 
-  span.onclick = function () {
-    modal.style.display = "none";
-  };
+  // animal dropdown
+  let dropdown = document.getElementById('select-animal');
+    let defaultoption = document.createElement('option');
+    defaultoption.text = 'select animal';
+    dropdown.add(defaultoption);
 
-  window.onclick = function (event) {
-    if (event.target == modal) {
-      modal.style.display = "none";
+    for(let i=0; i<animals.length;i++) {
+      let animalOption = document.createElement('option');
+      animalOption.text = animals[i];
+      dropdown.add(animalOption);
     }
-  };
+    dropdown.selectedIndex = 0
 
-  //start the oscillators
-  toggleButton = document.getElementById("play-button");
-  toggleButton.addEventListener("click", () => {
-    playing = !playing;
-  });
+  //change of dropdown
+  dropdown.addEventListener('change', function(e){
 
+if (e.target.value == "bat") {
+  soundtriggered = true;
+  soundtriggered1 = false;
+}
+else if (e.target.value == "treehopper") {
+  soundtriggered1 = true;
+  soundtriggered = false;
+}
+
+
+
+  })
+
+  //username info
   nameInput = document.getElementById("uname");
   sendButton = document.getElementById("send-name");
 
@@ -63,40 +76,24 @@ window.addEventListener("load", () => {
     socket.emit("msg", msgObj);
   });
 
-  //ScoreButton receives the scoreboard data from the server
-  // hearButton = document.getElementById("hear-button");
-  // let receivedMsg;
-  // let msgEl;
 
+  //hear the last message
   hearButton = document.getElementById("hear-button")
     hearButton.addEventListener("click", () => {
       batMusic[receivedSound].play();
-      console.log(batMusic[receivedSound])
-      console.log(batMusic)
+      console.log(batMusic[receivedSound]);
     });
 });
 
 let batSounds = [];
 let batMusic = [];
+let treehopperMusic = [];
 let serverMusic = [];
 let preLoadServer = [];
 let sentSound = false;
 let last = [serverMusic.length - 1]
 
-let bat1,
-  bat2,
-  bat3,
-  bat4,
-  bat5,
-  bat6,
-  bat7,
-  bat8,
-  bat9,
-  bat10,
-  bat12,
-  bat13,
-  bat14,
-  bat15;
+let bat1, bat2, bat3, bat4, bat5, bat6, bat7, bat8, bat9, bat10, bat12, bat13, bat14, bat15;
 
 // global variables for p5 Sketch
 let cnv;
@@ -108,27 +105,14 @@ function preload() {
   for (let i = 1; i < 14; i++) {
     batMusic[i - 1] = loadSound("../Audio/bat" + i + ".mp3");
   }
+  for (let i = 1; i < 15; i++) {
+    treehopperMusic[i - 1] = loadSound("../Audio/treehopper" + i + ".mp3");
+  }
 }
 
 let divX, divY;
 
 function setup() {
-  batSounds.push(
-    bat1,
-    bat2,
-    bat3,
-    bat4,
-    bat5,
-    bat6,
-    bat7,
-    bat8,
-    bat9,
-    bat10,
-    bat12,
-    bat13,
-    bat14,
-    bat15
-  );
 
   let width = window.innerWidth;
   let height = window.innerHeight;
@@ -137,6 +121,9 @@ function setup() {
   // divY = height / octaves.length;
   for (i = 0; i < 8; i++) {
     line(0, divY * i, width, divY * i);
+
+    stroke(10)
+    fill(100,100,100)
     line(divX * i, 0, divX * i, height);
   }
 
@@ -159,8 +146,15 @@ function setup() {
 
 //array of sounds evenly mapped to windowWidth
 function playSounds() {
-  let batNote = Math.round((mouseX + divX / 2) / divX) - 1;
+ if (soundtriggered==true) {
+ let batNote = Math.round((mouseX + divX / 2) / divX) - 1;
   batMusic[batNote].play();
+ }
+
+if (soundtriggered1==true) {
+  let treehopperNote = Math.round((mouseX + divX / 2) / divX) - 1;
+  treehopperMusic[treehopperNote].play();
+}
 
   let animalSounds = {
     sound: batMusic[batNote],
@@ -232,3 +226,5 @@ function keyPressed() {
     }
   }
 }
+
+
