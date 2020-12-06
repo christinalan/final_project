@@ -41,9 +41,9 @@ user.on("connection", (socket) => {
 
   //getting message to server
   socket.on("msg", (data) => {
-    console.log(data.firstLetters);
 
     user.emit("letters", data.firstLetters);
+    console.log(data.firstLetters)
   });
 
   //getting bat sound
@@ -54,4 +54,13 @@ user.on("connection", (socket) => {
 
     user.emit("dataSound", dataURL);
   });
+
+  socket.on("animalSounds1", (data) => {
+    // let dataSound = data.sound;
+    let dataURL1 = data.soundURL.url;
+    console.log(dataURL1);
+
+    user.emit("dataSound", dataURL1);
+  });
 });
+

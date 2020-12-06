@@ -50,7 +50,11 @@ let alphabet = [
   "y",
   "z",
   "!",
+  "?",
+  ".",
+  "+"
 ];
+console.log(alphabet)
 
 let alph;
 
@@ -92,10 +96,12 @@ window.addEventListener("load", () => {
 
   sendButton.addEventListener("click", () => {
     letterGroup = msgInput.value.match(/\b(\w)/g);
+    console.log(letterGroup);
     curMsg = msgInput.value;
     curName = nameInput.value;
     let msgObj = { name: curName, message: curMsg, firstLetters: letterGroup };
     socket.emit("msg", msgObj);
+ 
   });
 });
 
@@ -130,7 +136,7 @@ var toCol;
 let tree;
 
 function preload() {
-  for (let i = 1; i <= 14; i++) {
+  for (let i = 1; i <= 15; i++) {
     batMusic[i - 1] = loadSound("../Audio/bat" + i + ".mp3");
   }
   for (let i = 1; i <= 15; i++) {
@@ -138,11 +144,25 @@ function preload() {
   }
 }
 
+let buildMap = (batMusic, alphabet) => {
+  let map = new Map();
+  for (let i=0; i<batMusic.length; i++){
+    map.set(batMusic[i], alphabet[i])
+  }
+  return map;
+}
+
+
+
+
+
+
 let width, height;
 let divX, divY;
 let p5Letters = [];
 let p5Letter, singleLetter, letterToNum;
 let batPosition, newBatNote;
+let convertedsounds = [];
 
 function setup() {
   width = window.innerWidth / 2;
@@ -174,50 +194,61 @@ function setup() {
 
   //listening for the letters from the server
   socket.on("letters", (data) => {
+  
     p5Letters.push(data);
+
     // p5Letters.forEach((e) => console.log(e));
     for (let i = 0; i < p5Letters.length; i++) {
-      p5Letter = p5Letters[i];
+      console.log(p5Letters.length)
+      p5Letter = p5Letters[i]; 
+      console.log(p5Letters[i])
       p5Letter.forEach((e) => {
         singleLetter = e;
-        if (singleLetter == "a" || singleLetter == "n") {
+        if (singleLetter == "a" || singleLetter == "b") {
           letterToNum = 0;
-        } else if (singleLetter == "c" || singleLetter == "p") {
+        } else if (singleLetter == "c" || singleLetter == "d") {
           letterToNum = 1;
-        } else if (singleLetter == "e" || singleLetter == "r") {
+        } else if (singleLetter == "e" || singleLetter == "f") {
           letterToNum = 2;
         } else if (singleLetter == "g" || singleLetter == "h") {
           letterToNum = 3;
-        } else if (singleLetter == "i" || singleLetter == "t") {
+        } else if (singleLetter == "i" || singleLetter == "j") {
           letterToNum = 4;
-        } else if (singleLetter == "k" || singleLetter == "v") {
+        } else if (singleLetter == "k" || singleLetter == "l") {
           letterToNum = 5;
-        } else if (singleLetter == "m") {
+        } else if (singleLetter == "m" || singleLetter == "n" ) {
           letterToNum = 6;
-        } else if (singleLetter == "o" || singleLetter == "d") {
+        } else if (singleLetter == "o" || singleLetter == "p") {
           letterToNum = 7;
-        } else if (singleLetter == "q" || singleLetter == "f") {
+        } else if (singleLetter == "q" || singleLetter == "r") {
           letterToNum = 8;
-        } else if (singleLetter == "s" || singleLetter == "j") {
+        } else if (singleLetter == "s" || singleLetter == "t") {
           letterToNum = 9;
-        } else if (singleLetter == "u" || singleLetter == "l") {
+        } else if (singleLetter == "u" || singleLetter == "v") {
           letterToNum = 10;
         } else if (singleLetter == "w" || singleLetter == "x") {
           letterToNum = 11;
         } else if (singleLetter == "y" || singleLetter == "z") {
           letterToNum = 12;
-        } else if (singleLetter == "b" || singleLetter == "!") {
+        } else if (singleLetter == "!" || singleLetter == "?") {
           letterToNum = 13;
         }
+        else if (singleLetter == "." || singleLetter == "+") {
+          letterToNum = 14;
+        }
+        convertedsounds.push(letterToNum);
+        console.log(convertedsounds)
+
       });
     }
   });
 
   convertButton = document.getElementById("convert-button");
   convertButton.addEventListener("click", () => {
-    console.log(letterToNum);
-    console.log(batMusic[letterToNum]);
-    batMusic[letterToNum].play();
+    for (let i=0;i<convertedsounds.length;i++){
+    batMusic[convertedsounds[i]].play();
+    console.log( batMusic[convertedsounds[i]])
+    }
   });
   //listening for bat sound to come from server
   socket.on("dataSound", (data) => {
@@ -318,13 +349,21 @@ function playSounds() {
     singleTreeNote.play();
   }
 
-  soundIsPlaying = true;
+  soundtriggered = true;
   let animalSounds = {
     sound: batNote,
     soundURL: batMusic[batNote],
   };
 
   socket.emit("animalSounds", animalSounds);
+
+// soundtriggered1 = true;
+//   let treeSounds = {
+//     sound: treeNote,
+//     soundURL:treehopperMusic[treeNote],
+//   };
+
+//   socket.emit("animalSounds1", treeSounds);
 }
 
 function mouseClicked() {
