@@ -35,18 +35,33 @@ p {
   z-index: 0;
 }
 
+.buttons {
+  display: flex;
+  flex-direction: column;
+}
+
 .hear-button {
   background-color: orange;
-  transform: translateX(120px);
-  margin-top: 20%;
+  transform: translateX(100px);
+  margin-top: 150%;
   padding: 5px;
-  height: 70%;
+  height: 10%;
+  cursor: zoom-in;
+  border-radius: 40px;
+}
+
+.convert-button {
+  background-color: rgb(174, 255, 43);
+  transform: translateX(100px);
+  margin-top: 50%;
+  padding: 5px;
+  height: 10%;
   cursor: zoom-in;
   border-radius: 40px;
 }
 
 .dropdown {
-  margin: 2% 35% 0% 0%;
+  margin: 2% 40% 0% 0%;
 }
 .play-button {
   margin-top: 20px;

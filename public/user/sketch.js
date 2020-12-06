@@ -16,7 +16,7 @@ let clientName;
 let clientDate;
 let playing, clicked;
 let toggleButton;
-let hearButton;
+let hearButton, convertButton;
 let receivedSound;
 let animals = ["bat", "treehopper", "walrus"];
 let animalOption;
@@ -37,8 +37,6 @@ let alphabet = [
   "l",
   "m",
   "n",
-];
-let alphabet1 = [
   "o",
   "p",
   "q",
@@ -52,7 +50,6 @@ let alphabet1 = [
   "y",
   "z",
   "!",
-  ".",
 ];
 
 let alph;
@@ -144,7 +141,7 @@ function preload() {
 let width, height;
 let divX, divY;
 let p5Letters = [];
-let p5Letter, singleLetter;
+let p5Letter, singleLetter, letterToNum;
 let batPosition, newBatNote;
 
 function setup() {
@@ -183,15 +180,45 @@ function setup() {
       p5Letter = p5Letters[i];
       p5Letter.forEach((e) => {
         singleLetter = e;
-        if (singleLetter == "a") {
-          return (letterToNum = 0);
+        if (singleLetter == "a" || singleLetter == "n") {
+          letterToNum = 0;
+        } else if (singleLetter == "c" || singleLetter == "p") {
+          letterToNum = 1;
+        } else if (singleLetter == "e" || singleLetter == "r") {
+          letterToNum = 2;
+        } else if (singleLetter == "g" || singleLetter == "h") {
+          letterToNum = 3;
+        } else if (singleLetter == "i" || singleLetter == "t") {
+          letterToNum = 4;
+        } else if (singleLetter == "k" || singleLetter == "v") {
+          letterToNum = 5;
+        } else if (singleLetter == "m") {
+          letterToNum = 6;
+        } else if (singleLetter == "o" || singleLetter == "d") {
+          letterToNum = 7;
+        } else if (singleLetter == "q" || singleLetter == "f") {
+          letterToNum = 8;
+        } else if (singleLetter == "s" || singleLetter == "j") {
+          letterToNum = 9;
+        } else if (singleLetter == "u" || singleLetter == "l") {
+          letterToNum = 10;
+        } else if (singleLetter == "w" || singleLetter == "x") {
+          letterToNum = 11;
+        } else if (singleLetter == "y" || singleLetter == "z") {
+          letterToNum = 12;
+        } else if (singleLetter == "b" || singleLetter == "!") {
+          letterToNum = 13;
         }
       });
     }
-    console.log(letterToNum);
-    console.log(batMusic[letterToNum]);
   });
 
+  convertButton = document.getElementById("convert-button");
+  convertButton.addEventListener("click", () => {
+    console.log(letterToNum);
+    console.log(batMusic[letterToNum]);
+    batMusic[letterToNum].play();
+  });
   //listening for bat sound to come from server
   socket.on("dataSound", (data) => {
     // batNumber = data.sound;
@@ -268,6 +295,7 @@ function draw() {
 function playSounds() {
   let batNote = Math.round((mouseX + divX / 2) / divX) - 1;
   singleBatNote = batMusic[batNote];
+  console.log(batNote);
   if (soundtriggered == true) {
     singleBatNote.play();
   }
