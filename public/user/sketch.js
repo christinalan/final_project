@@ -245,9 +245,13 @@ function setup() {
   toCol2 = color(250, 100, 50);
 }
 
-let j;
+let yposition = 200;
+let speed = 0.01;
+let antiGravity = 0.01;
+
 function draw() {
-  // background(0);
+  background(0);
+
   waveFreq = freqAnalyzer.analyze();
   level = amplitude.getLevel();
 
@@ -256,7 +260,6 @@ function draw() {
 
   noStroke();
   for (let i = 0; i < waveFreq.length; i++) {
-    j = 0;
     let amp = waveFreq[i];
     let x = map(amp, 0, 200, height, 0);
     // let x = map(i, 0, waveFreq.length, 0, width);
@@ -265,20 +268,28 @@ function draw() {
     let l = map(c, 0, 255, 0, 1);
     let col = lerpColor(fromCol, toCol, l);
     fill(col);
-    rect(x, y + j, i, amp);
+    rect(x, yposition + y, i / 2, amp);
 
     if (level > 0) {
       push();
       stroke(col);
-      line(x, y, 0, height / i);
+      line(x, yposition + y, 0, height / i);
       pop();
     }
-    j += 10;
+
+    yposition -= speed;
+    // speed -= antiGravity;
+
+    if (yposition < -height / 2) {
+      yposition = height - 200;
+      background(0);
+    }
   }
-  if (waveFreq.length > width) {
+  if (yposition <= height) {
     waveFreq.splice(0, 1);
   }
 
+  push();
   beginShape();
   for (let i = 0; i < waveFreq.length; i++) {
     let c = constrain(freqAnalyzer.getEnergy(i), 0, 255);
@@ -290,6 +301,7 @@ function draw() {
     // vertex(i * w, map(waveFreq[i], 0, 256, height, 0));
   }
   endShape();
+  pop();
 }
 
 function playSounds() {
