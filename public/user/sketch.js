@@ -109,6 +109,7 @@ let batMusic = [];
 let treehopperMusic = [];
 let singleTreeNote;
 let serverMusic = [];
+let serverSound;
 
 let newBatSound;
 let newTreeSound;
@@ -143,8 +144,8 @@ function preload() {
 let width, height;
 let divX, divY;
 let p5Letters = [];
-let p5Letter, singleLetter, letterToNumber;
-let batPosition;
+let p5Letter, singleLetter;
+let batPosition, newBatNote;
 
 function setup() {
   width = window.innerWidth / 2;
@@ -171,7 +172,7 @@ function setup() {
   //I want to map each letter of the alphabet to a different sound
   //about 2 letters per animal sound
   for (let i = 0; i < alphabet.length; i++) {
-    letterToNum = map(alphabet[i], 0, 27, 0, 14);
+    // letterToNum = map(alphabet[i], 0, 27, 0, 14);
   }
 
   //listening for the letters from the server
@@ -182,13 +183,13 @@ function setup() {
       p5Letter = p5Letters[i];
       p5Letter.forEach((e) => {
         singleLetter = e;
-        console.log(singleLetter);
+        if (singleLetter == "a") {
+          return (letterToNum = 0);
+        }
       });
     }
-
-    // if (p5Letter == "a") {
-    //   console.log("success");
-    // }
+    console.log(letterToNum);
+    console.log(batMusic[letterToNum]);
   });
 
   //listening for bat sound to come from server
@@ -208,6 +209,7 @@ function setup() {
   hearButton.addEventListener("click", () => {
     // batMusic[batNumber].play();
     newBatSound.play();
+    // batMusic[newBatNote].play();
   });
 
   fromCol = color(50, 250, 155);
