@@ -39,13 +39,19 @@ let numbers = [];
 user.on("connection", (socket) => {
   console.log("mod socket connected : " + socket.id);
 
+  //getting message to server
+  socket.on("msg", (data) => {
+    console.log(data.firstLetters);
+
+    user.emit("letters", data.firstLetters);
+  });
+
   //getting bat sound
   socket.on("animalSounds", (data) => {
-    let dataSound = data.sound;
-    let dataURL = data.sound.url;
-    console.log(data.sound);
+    // let dataSound = data.sound;
+    let dataURL = data.soundURL.url;
+    console.log(dataURL);
 
-    console.log(dataSound);
     user.emit("dataSound", dataURL);
   });
 });

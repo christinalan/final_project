@@ -15,18 +15,52 @@ let score;
 let clientName;
 let clientDate;
 let playing, clicked;
-let nameInput;
-let sendButton;
-let curName;
 let toggleButton;
-let hearClicked;
 let hearButton;
-let serverBatSound;
-let batMusic1;
 let receivedSound;
 let animals = ["bat", "treehopper", "walrus"];
 let animalOption;
 let soundtriggered, soundtriggered1;
+
+let alphabet = [
+  "a",
+  "b",
+  "c",
+  "d",
+  "e",
+  "f",
+  "g",
+  "h",
+  "i",
+  "j",
+  "k",
+  "l",
+  "m",
+  "n",
+];
+let alphabet1 = [
+  "o",
+  "p",
+  "q",
+  "r",
+  "s",
+  "t",
+  "u",
+  "v",
+  "w",
+  "x",
+  "y",
+  "z",
+  "!",
+  ".",
+];
+
+let alph;
+
+let msgInput = document.getElementById("input-chat");
+let nameInput = document.getElementById("uname");
+let sendButton = document.getElementById("send-name");
+let curName, curMsg, letterGroup;
 
 //variables for the Instructions window
 let modal = document.getElementById("info-modal");
@@ -59,13 +93,11 @@ window.addEventListener("load", () => {
     }
   });
 
-  //username info
-  nameInput = document.getElementById("uname");
-  sendButton = document.getElementById("send-name");
-
   sendButton.addEventListener("click", () => {
+    letterGroup = msgInput.value.match(/\b(\w)/g);
+    curMsg = msgInput.value;
     curName = nameInput.value;
-    let msgObj = { name: curName };
+    let msgObj = { name: curName, message: curMsg, firstLetters: letterGroup };
     socket.emit("msg", msgObj);
   });
 });
@@ -110,20 +142,18 @@ function preload() {
 
 let width, height;
 let divX, divY;
+let p5Letters = [];
+let p5Letter, singleLetter, letterToNumber;
+let batPosition;
 
 function setup() {
   width = window.innerWidth / 2;
   height = (2 * window.innerHeight) / 3;
   canvas = createCanvas(width, height);
   canvas.parent("chat-canvas");
-  divX = width / 15;
+  divX = width / 14;
+  alph = alphabet.length / 14;
   // divY = height / octaves.length;
-  for (i = 0; i < 8; i++) {
-    line(0, divY * i, width, divY * i);
-    stroke(15);
-    fill(100, 100, 100);
-    line(divX * i, 0, divX * i, height);
-  }
 
   canvas.mousePressed(playSounds);
   background(0);
@@ -133,12 +163,37 @@ function setup() {
   amplitude = new p5.Amplitude();
 
   w = width / 64;
-  // freqAnalyzer.setInput(batMusic);
+
+  for (let i = 0; i < batMusic.length; i++) {
+    batPosition = batMusic.indexOf(batMusic[i]);
+    // letterToNum = alphabet[batPosition];
+  }
+  //I want to map each letter of the alphabet to a different sound
+  //about 2 letters per animal sound
+  for (let i = 0; i < alphabet.length; i++) {
+    letterToNum = map(alphabet[i], 0, 27, 0, 14);
+  }
+
+  //listening for the letters from the server
+  socket.on("letters", (data) => {
+    p5Letters.push(data);
+    // p5Letters.forEach((e) => console.log(e));
+    for (let i = 0; i < p5Letters.length; i++) {
+      p5Letter = p5Letters[i];
+      p5Letter.forEach((e) => {
+        singleLetter = e;
+        console.log(singleLetter);
+      });
+    }
+
+    // if (p5Letter == "a") {
+    //   console.log("success");
+    // }
+  });
 
   //listening for bat sound to come from server
   socket.on("dataSound", (data) => {
     // batNumber = data.sound;
-    // console.log(batNumber);
     serverMusic.push(data);
     // console.log(serverMusic);
 
@@ -260,20 +315,20 @@ function mouseClicked() {
   pop();
 }
 
-function keyPressed() {
-  if (keyCode === 32) {
-    playing = !playing;
+// function keyPressed() {
+//   if (keyCode === 32) {
+//     playing = !playing;
 
-    if (playing) {
-      osc1.start();
-      osc2.start(1);
-      toggleButton.style.background = "green";
-      toggleButton.innerHTML = "On";
-    } else {
-      osc1.stop();
-      osc2.stop();
-      toggleButton.innerHTML = "Off";
-      toggleButton.style.background = "red";
-    }
-  }
-}
+//     if (playing) {
+//       osc1.start();
+//       osc2.start(1);
+//       toggleButton.style.background = "green";
+//       toggleButton.innerHTML = "On";
+//     } else {
+//       osc1.stop();
+//       osc2.stop();
+//       toggleButton.innerHTML = "Off";
+//       toggleButton.style.background = "red";
+//     }
+//   }
+// }

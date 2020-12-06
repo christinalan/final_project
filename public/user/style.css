@@ -6,6 +6,7 @@ body {
   display: flex;
   flex-direction: row;
 }
+
 canvas {
   margin-top: 4%;
   margin-left: 15%;
@@ -33,15 +34,20 @@ p {
   font-weight: bold;
   z-index: 0;
 }
+
 .hear-button {
   background-color: orange;
-  transform: translateX(180px);
-  margin-top: -35px;
+  transform: translateX(120px);
+  margin-top: 20%;
   padding: 5px;
+  height: 70%;
   cursor: zoom-in;
   border-radius: 40px;
 }
 
+.dropdown {
+  margin: 2% 35% 0% 0%;
+}
 .play-button {
   margin-top: 20px;
   transform: translateX(170px);
@@ -65,7 +71,7 @@ p {
 }
 
 #uname {
-  transform: translateX(100px);
+  transform: translateX(30px);
   font-family: monospace;
   background: black;
   color: white;
@@ -74,11 +80,12 @@ p {
 }
 
 #send-name {
-  transform: translateX(110px);
+  transform: translateX(40px);
   font-family: monospace;
   background: black;
   color: white;
   font-size: revert;
+  padding: 10px;
 }
 
 .info-button {

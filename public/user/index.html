@@ -7,13 +7,9 @@
     <title>Frequency</title>
   </head>
   <body>
-    <div id="top-container">
-      <input type="text" id="uname" name="fname" placeholder="username" />
-      <button id="send-name" class="send-name">send</button>
-      <button id="hear-button" class="button hear-button">Hear Messages</button>
-    </div>
+    <div id="top-container"></div>
     <div id="animal-dropdown">
-      <select id="select-animal">
+      <select id="select-animal" class="dropdown">
         select animal
       </select>
     </div>
@@ -27,7 +23,10 @@
           cols="30"
         ></textarea>
       </form>
+      <button id="hear-button" class="button hear-button">Hear Messages</button>
     </div>
+    <input type="text" id="uname" name="fname" placeholder="username" />
+    <button id="send-name" class="send-name">send</button>
     <script type="text/javascript" src="/socket.io/socket.io.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.1.0/p5.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.6.1/addons/p5.sound.min.js"></script>
