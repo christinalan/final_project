@@ -112,7 +112,7 @@ let queue = [];
 let p5NewAudio = [];
 let src;
 let audioPlaying = 0;
-let playThis;
+let playThis = [];
 let p5Letter, singleLetter, letterToNum;
 let messageAudio;
 let yesAudio = false;
@@ -132,29 +132,31 @@ function preload() {
 }
 
 function setUpQueue() {
-  if (audioPlaying == 1 || queue.length == 0) return;
+  if (audioPlaying == 1 || playThis.length == 0) return;
   playQueue();
 }
 
 function playQueue() {
   audioPlaying = 1;
-  if (queue.length == 0) {
+  if (playThis.length == 0) {
     audioPlaying = 0;
     return;
   }
-  src = queue[0].file;
-  playThis = createAudio(src, soundSuccess, soundError, soundWaiting);
-  // console.log(src);
+
+  // src = queue[0].file;
+  // playThis = createAudio(src, soundSuccess, soundError, soundWaiting);
   // playThis = new Audio();
   // messageAudio = document.getElementById("messageAudio");
   // messageAudio.src = queue[0].file;
   // playThis.src = messageAudio.src;
   // playThis = queue[0].file;
   // playThis.load();
-  console.log(playThis);
-  playThis.play();
-  playThis.onended(() => {
-    queue.splice(0, 1);
+  // playThis.play();
+  src = playThis[0];
+  src.play();
+  console.log(src);
+  src.onended(() => {
+    playThis.splice(0, 1);
     playQueue();
   });
 
@@ -255,7 +257,13 @@ function setup() {
       // newAudio = batMusic[numberLetters[0]];
       // newAudio.play();
     }
-    setUpQueue();
+
+    for (let i = 0; i < queue.length; i++) {
+      src = queue[i].url;
+      console.log(src);
+      playThis[i] = loadSound(src, soundSuccess, soundError, soundWaiting);
+      console.log(playThis);
+    }
     // src = queue[0].url;
     // console.log(queue);
     // playThis = loadSound(src, soundSuccess, soundError, soundWaiting);
@@ -265,6 +273,7 @@ function setup() {
 
   convertButton = document.getElementById("convert-button");
   convertButton.addEventListener("click", () => {
+    setUpQueue();
     // playThis.play();
     // playThis.noLoop();
     // console.log(playThis);
@@ -306,12 +315,14 @@ function setup() {
 let yposition = 200;
 let speed = 0.01;
 let antiGravity = 0.01;
+let firstAn = false;
 
 function draw() {
   background(0);
 
   waveFreq = freqAnalyzer.analyze();
   level = amplitude.getLevel();
+  console.log(level);
 
   noStroke();
   for (let i = 0; i < waveFreq.length; i++) {
@@ -325,7 +336,7 @@ function draw() {
     fill(col);
     rect(x, yposition + y, i / 2, amp);
 
-    if (level > 0) {
+    if (amp > 0) {
       push();
       stroke(col);
       line(x, yposition + y, 0, height / i);
