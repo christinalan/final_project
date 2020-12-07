@@ -201,7 +201,13 @@ function setup() {
   convertButton = document.getElementById("convert-button");
   convertButton.addEventListener("click", () => {
     for (let i = 0; i < numberLetters.length; i++) {
-      queue.push(batMusic[numberLetters[i]]);
+      if (soundtriggered == true) {
+        queue.push(batMusic[numberLetters[i]]);
+      }
+
+      if (soundtriggered1 == true) {
+        queue.push(treehopperMusic[numberLetters[i]]);
+      }
       // newAudio = batMusic[numberLetters[0]];
       // newAudio.play();
     }
