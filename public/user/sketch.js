@@ -114,10 +114,7 @@ let src;
 let audioPlaying = 0;
 let playThis = [];
 let p5Letter, singleLetter, letterToNum;
-let messageAudio;
 let yesAudio = false;
-
-let batPosition, newBatNote;
 
 function preload() {
   for (let i = 1; i <= 15; i++) {
@@ -145,15 +142,11 @@ function playQueue() {
   src = playThis[0];
   src.play();
   console.log(src);
+  // this will play the next file in the playThis array
   src.onended(() => {
     playThis.splice(0, 1);
     playQueue();
   });
-
-  // playThis.addEventListener("ended", () => {
-  //   queue.splice(0, 1);
-  //   playQueue();
-  // });
 }
 
 function sayDone() {
@@ -187,26 +180,11 @@ function setup() {
   canvas.mousePressed(playSounds);
   background(0);
 
-  let audioIn = new p5.AudioIn();
-  audioIn.start();
-
   analyzer = new p5.FFT();
   freqAnalyzer = new p5.FFT(0, 64);
-  // freqAnalyzer.setInput(audioIn);
   amplitude = new p5.Amplitude();
-  // amplitude.setInput(audioIn);
 
   w = width / 64;
-
-  for (let i = 0; i < batMusic.length; i++) {
-    batPosition = batMusic.indexOf(batMusic[i]);
-    // letterToNum = alphabet[batPosition];
-  }
-  //I want to map each letter of the alphabet to a different sound
-  //about 2 letters per animal sound
-  // for (let i = 0; i < alphabet.length; i++) {
-  // letterToNum = map(alphabet[i], 0, 27, 0, 14);
-  // }
 
   //listening for the letters from the server
   socket.on("letters", (data) => {
@@ -244,10 +222,9 @@ function setup() {
       if (soundtriggered1 == true) {
         queue.push(treehopperMusic[numberLetters[i]]);
       }
-      // newAudio = batMusic[numberLetters[0]];
-      // newAudio.play();
     }
 
+    //after queue array is created, playThis will load the audio files from src
     for (let i = 0; i < queue.length; i++) {
       src = queue[i].url;
       console.log(src);
@@ -258,6 +235,7 @@ function setup() {
 
   convertButton = document.getElementById("convert-button");
   convertButton.addEventListener("click", () => {
+    //can only play after the sounds are loaded
     setUpQueue();
   });
 
