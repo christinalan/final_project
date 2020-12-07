@@ -141,8 +141,13 @@ function preload() {
 let width, height;
 let divX, divY;
 let p5Letters = [];
+let numberLetters = []; // queue of audio messages
+let queue = [];
+let audioPlaying = 0;
 let p5Letter, singleLetter, letterToNum;
+
 let batPosition, newBatNote;
+let newAudio;
 
 function setup() {
   width = window.innerWidth / 2;
@@ -180,45 +185,29 @@ function setup() {
       p5Letter = p5Letters[i];
       p5Letter.forEach((e) => {
         singleLetter = e;
-        if (singleLetter == "a" || singleLetter == "n") {
-          letterToNum = 0;
-        } else if (singleLetter == "c" || singleLetter == "p") {
-          letterToNum = 1;
-        } else if (singleLetter == "e" || singleLetter == "r") {
-          letterToNum = 2;
-        } else if (singleLetter == "g" || singleLetter == "h") {
-          letterToNum = 3;
-        } else if (singleLetter == "i" || singleLetter == "t") {
-          letterToNum = 4;
-        } else if (singleLetter == "k" || singleLetter == "v") {
-          letterToNum = 5;
-        } else if (singleLetter == "m") {
-          letterToNum = 6;
-        } else if (singleLetter == "o" || singleLetter == "d") {
-          letterToNum = 7;
-        } else if (singleLetter == "q" || singleLetter == "f") {
-          letterToNum = 8;
-        } else if (singleLetter == "s" || singleLetter == "j") {
-          letterToNum = 9;
-        } else if (singleLetter == "u" || singleLetter == "l") {
-          letterToNum = 10;
-        } else if (singleLetter == "w" || singleLetter == "x") {
-          letterToNum = 11;
-        } else if (singleLetter == "y" || singleLetter == "z") {
-          letterToNum = 12;
-        } else if (singleLetter == "b" || singleLetter == "!") {
-          letterToNum = 13;
+        letterToNum = singleLetter.charCodeAt(0) - 97;
+        if (letterToNum >= 13) {
+          letterToNum = Math.round(singleLetter.charCodeAt(0) - 111);
         }
+        if (letterToNum < 0) {
+          letterToNum = Math.round((letterToNum * -1) / 3);
+        }
+        console.log(letterToNum);
+        numberLetters.push(letterToNum);
       });
     }
   });
 
   convertButton = document.getElementById("convert-button");
   convertButton.addEventListener("click", () => {
-    console.log(letterToNum);
-    console.log(batMusic[letterToNum]);
-    batMusic[letterToNum].play();
+    for (let i = 0; i < numberLetters.length; i++) {
+      queue.push(batMusic[numberLetters[i]]);
+      // newAudio = batMusic[numberLetters[0]];
+      // newAudio.play();
+    }
+    setUpQueue();
   });
+
   //listening for bat sound to come from server
   socket.on("dataSound", (data) => {
     // batNumber = data.sound;
@@ -243,6 +232,31 @@ function setup() {
   toCol = color(50, 100, 200);
   fromCol2 = color(0, 100, 255);
   toCol2 = color(250, 100, 50);
+}
+
+function setUpQueue() {
+  if (audioPlaying == 1 || queue.length == 0) return;
+  playQueue();
+}
+
+function playQueue() {
+  audioPlaying = 1;
+  if (queue.length == 0) {
+    audioPlaying = 0;
+    return;
+  }
+  let src = queue[1].file;
+  console.log(src);
+  let playThis = new Audio(src);
+  // let messageAudio = document.getElementById("messageAudio");
+  // messageAudio.src = numberLetters[0].getAttribute("src");
+  // playThis.src = src;
+  playThis.load();
+  playThis.play();
+  playThis.addEventListener("ended", () => {
+    queue.splice(0, 1);
+    playQueue();
+  });
 }
 
 let yposition = 200;
