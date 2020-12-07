@@ -52,7 +52,7 @@ user.on("connection", (socket) => {
     let dataURL = data.soundURL.url;
     console.log(dataURL);
 
-    user.emit("dataSound", dataURL);
+    socket.broadcast.emit("dataSound", dataURL);
   });
 
   socket.on("animalSounds1", (data) => {
@@ -60,7 +60,15 @@ user.on("connection", (socket) => {
     let dataURL1 = data.soundURL.url;
     console.log(dataURL1);
 
-    user.emit("dataSound", dataURL1);
+    socket.broadcast.emit("dataSound", dataURL1);
+  });
+
+  socket.on("animalSounds2", (data) => {
+    // let dataSound = data.sound;
+    let dataURL2 = data.soundURL.url;
+    console.log(dataURL2);
+
+    socket.broadcast.emit("dataSound", dataURL2);
   });
 });
 

@@ -20,7 +20,7 @@ let hearButton, convertButton;
 let receivedSound;
 let animals = ["bat", "treehopper", "walrus"];
 let animalOption;
-let soundtriggered, soundtriggered1;
+let soundtriggered, soundtriggered1, sountriggered2;
 
 let alphabet = [
   "a",
@@ -88,11 +88,18 @@ window.addEventListener("load", () => {
     if (e.target.value == "bat") {
       soundtriggered = true;
       soundtriggered1 = false;
-    } else if (e.target.value == "treehopper") {
+      sountriggered2 = false;
+    } else if(e.target.value == "treehopper") {
       soundtriggered1 = true;
       soundtriggered = false;
+      sountriggered2 = false;
+    } else if(e.target.value == "walrus") {
+      sountriggered2 = true;
+      soundtriggered = false;
+      soundtriggered1 = false;
     }
   });
+  
 
   sendButton.addEventListener("click", () => {
     letterGroup = msgInput.value.match(/\b(\w)/g);
@@ -113,6 +120,8 @@ let treehopperMusic = [];
 let singleTreeNote;
 let serverMusic = [];
 let serverSound;
+let walrusMusic = [];
+let singleWalrusNote;
 
 let newBatSound;
 let newTreeSound;
@@ -142,15 +151,11 @@ function preload() {
   for (let i = 1; i <= 15; i++) {
     treehopperMusic[i - 1] = loadSound("../Audio/treehopper" + i + ".mp3");
   }
+  for (let i = 1; i <= 15; i++) {
+    walrusMusic[i - 1] = loadSound("../Audio/walrus" + i + ".mp3");
+  }
 }
 
-let buildMap = (batMusic, alphabet) => {
-  let map = new Map();
-  for (let i=0; i<batMusic.length; i++){
-    map.set(batMusic[i], alphabet[i])
-  }
-  return map;
-}
 
 
 
@@ -169,7 +174,7 @@ function setup() {
   height = (2 * window.innerHeight) / 3;
   canvas = createCanvas(width, height);
   canvas.parent("chat-canvas");
-  divX = width / 14;
+  divX = width / 15;
   alph = alphabet.length / 14;
   // divY = height / octaves.length;
 
@@ -242,7 +247,6 @@ function setup() {
       });
     }
   });
-
   convertButton = document.getElementById("convert-button");
   convertButton.addEventListener("click", () => {
     for (let i=0;i<convertedsounds.length;i++){
@@ -338,32 +342,44 @@ function draw() {
 function playSounds() {
   let batNote = Math.round((mouseX + divX / 2) / divX) - 1;
   singleBatNote = batMusic[batNote];
-  console.log(batNote);
+
   if (soundtriggered == true) {
     singleBatNote.play();
+
+    let animalSounds = {
+      sound: batNote,
+      soundURL: batMusic[batNote],
+    };
+
+    socket.emit("animalSounds", animalSounds);
+
   }
 
   let treeNote = Math.round((mouseX + divX / 2) / divX) - 1;
   singleTreeNote = treehopperMusic[treeNote];
   if (soundtriggered1 == true) {
     singleTreeNote.play();
+
+    let treeSounds = {
+      sound: treeNote,
+      soundURL:treehopperMusic[treeNote],
+    };
+
+    socket.emit("animalSounds1", treeSounds);
   }
 
-  soundtriggered = true;
-  let animalSounds = {
-    sound: batNote,
-    soundURL: batMusic[batNote],
-  };
+  let walrusNote = Math.round((mouseX + divX / 2) / divX) - 1;
+  singleWalrusNote = walrusMusic[walrusNote];
+  if (sountriggered2 == true) {
+    singleWalrusNote.play();
 
-  socket.emit("animalSounds", animalSounds);
+    let walrusSounds = {
+      sound: walrusNote,
+      soundURL:walrusMusic[walrusNote],
+    };
 
-// soundtriggered1 = true;
-//   let treeSounds = {
-//     sound: treeNote,
-//     soundURL:treehopperMusic[treeNote],
-//   };
-
-//   socket.emit("animalSounds1", treeSounds);
+    socket.emit("animalSounds1", walrusSounds);
+  }
 }
 
 function mouseClicked() {
