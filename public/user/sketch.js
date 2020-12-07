@@ -210,8 +210,8 @@ function setup() {
     }
   });
 
-  hearButton = document.getElementById("hear-button");
-  hearButton.addEventListener("click", () => {
+  convertButton = document.getElementById("convert-button");
+  convertButton.addEventListener("click", () => {
     // batMusic[batNumber].play();
 
     for (let i = 0; i < numberLetters.length; i++) {
@@ -233,8 +233,8 @@ function setup() {
     }
   });
 
-  convertButton = document.getElementById("convert-button");
-  convertButton.addEventListener("click", () => {
+  hearButton = document.getElementById("hear-button");
+  hearButton.addEventListener("click", () => {
     //can only play after the sounds are loaded
     setUpQueue();
   });
@@ -268,7 +268,6 @@ function draw() {
 
   waveFreq = freqAnalyzer.analyze();
   level = amplitude.getLevel();
-  console.log(level);
 
   noStroke();
   for (let i = 0; i < waveFreq.length; i++) {

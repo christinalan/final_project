@@ -18,14 +18,13 @@ canvas {
 }
 
 .chat {
-  
   margin-top: 20%;
   margin-left: 10%;
   width: 100%;
   height: 500px;
   padding-left: 5px;
   overflow: auto;
-  outline:  rgb(0, 255, 115) 3px solid;
+  outline: rgb(0, 255, 115) 3px solid;
   color: white;
   background-color: black;
 }
@@ -44,10 +43,9 @@ p {
 .buttons {
   display: flex;
   flex-direction: column;
-  
 }
 
-.hear-button {
+.convert-button {
   background-color: rgb(174, 255, 43);
   transform: translateX(100px);
   margin-top: 150%;
@@ -57,7 +55,7 @@ p {
   border-radius: 40px;
 }
 
-.convert-button {
+.hear-button {
   background-color: rgb(174, 255, 43);
   transform: translateX(100px);
   margin-top: 50%;
@@ -174,5 +172,4 @@ p {
 #animal-dropdown {
   text-align: center;
   align-items: center;
-  
 }
