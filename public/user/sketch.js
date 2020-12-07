@@ -142,16 +142,6 @@ function playQueue() {
     audioPlaying = 0;
     return;
   }
-
-  // src = queue[0].file;
-  // playThis = createAudio(src, soundSuccess, soundError, soundWaiting);
-  // playThis = new Audio();
-  // messageAudio = document.getElementById("messageAudio");
-  // messageAudio.src = queue[0].file;
-  // playThis.src = messageAudio.src;
-  // playThis = queue[0].file;
-  // playThis.load();
-  // playThis.play();
   src = playThis[0];
   src.play();
   console.log(src);
@@ -264,33 +254,11 @@ function setup() {
       playThis[i] = loadSound(src, soundSuccess, soundError, soundWaiting);
       console.log(playThis);
     }
-    // src = queue[0].url;
-    // console.log(queue);
-    // playThis = loadSound(src, soundSuccess, soundError, soundWaiting);
-    // newBatSound.play();
-    // batMusic[newBatNote].play();
   });
 
   convertButton = document.getElementById("convert-button");
   convertButton.addEventListener("click", () => {
     setUpQueue();
-    // playThis.play();
-    // playThis.noLoop();
-    // console.log(playThis);
-    // playThis.onended(() => {
-    //   console.log("ended");
-    //   queue.splice(0, 1);
-    //   playThis.play();
-    // });
-    // for (let i = 0; i < numberLetters.length; i++) {
-    //   if (soundtriggered == true) {
-    //     queue.push(batMusic[numberLetters[i]]);
-    //   }
-    //   if (soundtriggered1 == true) {
-    //     queue.push(treehopperMusic[numberLetters[i]]);
-    //   }
-    // }
-    // setUpQueue();
   });
 
   //listening for bat sound to come from server
