@@ -378,7 +378,7 @@ function playSounds() {
       soundURL:walrusMusic[walrusNote],
     };
 
-    socket.emit("animalSounds1", walrusSounds);
+    socket.emit("animalSounds2", walrusSounds);
   }
 }
 
