@@ -230,7 +230,20 @@ function setup() {
   hearButton = document.getElementById("hear-button");
   hearButton.addEventListener("click", () => {
     // batMusic[batNumber].play();
-    newBatSound.play();
+
+    for (let i = 0; i < numberLetters.length; i++) {
+      if (soundtriggered == true) {
+        queue.push(batMusic[numberLetters[i]]);
+      }
+
+      if (soundtriggered1 == true) {
+        queue.push(treehopperMusic[numberLetters[i]]);
+      }
+      // newAudio = batMusic[numberLetters[0]];
+      // newAudio.play();
+    }
+    setUpQueue();
+    // newBatSound.play();
     // batMusic[newBatNote].play();
   });
 
