@@ -20,7 +20,7 @@ let hearButton, convertButton;
 let receivedSound;
 let animals = ["bat", "treehopper", "walrus"];
 let animalOption;
-let soundtriggered, soundtriggered1, sountriggered2;
+let soundtriggered, soundtriggered1, soundtriggered2;
 
 let msgInput = document.getElementById("input-chat");
 let nameInput = document.getElementById("uname");
@@ -52,13 +52,13 @@ window.addEventListener("load", () => {
     if (e.target.value == "bat") {
       soundtriggered = true;
       soundtriggered1 = false;
-      sountriggered2 = false;
+      soundtriggered2 = false;
     } else if (e.target.value == "treehopper") {
       soundtriggered1 = true;
       soundtriggered = false;
-      sountriggered2 = false;
+      soundtriggered2 = false;
     } else if (e.target.value == "walrus") {
-      sountriggered2 = true;
+      soundtriggered2 = true;
       soundtriggered = false;
       soundtriggered1 = false;
     }
@@ -222,6 +222,10 @@ function setup() {
       if (soundtriggered1 == true) {
         queue.push(treehopperMusic[numberLetters[i]]);
       }
+
+      if (soundtriggered2 == true) {
+        queue.push(walrusMusic[numberLetters[i]]);
+      }
     }
 
     //after queue array is created, playThis will load the audio files from src
@@ -349,7 +353,7 @@ function playSounds() {
 
   let walrusNote = Math.round((mouseX + divX / 2) / divX) - 1;
   singleWalrusNote = walrusMusic[walrusNote];
-  if (sountriggered2 == true) {
+  if (soundtriggered2 == true) {
     singleWalrusNote.play();
 
     let walrusSounds = {
