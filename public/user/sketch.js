@@ -66,7 +66,7 @@ window.addEventListener("load", () => {
 
   sendButton.addEventListener("click", () => {
     letterGroup = msgInput.value.match(/\b(\w)/g);
-    console.log(letterGroup);
+    // console.log(letterGroup);
     curMsg = msgInput.value;
     curName = nameInput.value;
     let msgObj = { name: curName, message: curMsg, firstLetters: letterGroup };
@@ -104,7 +104,20 @@ let yStart = 0;
 var fromCol;
 var toCol;
 
-let tree;
+let width, height;
+let divX, divY;
+let p5Letters = [];
+let numberLetters = []; // queue of audio messages
+let queue = [];
+let p5NewAudio = [];
+let src;
+let audioPlaying = 0;
+let playThis;
+let p5Letter, singleLetter, letterToNum;
+let messageAudio;
+let yesAudio = false;
+
+let batPosition, newBatNote;
 
 function preload() {
   for (let i = 1; i <= 15; i++) {
@@ -118,16 +131,59 @@ function preload() {
   }
 }
 
-let width, height;
-let divX, divY;
-let p5Letters = [];
-let numberLetters = []; // queue of audio messages
-let queue = [];
-let audioPlaying = 0;
-let p5Letter, singleLetter, letterToNum;
+function setUpQueue() {
+  if (audioPlaying == 1 || queue.length == 0) return;
+  playQueue();
+}
 
-let batPosition, newBatNote;
-let newAudio;
+function playQueue() {
+  audioPlaying = 1;
+  if (queue.length == 0) {
+    audioPlaying = 0;
+    return;
+  }
+  src = queue[0].file;
+  playThis = createAudio(src, soundSuccess, soundError, soundWaiting);
+  // console.log(src);
+  // playThis = new Audio();
+  // messageAudio = document.getElementById("messageAudio");
+  // messageAudio.src = queue[0].file;
+  // playThis.src = messageAudio.src;
+  // playThis = queue[0].file;
+  // playThis.load();
+  console.log(playThis);
+  playThis.play();
+  playThis.onended(() => {
+    queue.splice(0, 1);
+    playQueue();
+  });
+
+  // playThis.addEventListener("ended", () => {
+  //   queue.splice(0, 1);
+  //   playQueue();
+  // });
+}
+
+function sayDone() {
+  console.log("audio file is done playing");
+  queue.splice(0, 1);
+  console.log(queue);
+  playThis.play();
+}
+
+function soundSuccess(resp) {
+  console.log("Sound is ready!");
+  // alert("sound is ready");
+  yesAudio = true;
+  console.log(yesAudio);
+}
+function soundError(err) {
+  console.log("sound is not working");
+  console.log(err);
+}
+function soundWaiting() {
+  console.log("Waiting for sound...");
+}
 
 function setup() {
   width = window.innerWidth / 2;
@@ -135,14 +191,18 @@ function setup() {
   canvas = createCanvas(width, height);
   canvas.parent("chat-canvas");
   divX = width / 15;
-  // divY = height / octaves.length;
 
   canvas.mousePressed(playSounds);
   background(0);
 
+  let audioIn = new p5.AudioIn();
+  audioIn.start();
+
   analyzer = new p5.FFT();
   freqAnalyzer = new p5.FFT(0, 64);
+  // freqAnalyzer.setInput(audioIn);
   amplitude = new p5.Amplitude();
+  // amplitude.setInput(audioIn);
 
   w = width / 64;
 
@@ -162,9 +222,9 @@ function setup() {
 
     // p5Letters.forEach((e) => console.log(e));
     for (let i = 0; i < p5Letters.length; i++) {
-      console.log(p5Letters.length);
+      // console.log(p5Letters.length);
       p5Letter = p5Letters[i];
-      console.log(p5Letters[i]);
+      // console.log(p5Letters[i]);
       p5Letter.forEach((e) => {
         singleLetter = e;
         letterToNum = singleLetter.charCodeAt(0) - 97;
@@ -178,34 +238,6 @@ function setup() {
         numberLetters.push(letterToNum);
       });
     }
-  });
-  convertButton = document.getElementById("convert-button");
-  convertButton.addEventListener("click", () => {
-    for (let i = 0; i < numberLetters.length; i++) {
-      if (soundtriggered == true) {
-        queue.push(batMusic[numberLetters[i]]);
-      }
-
-      if (soundtriggered1 == true) {
-        queue.push(treehopperMusic[numberLetters[i]]);
-      }
-      // newAudio = batMusic[numberLetters[0]];
-      // newAudio.play();
-    }
-    setUpQueue();
-  });
-
-  //listening for bat sound to come from server
-  socket.on("dataSound", (data) => {
-    // batNumber = data.sound;
-    serverMusic.push(data);
-    // console.log(serverMusic);
-
-    for (let i = 0; i < serverMusic.length; i++) {
-      newBatSound = new Audio(serverMusic[i]);
-      // console.log(newBatSound);
-    }
-    // let newBatSound = new Audio(data);
   });
 
   hearButton = document.getElementById("hear-button");
@@ -224,39 +256,51 @@ function setup() {
       // newAudio.play();
     }
     setUpQueue();
+    // src = queue[0].url;
+    // console.log(queue);
+    // playThis = loadSound(src, soundSuccess, soundError, soundWaiting);
     // newBatSound.play();
     // batMusic[newBatNote].play();
+  });
+
+  convertButton = document.getElementById("convert-button");
+  convertButton.addEventListener("click", () => {
+    // playThis.play();
+    // playThis.noLoop();
+    // console.log(playThis);
+    // playThis.onended(() => {
+    //   console.log("ended");
+    //   queue.splice(0, 1);
+    //   playThis.play();
+    // });
+    // for (let i = 0; i < numberLetters.length; i++) {
+    //   if (soundtriggered == true) {
+    //     queue.push(batMusic[numberLetters[i]]);
+    //   }
+    //   if (soundtriggered1 == true) {
+    //     queue.push(treehopperMusic[numberLetters[i]]);
+    //   }
+    // }
+    // setUpQueue();
+  });
+
+  //listening for bat sound to come from server
+  socket.on("dataSound", (data) => {
+    // batNumber = data.sound;
+    serverMusic.push(data);
+    // console.log(serverMusic);
+
+    for (let i = 0; i < serverMusic.length; i++) {
+      newBatSound = new Audio(serverMusic[i]);
+      // console.log(newBatSound);
+    }
+    // let newBatSound = new Audio(data);
   });
 
   fromCol = color(50, 250, 155);
   toCol = color(50, 100, 200);
   fromCol2 = color(0, 100, 255);
   toCol2 = color(250, 100, 50);
-}
-
-function setUpQueue() {
-  if (audioPlaying == 1 || queue.length == 0) return;
-  playQueue();
-}
-
-function playQueue() {
-  audioPlaying = 1;
-  if (queue.length == 0) {
-    audioPlaying = 0;
-    return;
-  }
-  let src = queue[0].file;
-  console.log(src);
-  let playThis = new Audio(src);
-  // let messageAudio = document.getElementById("messageAudio");
-  // messageAudio.src = numberLetters[0].getAttribute("src");
-  // playThis.src = src;
-  playThis.load();
-  playThis.play();
-  playThis.addEventListener("ended", () => {
-    queue.splice(0, 1);
-    playQueue();
-  });
 }
 
 let yposition = 200;
@@ -268,9 +312,6 @@ function draw() {
 
   waveFreq = freqAnalyzer.analyze();
   level = amplitude.getLevel();
-
-  let rectWidth = 1; //(soundLength * fps) / windowWidth;
-  let rectHeight = (MaxFreq - MinFreq) / windowHeight;
 
   noStroke();
   for (let i = 0; i < waveFreq.length; i++) {
@@ -319,11 +360,15 @@ function draw() {
 }
 
 function playSounds() {
+  // if (yesAudio == true) {
+  //   playThis.play();
+  //   console.log(playThis);
+  // }
   let batNote = Math.round((mouseX + divX / 2) / divX) - 1;
   singleBatNote = batMusic[batNote];
 
   if (soundtriggered == true) {
-    singleBatNote.play();
+    // singleBatNote.play();
 
     let animalSounds = {
       sound: batNote,
@@ -336,7 +381,7 @@ function playSounds() {
   let treeNote = Math.round((mouseX + divX / 2) / divX) - 1;
   singleTreeNote = treehopperMusic[treeNote];
   if (soundtriggered1 == true) {
-    singleTreeNote.play();
+    // singleTreeNote.play();
 
     let treeSounds = {
       sound: treeNote,
@@ -390,32 +435,6 @@ function animalAnimation() {
 
 function mouseClicked() {
   clicked = !clicked;
-
-  waveform = analyzer.waveform();
-
-  // draw the shape of the waveform
-  push();
-  beginShape();
-  strokeWeight(5);
-  noFill();
-  for (let i = 0; i < waveFreq.length; i++) {
-    let angle = map(i, 0, waveFreq.length, 0, 360);
-    let amp = waveFreq[i];
-    let r = map(amp, 0, 128, 0, 400);
-    let x = r * cos(angle);
-    let y = r * sin(angle);
-    let col = map(i, 0, waveFreq.length, 0, 255);
-
-    // stroke(200, 255, i);
-    if (amp != 0) {
-      stroke(constrain(col, 100, 255), random(255), 155);
-      // line(width / 2, height / 2, x, y);
-      // vertex(x, y + height / 2);
-      // vertex(x + width / 2, y);
-    }
-  }
-  endShape();
-  pop();
 }
 
 // function keyPressed() {
