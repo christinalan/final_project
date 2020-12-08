@@ -13,7 +13,7 @@ modSocket.on("connect", () => {
 //global socket variables
 let playing, clicked;
 let toggleButton;
-let hearButton, convertButton;
+let hearButton;
 let animals = ["bat", "treehopper", "walrus"];
 let animalOption, selectedAnimal;
 let soundtriggered, soundtriggered1, soundtriggered2;
@@ -160,9 +160,6 @@ window.addEventListener("load", () => {
     src = "";
     queue = [];
   });
-
-  convertButton = document.getElementById("convert-button");
-  convertButton.addEventListener("click", () => {});
 
   hearButton = document.getElementById("hear-button");
   hearButton.addEventListener("click", () => {

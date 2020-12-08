@@ -8,38 +8,25 @@
   </head>
   <body>
     <audio id="messageAudio" src=""></audio>
+    <div class="buttons">
+      <button id="hear-button" class="button hear-button">Hear Messages</button>
+    </div>
 
     <div id="chat-canvas">
       <div class="sub-container chat-feed">
         <div id="chat-box-msgs" class="chat"></div>
       </div>
-      <!-- <form id="chat-box" action="">
-        <textarea
-          id="input-chat"
-          class="chat"
-          name="address"
-          rows="3"
-          cols="30"
-        ></textarea>
-      </form> -->
-
-      <div class="buttons">
-        <div id="animal-dropdown">
-          <select id="select-animal" class="dropdown">
-            select animal
-          </select>
-        </div>
-        <button id="convert-button" class="button convert-button">
-          Convert
-        </button>
-        <button id="hear-button" class="button hear-button">
-          Hear Messages
-        </button>
-      </div>
     </div>
     <input type="text" id="input-name" class="uname" placeholder="username" />
     <input type="text" id="input-chat" class="umessage" placeholder="message" />
-    <button id="send-name" class="send-name">send</button>
+    <div class="select">
+      <div id="animal-dropdown">
+        <select id="select-animal" class="dropdown">
+          select animal
+        </select>
+      </div>
+      <button id="send-name" class="send-name">send</button>
+    </div>
     <script type="text/javascript" src="/socket.io/socket.io.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.1.0/p5.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.6.1/addons/p5.sound.min.js"></script>
