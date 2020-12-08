@@ -16,6 +16,7 @@ let toggleButton;
 let hearButton;
 let animals = ["bat", "treehopper", "walrus"];
 let animalOption, selectedAnimal;
+let serverLetters;
 let soundtriggered, soundtriggered1, soundtriggered2;
 
 let p5Letters = [];
@@ -102,52 +103,25 @@ window.addEventListener("load", () => {
 
   //listening for the letters from the server and converting them right away?
   socket.on("letterSounds", (data) => {
-    p5Letters.push(data.letters);
-    console.log(p5Letters);
     console.log(data.animal);
     selectedAnimal = data.animal;
+    console.log(data.letters);
+    serverLetters = data.letters;
 
-    for (let i = 0; i < p5Letters.length; i++) {
-      // console.log(p5Letters.length);
-      p5Letter = p5Letters[i];
-      // console.log(p5Letters[i]);
-      p5Letter.forEach((e) => {
-        singleLetter = e;
-        letterToNum = singleLetter.charCodeAt(0) - 97;
-        if (letterToNum >= 13) {
-          letterToNum = Math.round(singleLetter.charCodeAt(0) - 111);
-        }
-        if (letterToNum < 0) {
-          letterToNum = Math.round((letterToNum * -1) / 3);
-        }
-        // console.log(letterToNum);
-        numberLetters.push(letterToNum);
-        // console.log(numberLetters);
-      });
-    }
-    p5Letters = [];
-    console.log(p5Letters);
-
-    queue = [];
-    console.log(queue);
-
-    for (let i = 0; i < numberLetters.length; i++) {
+    for (let i = 0; i < serverLetters.length; i++) {
       if (selectedAnimal == "bat") {
         console.log(selectedAnimal);
-        queue.push(batMusic[numberLetters[i]]);
+        queue.push(batMusic[serverLetters[i]]);
       }
 
       if (selectedAnimal == "treehopper") {
-        queue.push(treehopperMusic[numberLetters[i]]);
+        queue.push(treehopperMusic[serverLetters[i]]);
       }
 
       if (selectedAnimal == "walrus") {
-        queue.push(walrusMusic[numberLetters[i]]);
+        queue.push(walrusMusic[serverLetters[i]]);
       }
     }
-
-    numberLetters = [];
-    console.log(numberLetters);
 
     //after queue array is created, playThis will load the audio files from src
     for (let i = 0; i < queue.length; i++) {

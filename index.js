@@ -31,8 +31,10 @@ mod.on("connection", (socket) => {
   });
 });
 
-let names = [];
-let sounds = [];
+let p5letters1 = [];
+let numberLetters1 = [];
+let p5Letter1, singleLetter1;
+let letterToNum1;
 
 //listening for users to connect
 user.on("connection", (socket) => {
@@ -40,20 +42,44 @@ user.on("connection", (socket) => {
 
   //getting first letters message to server
   socket.on("msg", (data) => {
-    console.log(data);
+    // console.log(data);
+
+    p5letters1.push(data.firstLetters);
+    // console.log(p5letters1);
+
+    for (let i = 0; i < p5letters1.length; i++) {
+      p5Letter1 = p5letters1[i];
+      p5Letter1.forEach((e) => {
+        singleLetter1 = e;
+        letterToNum1 = singleLetter1.charCodeAt(0) - 97;
+        if (letterToNum1 >= 13) {
+          letterToNum1 = Math.round(singleLetter1.charCodeAt(0) - 111);
+        }
+        if (letterToNum1 < 0) {
+          letterToNum1 = Math.round((letterToNum1 * -1) / 3);
+        }
+        numberLetters1.push(letterToNum1);
+      });
+    }
+
+    console.log(numberLetters1);
+
     let msgObj = {
       name: data.name,
       message: data.message,
     };
 
     let letterSounds = {
-      letters: data.firstLetters,
+      letters: numberLetters1,
       animal: data.animal,
     };
 
-    console.log(msgObj);
+    // console.log(msgObj);
     user.emit("msgObj", msgObj);
-    user.emit("letterSounds", letterSounds);
+    socket.broadcast.emit("letterSounds", letterSounds);
+    // console.log(p5letters1);
+    p5letters1 = [];
+    numberLetters1 = [];
     // user.emit("letters", data.firstLetters);
   });
 
