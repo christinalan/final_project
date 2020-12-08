@@ -251,8 +251,6 @@ function setup() {
 
   fromCol = color(50, 250, 155);
   toCol = color(50, 100, 200);
-  fromCol2 = color(0, 100, 255);
-  toCol2 = color(250, 100, 50);
 }
 
 let yposition = 200;
@@ -296,20 +294,6 @@ function draw() {
   if (yposition <= height) {
     waveFreq.splice(0, 1);
   }
-
-  push();
-  beginShape();
-  for (let i = 0; i < waveFreq.length; i++) {
-    let c = constrain(freqAnalyzer.getEnergy(i), 0, 255);
-    let l = map(c, 0, 255, 0, 1);
-    let col = lerpColor(fromCol2, toCol2, l);
-    let alpha = map(level, 0, 0.5, 50, 150);
-    noStroke();
-    // fill(col, alpha);
-    // vertex(i * w, map(waveFreq[i], 0, 256, height, 0));
-  }
-  endShape();
-  pop();
 }
 
 function playSounds() {
