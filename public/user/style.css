@@ -48,6 +48,7 @@ p {
   display: flex;
   flex-direction: column;
   height: 100%;
+  z-index: 2;
 }
 
 .dropdown {
@@ -58,7 +59,6 @@ p {
 .button {
   font-family: monospace;
   font-weight: bold;
-  z-index: 0;
   outline: none;
 }
 

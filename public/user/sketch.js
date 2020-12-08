@@ -15,7 +15,7 @@ let playing, clicked;
 let toggleButton;
 let hearButton, convertButton;
 let animals = ["bat", "treehopper", "walrus"];
-let animalOption;
+let animalOption, selectedAnimal;
 let soundtriggered, soundtriggered1, soundtriggered2;
 
 let p5Letters = [];
@@ -61,14 +61,17 @@ window.addEventListener("load", () => {
       soundtriggered = true;
       soundtriggered1 = false;
       soundtriggered2 = false;
+      selectedAnimal = animals[0];
     } else if (e.target.value == "treehopper") {
       soundtriggered1 = true;
       soundtriggered = false;
       soundtriggered2 = false;
+      selectedAnimal = animals[1];
     } else if (e.target.value == "walrus") {
       soundtriggered2 = true;
       soundtriggered = false;
       soundtriggered1 = false;
+      selectedAnimal = animals[2];
     }
   });
 
@@ -78,7 +81,12 @@ window.addEventListener("load", () => {
     console.log(letterGroup);
     curMsg = msgInput.value;
     curName = nameInput.value;
-    let msgObj = { name: curName, message: curMsg, firstLetters: letterGroup };
+    let msgObj = {
+      name: curName,
+      message: curMsg,
+      firstLetters: letterGroup,
+      animal: selectedAnimal,
+    };
     socket.emit("msg", msgObj);
   });
 
@@ -92,9 +100,12 @@ window.addEventListener("load", () => {
     chatBox.scrollTop = chatBox.scrollHeight;
   });
 
-  //listening for the letters from the server
-  socket.on("letters", (data) => {
-    p5Letters.push(data);
+  //listening for the letters from the server and converting them right away?
+  socket.on("letterSounds", (data) => {
+    p5Letters.push(data.letters);
+    console.log(p5Letters);
+    console.log(data.animal);
+    selectedAnimal = data.animal;
 
     for (let i = 0; i < p5Letters.length; i++) {
       // console.log(p5Letters.length);
@@ -116,38 +127,42 @@ window.addEventListener("load", () => {
     }
     p5Letters = [];
     console.log(p5Letters);
-  });
 
-  convertButton = document.getElementById("convert-button");
-  convertButton.addEventListener("click", () => {
     queue = [];
+    console.log(queue);
+
     for (let i = 0; i < numberLetters.length; i++) {
-      if (soundtriggered == true) {
+      if (selectedAnimal == "bat") {
+        console.log(selectedAnimal);
         queue.push(batMusic[numberLetters[i]]);
       }
 
-      if (soundtriggered1 == true) {
+      if (selectedAnimal == "treehopper") {
         queue.push(treehopperMusic[numberLetters[i]]);
       }
 
-      if (soundtriggered2 == true) {
+      if (selectedAnimal == "walrus") {
         queue.push(walrusMusic[numberLetters[i]]);
       }
     }
 
     numberLetters = [];
     console.log(numberLetters);
+
     //after queue array is created, playThis will load the audio files from src
     for (let i = 0; i < queue.length; i++) {
       src = queue[i].url;
-      // console.log(queue);
-      // console.log(src);
+      console.log(queue);
+      console.log(src);
       playThis[i] = loadSound(src, soundSuccess, soundError, soundWaiting);
-      // console.log(playThis);
+      console.log(playThis);
     }
     src = "";
     queue = [];
   });
+
+  convertButton = document.getElementById("convert-button");
+  convertButton.addEventListener("click", () => {});
 
   hearButton = document.getElementById("hear-button");
   hearButton.addEventListener("click", () => {

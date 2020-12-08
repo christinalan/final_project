@@ -40,13 +40,21 @@ user.on("connection", (socket) => {
 
   //getting first letters message to server
   socket.on("msg", (data) => {
+    console.log(data);
     let msgObj = {
       name: data.name,
       message: data.message,
     };
+
+    let letterSounds = {
+      letters: data.firstLetters,
+      animal: data.animal,
+    };
+
     console.log(msgObj);
     user.emit("msgObj", msgObj);
-    user.emit("letters", data.firstLetters);
+    user.emit("letterSounds", letterSounds);
+    // user.emit("letters", data.firstLetters);
   });
 
   //getting bat sound
