@@ -317,7 +317,7 @@ function playSounds() {
   singleBatNote = batMusic[batNote];
 
   if (soundtriggered == true) {
-    // singleBatNote.play();
+    singleBatNote.play();
 
     let animalSounds = {
       sound: batNote,
@@ -330,7 +330,7 @@ function playSounds() {
   let treeNote = Math.round((mouseX + divX / 2) / divX) - 1;
   singleTreeNote = treehopperMusic[treeNote];
   if (soundtriggered1 == true) {
-    // singleTreeNote.play();
+    singleTreeNote.play();
 
     let treeSounds = {
       sound: treeNote,
@@ -354,52 +354,6 @@ function playSounds() {
   }
 }
 
-function animalAnimation() {
-  waveform = analyzer.waveform();
-
-  // draw the shape of the waveform
-  push();
-  beginShape();
-  strokeWeight(5);
-  noFill();
-  for (let i = 0; i < waveFreq.length; i++) {
-    let angle = map(i, 0, waveFreq.length, 0, 360);
-    let amp = waveFreq[i];
-    let r = map(amp, 0, 128, 0, 400);
-    let x = r * cos(angle);
-    let y = r * sin(angle);
-    let col = map(i, 0, waveFreq.length, 0, 255);
-
-    // stroke(200, 255, i);
-    if (amp != 0) {
-      stroke(constrain(col, 100, 255), random(255), 155);
-      // line(width / 2, height / 2, x, y);
-      // vertex(x, y + height / 2);
-      // vertex(x + width / 2, y);
-    }
-  }
-  endShape();
-  pop();
-}
-
 function mouseClicked() {
   clicked = !clicked;
 }
-
-// function keyPressed() {
-//   if (keyCode === 32) {
-//     playing = !playing;
-
-//     if (playing) {
-//       osc1.start();
-//       osc2.start(1);
-//       toggleButton.style.background = "green";
-//       toggleButton.innerHTML = "On";
-//     } else {
-//       osc1.stop();
-//       osc2.stop();
-//       toggleButton.innerHTML = "Off";
-//       toggleButton.style.background = "red";
-//     }
-//   }
-// }
