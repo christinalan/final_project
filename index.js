@@ -40,7 +40,12 @@ user.on("connection", (socket) => {
 
   //getting first letters message to server
   socket.on("msg", (data) => {
-    console.log(data.firstLetters);
+    let msgObj = {
+      name: data.name,
+      message: data.message,
+    };
+    console.log(msgObj);
+    user.emit("msgObj", msgObj);
     user.emit("letters", data.firstLetters);
   });
 

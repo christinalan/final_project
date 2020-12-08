@@ -8,14 +8,12 @@
   </head>
   <body>
     <audio id="messageAudio" src=""></audio>
-    <div id="top-container"></div>
-    <div id="animal-dropdown">
-      <select id="select-animal" class="dropdown">
-        select animal
-      </select>
-    </div>
+
     <div id="chat-canvas">
-      <form id="chat-box" action="">
+      <div class="sub-container chat-feed">
+        <div id="chat-box-msgs" class="chat"></div>
+      </div>
+      <!-- <form id="chat-box" action="">
         <textarea
           id="input-chat"
           class="chat"
@@ -23,8 +21,14 @@
           rows="3"
           cols="30"
         ></textarea>
-      </form>
+      </form> -->
+
       <div class="buttons">
+        <div id="animal-dropdown">
+          <select id="select-animal" class="dropdown">
+            select animal
+          </select>
+        </div>
         <button id="convert-button" class="button convert-button">
           Convert
         </button>
@@ -33,7 +37,8 @@
         </button>
       </div>
     </div>
-    <input type="text" id="uname" name="fname" placeholder="username" />
+    <input type="text" id="input-name" class="uname" placeholder="username" />
+    <input type="text" id="input-chat" class="umessage" placeholder="message" />
     <button id="send-name" class="send-name">send</button>
     <script type="text/javascript" src="/socket.io/socket.io.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.1.0/p5.min.js"></script>

@@ -17,15 +17,17 @@ let clientDate;
 let playing, clicked;
 let toggleButton;
 let hearButton, convertButton;
-let receivedSound;
 let animals = ["bat", "treehopper", "walrus"];
 let animalOption;
 let soundtriggered, soundtriggered1, soundtriggered2;
 
+let nameInput = document.getElementById("input-name");
 let msgInput = document.getElementById("input-chat");
-let nameInput = document.getElementById("uname");
 let sendButton = document.getElementById("send-name");
 let curName, curMsg, letterGroup;
+
+//the chat box element ID
+let chatBox = document.getElementById("chat-box-msgs");
 
 //variables for the Instructions window
 let modal = document.getElementById("info-modal");
@@ -71,6 +73,16 @@ window.addEventListener("load", () => {
     curName = nameInput.value;
     let msgObj = { name: curName, message: curMsg, firstLetters: letterGroup };
     socket.emit("msg", msgObj);
+  });
+
+  socket.on("msgObj", (data) => {
+    let receivedMsg = data.name + ": " + data.message;
+    console.log(receivedMsg);
+    let msgEl = document.createElement("p");
+    msgEl.innerHTML = receivedMsg;
+
+    chatBox.appendChild(msgEl);
+    chatBox.scrollTop = chatBox.scrollHeight;
   });
 });
 
