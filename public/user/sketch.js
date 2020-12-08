@@ -11,15 +11,21 @@ modSocket.on("connect", () => {
 });
 
 //global socket variables
-let score;
-let clientName;
-let clientDate;
 let playing, clicked;
 let toggleButton;
 let hearButton, convertButton;
 let animals = ["bat", "treehopper", "walrus"];
 let animalOption;
 let soundtriggered, soundtriggered1, soundtriggered2;
+
+let p5Letters = [];
+let numberLetters = []; // queue of audio messages
+let queue = [];
+let src;
+let audioPlaying = 0;
+let playThis = [];
+let p5Letter, singleLetter, letterToNum;
+let yesAudio = false;
 
 let nameInput = document.getElementById("input-name");
 let msgInput = document.getElementById("input-chat");
@@ -84,116 +90,6 @@ window.addEventListener("load", () => {
     chatBox.appendChild(msgEl);
     chatBox.scrollTop = chatBox.scrollHeight;
   });
-});
-
-let soundIsPlaying = false;
-let level;
-let singleBatNote;
-let batMusic = [];
-let treehopperMusic = [];
-let singleTreeNote;
-let serverMusic = [];
-let serverSound;
-let walrusMusic = [];
-let singleWalrusNote;
-
-let newBatSound;
-let newTreeSound;
-// global variables for p5 Sketch
-let cnv;
-let mouseFreq;
-let analyzer, waveform, freqAnalyzer, waveFreq;
-let x, y;
-
-let soundLength = 30;
-
-var MinFreq = 20;
-var MaxFreq = 15000;
-var FreqStep = 10;
-let w;
-let yStart = 0;
-
-var fromCol;
-var toCol;
-
-let width, height;
-let divX, divY;
-let p5Letters = [];
-let numberLetters = []; // queue of audio messages
-let queue = [];
-let p5NewAudio = [];
-let src;
-let audioPlaying = 0;
-let playThis = [];
-let p5Letter, singleLetter, letterToNum;
-let yesAudio = false;
-
-function preload() {
-  for (let i = 1; i <= 15; i++) {
-    batMusic[i - 1] = loadSound("../Audio/bat" + i + ".mp3");
-  }
-  for (let i = 1; i <= 15; i++) {
-    treehopperMusic[i - 1] = loadSound("../Audio/treehopper" + i + ".mp3");
-  }
-  for (let i = 1; i <= 15; i++) {
-    walrusMusic[i - 1] = loadSound("../Audio/walrus" + i + ".mp3");
-  }
-}
-
-function setUpQueue() {
-  if (audioPlaying == 1 || playThis.length == 0) return;
-  // console.log(playThis);
-  playQueue();
-}
-
-function playQueue() {
-  audioPlaying = 1;
-  if (playThis.length == 0) {
-    audioPlaying = 0;
-    return;
-  }
-  src = playThis[0];
-  src.play();
-  // console.log(src);
-  // this will play the next file in the playThis array
-  src.onended(() => {
-    playThis.splice(0, 1);
-    playQueue();
-    if (playThis.length === 0) {
-      playThis = [];
-      // console.log(playThis);
-    }
-  });
-  yesAudio = true;
-}
-
-function soundSuccess(resp) {
-  console.log("Sound is ready!");
-  // alert("sound is ready");
-}
-function soundError(err) {
-  console.log("sound is not working");
-  console.log(err);
-}
-function soundWaiting() {
-  console.log("Waiting for sound...");
-}
-
-function setup() {
-  width = window.innerWidth / 2;
-  height = (2 * window.innerHeight) / 3;
-  canvas = createCanvas(width, height);
-  canvas.parent("chat-canvas");
-  divX = width / 15;
-
-  canvas.mousePressed(playSounds);
-  background(0);
-
-  analyzer = new p5.FFT();
-  freqAnalyzer = new p5.FFT(0, 64);
-  amplitude = new p5.Amplitude();
-
-  w = width / 64;
 
   //listening for the letters from the server
   socket.on("letters", (data) => {
@@ -270,6 +166,104 @@ function setup() {
     }
     // let newBatSound = new Audio(data);
   });
+
+  function setUpQueue() {
+    if (audioPlaying == 1 || playThis.length == 0) return;
+    // console.log(playThis);
+    playQueue();
+  }
+
+  function playQueue() {
+    audioPlaying = 1;
+    if (playThis.length == 0) {
+      audioPlaying = 0;
+      return;
+    }
+    src = playThis[0];
+    src.play();
+    // console.log(src);
+    // this will play the next file in the playThis array
+    src.onended(() => {
+      playThis.splice(0, 1);
+      playQueue();
+      if (playThis.length === 0) {
+        playThis = [];
+        // console.log(playThis);
+      }
+    });
+    yesAudio = true;
+  }
+
+  function soundSuccess(resp) {
+    console.log("Sound is ready!");
+    // alert("sound is ready");
+  }
+  function soundError(err) {
+    console.log("sound is not working");
+    console.log(err);
+  }
+  function soundWaiting() {
+    console.log("Waiting for sound...");
+  }
+});
+
+let level;
+let singleBatNote;
+let batMusic = [];
+let treehopperMusic = [];
+let singleTreeNote;
+let serverMusic = [];
+let serverSound;
+let walrusMusic = [];
+let singleWalrusNote;
+
+let newBatSound;
+let newTreeSound;
+// global variables for p5 Sketch
+let cnv;
+let mouseFreq;
+let analyzer, waveform, freqAnalyzer, waveFreq;
+let x, y;
+
+var MinFreq = 20;
+var MaxFreq = 15000;
+var FreqStep = 10;
+let w;
+let yStart = 0;
+
+var fromCol;
+var toCol;
+
+let width, height;
+let divX, divY;
+
+function preload() {
+  for (let i = 1; i <= 15; i++) {
+    batMusic[i - 1] = loadSound("../Audio/bat" + i + ".mp3");
+  }
+  for (let i = 1; i <= 15; i++) {
+    treehopperMusic[i - 1] = loadSound("../Audio/treehopper" + i + ".mp3");
+  }
+  for (let i = 1; i <= 15; i++) {
+    walrusMusic[i - 1] = loadSound("../Audio/walrus" + i + ".mp3");
+  }
+}
+
+function setup() {
+  width = window.innerWidth / 2;
+  height = (2 * window.innerHeight) / 3;
+  canvas = createCanvas(width, height);
+  canvas.parent("chat-canvas");
+  divX = width / 15;
+
+  canvas.mousePressed(playSounds);
+  background(0);
+
+  analyzer = new p5.FFT();
+  freqAnalyzer = new p5.FFT(0, 64);
+  amplitude = new p5.Amplitude();
+
+  w = width / 64;
 
   fromCol = color(50, 250, 155);
   toCol = color(50, 100, 200);
