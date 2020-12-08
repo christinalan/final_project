@@ -11,22 +11,34 @@
     <div class="buttons">
       <button id="hear-button" class="button hear-button">Hear Messages</button>
     </div>
-
-    <div id="chat-canvas">
-      <div class="sub-container chat-feed">
-        <div id="chat-box-msgs" class="chat"></div>
-      </div>
-    </div>
-    <input type="text" id="input-name" class="uname" placeholder="username" />
-    <input type="text" id="input-chat" class="umessage" placeholder="message" />
     <div class="select">
       <div id="animal-dropdown">
         <select id="select-animal" class="dropdown">
           select animal
         </select>
       </div>
-      <button id="send-name" class="send-name">send</button>
+      <div class="input">
+        <input
+          type="text"
+          id="input-name"
+          class="input uname"
+          placeholder="username"
+        />
+        <input
+          type="text"
+          id="input-chat"
+          class="input umessage"
+          placeholder="message"
+        />
+        <button id="send-name" class="send-name">send</button>
+      </div>
     </div>
+    <div id="chat-canvas">
+      <div class="sub-container chat-feed">
+        <div id="chat-box-msgs" class="chat"></div>
+      </div>
+    </div>
+
     <script type="text/javascript" src="/socket.io/socket.io.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.1.0/p5.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.6.1/addons/p5.sound.min.js"></script>
