@@ -72,9 +72,10 @@ window.addEventListener("load", () => {
     }
   });
 
+  letterGroup = "";
   sendButton.addEventListener("click", () => {
     letterGroup = msgInput.value.match(/\b(\w)/g);
-    // console.log(letterGroup);
+    console.log(letterGroup);
     curMsg = msgInput.value;
     curName = nameInput.value;
     let msgObj = { name: curName, message: curMsg, firstLetters: letterGroup };
@@ -83,7 +84,7 @@ window.addEventListener("load", () => {
 
   socket.on("msgObj", (data) => {
     let receivedMsg = data.name + ": " + data.message;
-    console.log(receivedMsg);
+    // console.log(receivedMsg);
     let msgEl = document.createElement("p");
     msgEl.innerHTML = receivedMsg;
 
@@ -93,9 +94,7 @@ window.addEventListener("load", () => {
 
   //listening for the letters from the server
   socket.on("letters", (data) => {
-    p5Letters = [];
     p5Letters.push(data);
-    // console.log(p5Letters);
 
     for (let i = 0; i < p5Letters.length; i++) {
       // console.log(p5Letters.length);
@@ -115,6 +114,8 @@ window.addEventListener("load", () => {
         // console.log(numberLetters);
       });
     }
+    p5Letters = [];
+    console.log(p5Letters);
   });
 
   convertButton = document.getElementById("convert-button");
@@ -139,12 +140,12 @@ window.addEventListener("load", () => {
     //after queue array is created, playThis will load the audio files from src
     for (let i = 0; i < queue.length; i++) {
       src = queue[i].url;
-      console.log(src);
-      console.log(queue);
+      // console.log(queue);
       // console.log(src);
       playThis[i] = loadSound(src, soundSuccess, soundError, soundWaiting);
       // console.log(playThis);
     }
+    src = "";
     queue = [];
   });
 
@@ -186,11 +187,8 @@ window.addEventListener("load", () => {
     src.onended(() => {
       playThis.splice(0, 1);
       playQueue();
-      if (playThis.length === 0) {
-        playThis = [];
-        // console.log(playThis);
-      }
     });
+
     yesAudio = true;
   }
 
