@@ -33,16 +33,15 @@ mod.on("connection", (socket) => {
 
 let names = [];
 let sounds = [];
-let numbers = [];
 
 //listening for users to connect
 user.on("connection", (socket) => {
   console.log("mod socket connected : " + socket.id);
 
-  //getting message to server
+  //getting first letters message to server
   socket.on("msg", (data) => {
-    user.emit("letters", data.firstLetters);
     console.log(data.firstLetters);
+    user.emit("letters", data.firstLetters);
   });
 
   //getting bat sound

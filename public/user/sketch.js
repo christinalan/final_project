@@ -130,6 +130,7 @@ function preload() {
 
 function setUpQueue() {
   if (audioPlaying == 1 || playThis.length == 0) return;
+  // console.log(playThis);
   playQueue();
 }
 
@@ -141,26 +142,22 @@ function playQueue() {
   }
   src = playThis[0];
   src.play();
-  console.log(src);
+  // console.log(src);
   // this will play the next file in the playThis array
   src.onended(() => {
     playThis.splice(0, 1);
     playQueue();
+    if (playThis.length === 0) {
+      playThis = [];
+      // console.log(playThis);
+    }
   });
-}
-
-function sayDone() {
-  console.log("audio file is done playing");
-  queue.splice(0, 1);
-  console.log(queue);
-  playThis.play();
+  yesAudio = true;
 }
 
 function soundSuccess(resp) {
   console.log("Sound is ready!");
   // alert("sound is ready");
-  yesAudio = true;
-  console.log(yesAudio);
 }
 function soundError(err) {
   console.log("sound is not working");
@@ -188,9 +185,10 @@ function setup() {
 
   //listening for the letters from the server
   socket.on("letters", (data) => {
+    p5Letters = [];
     p5Letters.push(data);
+    // console.log(p5Letters);
 
-    // p5Letters.forEach((e) => console.log(e));
     for (let i = 0; i < p5Letters.length; i++) {
       // console.log(p5Letters.length);
       p5Letter = p5Letters[i];
@@ -204,16 +202,16 @@ function setup() {
         if (letterToNum < 0) {
           letterToNum = Math.round((letterToNum * -1) / 3);
         }
-        console.log(letterToNum);
+        // console.log(letterToNum);
         numberLetters.push(letterToNum);
+        // console.log(numberLetters);
       });
     }
   });
 
   convertButton = document.getElementById("convert-button");
   convertButton.addEventListener("click", () => {
-    // batMusic[batNumber].play();
-
+    queue = [];
     for (let i = 0; i < numberLetters.length; i++) {
       if (soundtriggered == true) {
         queue.push(batMusic[numberLetters[i]]);
@@ -228,13 +226,18 @@ function setup() {
       }
     }
 
+    numberLetters = [];
+    console.log(numberLetters);
     //after queue array is created, playThis will load the audio files from src
     for (let i = 0; i < queue.length; i++) {
       src = queue[i].url;
       console.log(src);
+      console.log(queue);
+      // console.log(src);
       playThis[i] = loadSound(src, soundSuccess, soundError, soundWaiting);
-      console.log(playThis);
+      // console.log(playThis);
     }
+    queue = [];
   });
 
   hearButton = document.getElementById("hear-button");
@@ -320,10 +323,6 @@ function draw() {
 }
 
 function playSounds() {
-  // if (yesAudio == true) {
-  //   playThis.play();
-  //   console.log(playThis);
-  // }
   let batNote = Math.round((mouseX + divX / 2) / divX) - 1;
   singleBatNote = batMusic[batNote];
 
