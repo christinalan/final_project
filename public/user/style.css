@@ -123,8 +123,12 @@ p {
   border-radius: 40px;
 }
 
-.info-button {
-  margin-left: 10px;
+.navlink {
+  color: white;
+  text-decoration: underline;
+  font-family: monospace;
+  float: right;
+  font-size: 12px;
   cursor: pointer;
   border-radius: 20px;
   padding: 10px;
