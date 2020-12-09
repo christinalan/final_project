@@ -588,113 +588,321 @@ function draw() {
 }
 
 function playSounds() {
-  let armNote = Math.round((mouseX + divX / 2) / divX) - 1;
-  singleArmadilloNote = armadilloMusic[armNote];
+  let noteIndex = Math.round((mouseX + divX / 2) / divX) - 1;
+
+  singleArmadilloNote = armadilloMusic[noteIndex];
+
+  singleBatNote = batMusic[noteIndex];
+
+  singleCapNote = capercaillieMusic[noteIndex];
+
+  singleDolphinNote = dolphinMusic[noteIndex];
+
+  singleEleNote = elephantMusic[noteIndex];
+
+  singleElkNote = elkMusic[noteIndex];
+
+  singleFrogNote = frogMusic[noteIndex];
+
+  singleKNote = kauaiooMusic[noteIndex];
+
+  singleLemurNote = lemurMusic[noteIndex];
+
+  singleFishNote = plainfinMusic[noteIndex];
+
+  singleRatNote = ratMusic[noteIndex];
+
+  singleSealNote = sealMusic[noteIndex];
+
+  singleTreeNote = treehopperMusic[noteIndex];
+
+  singleWalrusNote = walrusMusic[noteIndex];
+
+  singleWhaleNote = whaleMusic[noteIndex];
 
   if (soundTriggered.armadilloTr == true) {
+    singleArmadilloNote.setVolume(1);
     singleArmadilloNote.play();
+    singleBatNote.setVolume(0);
+    singleCapNote.setVolume(0);
+    singleDolphinNote.setVolume(0);
+    singleEleNote.setVolume(0);
+    singleElkNote.setVolume(0);
+    singleFrogNote.setVolume(0);
+    singleKNote.setVolume(0);
+    singleLemurNote.setVolume(0);
+    singleFishNote.setVolume(0);
+    singleRatNote.setVolume(0);
+    singleSealNote.setVolume(0);
+    singleTreeNote.setVolume(0);
+    singleWalrusNote.setVolume(0);
+    singleWhaleNote.setVolume(0);
   }
-
-  let batNote = Math.round((mouseX + divX / 2) / divX) - 1;
-  singleBatNote = batMusic[batNote];
 
   if (soundTriggered.batTr == true) {
+    singleBatNote.setVolume(1);
     singleBatNote.play();
-
-    let batSounds = {
-      sound: batNote,
-      soundURL: batMusic[batNote],
-    };
-
-    socket.emit("animalSounds", batSounds);
+    singleArmadilloNote.setVolume(0);
+    singleCapNote.setVolume(0);
+    singleDolphinNote.setVolume(0);
+    singleEleNote.setVolume(0);
+    singleElkNote.setVolume(0);
+    singleFrogNote.setVolume(0);
+    singleKNote.setVolume(0);
+    singleLemurNote.setVolume(0);
+    singleFishNote.setVolume(0);
+    singleRatNote.setVolume(0);
+    singleSealNote.setVolume(0);
+    singleTreeNote.setVolume(0);
+    singleWalrusNote.setVolume(0);
+    singleWhaleNote.setVolume(0);
   }
-
-  let capNote = Math.round((mouseX + divX / 2) / divX) - 1;
-  singleCapNote = capercaillieMusic[capNote];
 
   if (soundTriggered.caperTr == true) {
+    singleCapNote.setVolume(1);
     singleCapNote.play();
+    singleArmadilloNote.setVolume(0);
+    singleBatNote.setVolume(0);
+    singleDolphinNote.setVolume(0);
+    singleEleNote.setVolume(0);
+    singleElkNote.setVolume(0);
+    singleFrogNote.setVolume(0);
+    singleKNote.setVolume(0);
+    singleLemurNote.setVolume(0);
+    singleFishNote.setVolume(0);
+    singleRatNote.setVolume(0);
+    singleSealNote.setVolume(0);
+    singleTreeNote.setVolume(0);
+    singleWalrusNote.setVolume(0);
+    singleWhaleNote.setVolume(0);
   }
-
-  let dolNote = Math.round((mouseX + divX / 2) / divX) - 1;
-  singleDolphinNote = dolphinMusic[dolNote];
 
   if (soundTriggered.dolphinTr == true) {
+    singleDolphinNote.setVolume(1);
     singleDolphinNote.play();
+    singleArmadilloNote.setVolume(0);
+    singleBatNote.setVolume(0);
+    singleCapNote.setVolume(0);
+    singleEleNote.setVolume(0);
+    singleElkNote.setVolume(0);
+    singleFrogNote.setVolume(0);
+    singleKNote.setVolume(0);
+    singleLemurNote.setVolume(0);
+    singleFishNote.setVolume(0);
+    singleRatNote.setVolume(0);
+    singleSealNote.setVolume(0);
+    singleTreeNote.setVolume(0);
+    singleWalrusNote.setVolume(0);
+    singleWhaleNote.setVolume(0);
   }
-
-  let elpNote = Math.round((mouseX + divX / 2) / divX) - 1;
-  singleEleNote = elephantMusic[elpNote];
 
   if (soundTriggered.elephantTr == true) {
+    singleEleNote.setVolume(1);
     singleEleNote.play();
+    singleArmadilloNote.setVolume(0);
+    singleBatNote.setVolume(0);
+    singleCapNote.setVolume(0);
+    singleDolphinNote.setVolume(0);
+    singleElkNote.setVolume(0);
+    singleFrogNote.setVolume(0);
+    singleKNote.setVolume(0);
+    singleLemurNote.setVolume(0);
+    singleFishNote.setVolume(0);
+    singleRatNote.setVolume(0);
+    singleSealNote.setVolume(0);
+    singleTreeNote.setVolume(0);
+    singleWalrusNote.setVolume(0);
+    singleWhaleNote.setVolume(0);
   }
-
-  let elkNote = Math.round((mouseX + divX / 2) / divX) - 1;
-  singleElkNote = elkMusic[elkNote];
 
   if (soundTriggered.elkTr == true) {
+    singleElkNote.setVolume(1);
     singleElkNote.play();
+    singleArmadilloNote.setVolume(0);
+    singleBatNote.setVolume(0);
+    singleCapNote.setVolume(0);
+    singleDolphinNote.setVolume(0);
+    singleEleNote.setVolume(0);
+    singleFrogNote.setVolume(0);
+    singleKNote.setVolume(0);
+    singleLemurNote.setVolume(0);
+    singleFishNote.setVolume(0);
+    singleRatNote.setVolume(0);
+    singleSealNote.setVolume(0);
+    singleTreeNote.setVolume(0);
+    singleWalrusNote.setVolume(0);
+    singleWhaleNote.setVolume(0);
   }
-
-  let frogNote = Math.round((mouseX + divX / 2) / divX) - 1;
-  singleFrogNote = frogMusic[frogNote];
 
   if (soundTriggered.frogTr == true) {
+    singleFrogNote.setVolume(1);
     singleFrogNote.play();
+    singleArmadilloNote.setVolume(0);
+    singleBatNote.setVolume(0);
+    singleCapNote.setVolume(0);
+    singleDolphinNote.setVolume(0);
+    singleEleNote.setVolume(0);
+    singleElkNote.setVolume(0);
+    singleKNote.setVolume(0);
+    singleLemurNote.setVolume(0);
+    singleFishNote.setVolume(0);
+    singleRatNote.setVolume(0);
+    singleSealNote.setVolume(0);
+    singleTreeNote.setVolume(0);
+    singleWalrusNote.setVolume(0);
+    singleWhaleNote.setVolume(0);
   }
-
-  let kNote = Math.round((mouseX + divX / 2) / divX) - 1;
-  singleKNote = kauaiooMusic[kNote];
 
   if (soundTriggered.kauaiTr == true) {
+    singleKNote.setVolume(1);
     singleKNote.play();
+    singleArmadilloNote.setVolume(0);
+    singleBatNote.setVolume(0);
+    singleCapNote.setVolume(0);
+    singleDolphinNote.setVolume(0);
+    singleEleNote.setVolume(0);
+    singleElkNote.setVolume(0);
+    singleFrogNote.setVolume(0);
+    singleLemurNote.setVolume(0);
+    singleFishNote.setVolume(0);
+    singleRatNote.setVolume(0);
+    singleSealNote.setVolume(0);
+    singleTreeNote.setVolume(0);
+    singleWalrusNote.setVolume(0);
+    singleWhaleNote.setVolume(0);
   }
-
-  let lemurNote = Math.round((mouseX + divX / 2) / divX) - 1;
-  singleLemurNote = lemurMusic[lemurNote];
 
   if (soundTriggered.lemurTr == true) {
+    singleLemurNote.setVolume(1);
     singleLemurNote.play();
+    singleArmadilloNote.setVolume(0);
+    singleBatNote.setVolume(0);
+    singleCapNote.setVolume(0);
+    singleDolphinNote.setVolume(0);
+    singleEleNote.setVolume(0);
+    singleElkNote.setVolume(0);
+    singleFrogNote.setVolume(0);
+    singleKNote.setVolume(0);
+    singleFishNote.setVolume(0);
+    singleRatNote.setVolume(0);
+    singleSealNote.setVolume(0);
+    singleTreeNote.setVolume(0);
+    singleWalrusNote.setVolume(0);
+    singleWhaleNote.setVolume(0);
   }
-
-  let fishNote = Math.round((mouseX + divX / 2) / divX) - 1;
-  singleFishNote = plainfinMusic[fishNote];
 
   if (soundTriggered.fishTr == true) {
+    singleFishNote.setVolume(1);
     singleFishNote.play();
+    singleArmadilloNote.setVolume(0);
+    singleBatNote.setVolume(0);
+    singleCapNote.setVolume(0);
+    singleDolphinNote.setVolume(0);
+    singleEleNote.setVolume(0);
+    singleElkNote.setVolume(0);
+    singleFrogNote.setVolume(0);
+    singleKNote.setVolume(0);
+    singleLemurNote.setVolume(0);
+    singleRatNote.setVolume(0);
+    singleSealNote.setVolume(0);
+    singleTreeNote.setVolume(0);
+    singleWalrusNote.setVolume(0);
+    singleWhaleNote.setVolume(0);
   }
-
-  let ratNote = Math.round((mouseX + divX / 2) / divX) - 1;
-  singleRatNote = ratMusic[ratNote];
 
   if (soundTriggered.ratTr == true) {
+    singleRatNote.setVolume(1);
     singleRatNote.play();
+    singleArmadilloNote.setVolume(0);
+    singleBatNote.setVolume(0);
+    singleCapNote.setVolume(0);
+    singleDolphinNote.setVolume(0);
+    singleEleNote.setVolume(0);
+    singleElkNote.setVolume(0);
+    singleFrogNote.setVolume(0);
+    singleKNote.setVolume(0);
+    singleLemurNote.setVolume(0);
+    singleFishNote.setVolume(0);
+    singleSealNote.setVolume(0);
+    singleTreeNote.setVolume(0);
+    singleWalrusNote.setVolume(0);
+    singleWhaleNote.setVolume(0);
   }
-
-  let sealNote = Math.round((mouseX + divX / 2) / divX) - 1;
-  singleSealNote = sealMusic[sealNote];
 
   if (soundTriggered.sealTr == true) {
-    singleRatNote.play();
+    singleSealNote.setVolume(1);
+    singleSealNote.play();
+    singleArmadilloNote.setVolume(0);
+    singleBatNote.setVolume(0);
+    singleCapNote.setVolume(0);
+    singleDolphinNote.setVolume(0);
+    singleEleNote.setVolume(0);
+    singleElkNote.setVolume(0);
+    singleFrogNote.setVolume(0);
+    singleKNote.setVolume(0);
+    singleLemurNote.setVolume(0);
+    singleFishNote.setVolume(0);
+    singleRatNote.setVolume(0);
+    singleTreeNote.setVolume(0);
+    singleWalrusNote.setVolume(0);
+    singleWhaleNote.setVolume(0);
   }
 
-  let treeNote = Math.round((mouseX + divX / 2) / divX) - 1;
-  singleTreeNote = treehopperMusic[treeNote];
   if (soundTriggered.treeTr == true) {
+    singleTreeNote.setVolume(1);
     singleTreeNote.play();
+    singleArmadilloNote.setVolume(0);
+    singleBatNote.setVolume(0);
+    singleCapNote.setVolume(0);
+    singleDolphinNote.setVolume(0);
+    singleEleNote.setVolume(0);
+    singleElkNote.setVolume(0);
+    singleFrogNote.setVolume(0);
+    singleKNote.setVolume(0);
+    singleLemurNote.setVolume(0);
+    singleFishNote.setVolume(0);
+    singleRatNote.setVolume(0);
+    singleSealNote.setVolume(0);
+    singleWalrusNote.setVolume(0);
+    singleWhaleNote.setVolume(0);
   }
 
-  let walrusNote = Math.round((mouseX + divX / 2) / divX) - 1;
-  singleWalrusNote = walrusMusic[walrusNote];
   if (soundTriggered.walrusTr == true) {
+    singleWalrusNote.setVolume(1);
     singleWalrusNote.play();
+    singleArmadilloNote.setVolume(0);
+    singleBatNote.setVolume(0);
+    singleCapNote.setVolume(0);
+    singleDolphinNote.setVolume(0);
+    singleEleNote.setVolume(0);
+    singleElkNote.setVolume(0);
+    singleFrogNote.setVolume(0);
+    singleKNote.setVolume(0);
+    singleLemurNote.setVolume(0);
+    singleFishNote.setVolume(0);
+    singleRatNote.setVolume(0);
+    singleSealNote.setVolume(0);
+    singleTreeNote.setVolume(0);
+    singleWhaleNote.setVolume(0);
   }
 
-  let whaleNote = Math.round((mouseX + divX / 2) / divX) - 1;
-  singleWhaleNote = whaleMusic[whaleNote];
   if (soundTriggered.whaleTr == true) {
+    singleWhaleNote.setVolume(1);
     singleWhaleNote.play();
+    singleArmadilloNote.setVolume(0);
+    singleBatNote.setVolume(0);
+    singleCapNote.setVolume(0);
+    singleDolphinNote.setVolume(0);
+    singleEleNote.setVolume(0);
+    singleElkNote.setVolume(0);
+    singleFrogNote.setVolume(0);
+    singleKNote.setVolume(0);
+    singleLemurNote.setVolume(0);
+    singleFishNote.setVolume(0);
+    singleRatNote.setVolume(0);
+    singleSealNote.setVolume(0);
+    singleTreeNote.setVolume(0);
+    singleWalrusNote.setVolume(0);
   }
 }
 
