@@ -8,7 +8,7 @@ canvas {
   margin-left: 10%;
   width: 50%;
   height: 50%;
-  z-index: 1;
+  z-index: 0;
   outline: black 1px solid;
 }
 
@@ -48,7 +48,7 @@ p {
   display: flex;
   flex-direction: row;
   height: 100%;
-  z-index: 2;
+  z-index: 1;
 }
 
 .button {
@@ -131,13 +131,11 @@ p {
 }
 
 .modal {
-  display: none; /* Hidden by default */
+  /* display: none; */
   position: fixed; /* Stay in place */
-  z-index: 1; /* Sit on top */
+  z-index: 2; /* Sit on top */
   left: 0;
   top: 0;
-  width: 100%; /* Full width */
-  height: 100%; /* Full height */
   overflow: auto; /* Enable scroll if needed */
   background-color: rgb(0, 0, 0); /* Fallback color */
   background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
@@ -145,13 +143,14 @@ p {
 
 /* Modal Content/Box */
 .modal-content {
+  display: block;
   font-family: monospace;
   background-color: black;
   color: white;
-  margin: 15% auto; /* 15% from the top and centered */
-  padding: 20px;
+  margin: 15% 10%; /* 15% from the top and centered */
+  padding: 15px;
   border: 1px solid #888;
-  width: 80%; /* Could be more or less, depending on screen size */
+  width: 60%; /* Could be more or less, depending on screen size */
 }
 
 /* The Close Button */

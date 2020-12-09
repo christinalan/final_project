@@ -78,12 +78,20 @@ let chatBox = document.getElementById("chat-box-msgs");
 let textMessages = document.getElementsByTagName("P");
 
 //variables for the Instructions window
+let instructions = document.getElementById("instructions");
 let modal = document.getElementById("info-modal");
-let infoButton = document.getElementById("info-button");
-//span that closes the window
-let span = document.getElementsByClassName("close")[0];
+let infoSpan = document.getElementById("info-span");
 
 window.addEventListener("load", () => {
+  //modal stuff
+  instructions.onclick = function () {
+    modal.style.display = "block";
+  };
+
+  infoSpan.onclick = function () {
+    modal.style.display = "none";
+  };
+
   // animal dropdown
   let dropdown = document.getElementById("select-animal");
   let defaultoption = document.createElement("option");
