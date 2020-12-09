@@ -17,13 +17,7 @@ let io = require("socket.io")();
 io.listen(server);
 
 //different nameSpaces
-let mod = io.of("/mod");
-let user = io.of("/user");
-
-//listening for users to connect
-mod.on("connection", (socket) => {
-  console.log("mod socket connected : " + socket.id);
-});
+// let user = io.of("/user");
 
 let p5letters1 = [];
 let numberLetters1 = [];
@@ -31,7 +25,7 @@ let p5Letter1, singleLetter1;
 let letterToNum1;
 
 //listening for users to connect
-user.on("connection", (socket) => {
+io.sockets.on("connection", (socket) => {
   console.log("mod socket connected : " + socket.id);
 
   //getting first letters message to server
@@ -69,7 +63,7 @@ user.on("connection", (socket) => {
     };
 
     console.log(data.animal);
-    user.emit("msgObj", msgObj);
+    io.sockets.emit("msgObj", msgObj);
     socket.broadcast.emit("letterSounds", letterSounds);
     // console.log(p5letters1);
     p5letters1 = [];

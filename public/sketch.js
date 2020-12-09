@@ -1,13 +1,8 @@
 //create a socket namespace
-let socket = io("/user");
-let modSocket = io("/mod");
+let socket = io();
 
 socket.on("connect", () => {
   console.log("connected");
-});
-
-modSocket.on("connect", () => {
-  console.log("mod socket in user is connected");
 });
 
 //global socket variables
@@ -465,49 +460,49 @@ let divX, divY;
 
 function preload() {
   for (let i = 1; i <= 15; i++) {
-    armadilloMusic[i - 1] = loadSound("../Audio/armadillo" + i + ".mp3");
+    armadilloMusic[i - 1] = loadSound("Audio/armadillo" + i + ".mp3");
   }
   for (let i = 1; i <= 15; i++) {
-    batMusic[i - 1] = loadSound("../Audio/bat" + i + ".mp3");
+    batMusic[i - 1] = loadSound("Audio/bat" + i + ".mp3");
   }
   for (let i = 1; i <= 15; i++) {
-    capercaillieMusic[i - 1] = loadSound("../Audio/cap" + i + ".mp3");
+    capercaillieMusic[i - 1] = loadSound("Audio/cap" + i + ".mp3");
   }
   for (let i = 1; i <= 15; i++) {
-    dolphinMusic[i - 1] = loadSound("../Audio/dolphin" + i + ".mp3");
+    dolphinMusic[i - 1] = loadSound("Audio/dolphin" + i + ".mp3");
   }
   for (let i = 1; i <= 15; i++) {
-    elephantMusic[i - 1] = loadSound("../Audio/elephant" + i + ".mp3");
+    elephantMusic[i - 1] = loadSound("Audio/elephant" + i + ".mp3");
   }
   for (let i = 1; i <= 15; i++) {
-    elkMusic[i - 1] = loadSound("../Audio/elk" + i + ".mp3");
+    elkMusic[i - 1] = loadSound("Audio/elk" + i + ".mp3");
   }
   for (let i = 1; i <= 15; i++) {
-    frogMusic[i - 1] = loadSound("../Audio/frog" + i + ".mp3");
+    frogMusic[i - 1] = loadSound("Audio/frog" + i + ".mp3");
   }
   for (let i = 1; i <= 15; i++) {
-    kauaiooMusic[i - 1] = loadSound("../Audio/kau" + i + ".mp3");
+    kauaiooMusic[i - 1] = loadSound("Audio/kau" + i + ".mp3");
   }
   for (let i = 1; i <= 15; i++) {
-    lemurMusic[i - 1] = loadSound("../Audio/lemur" + i + ".mp3");
+    lemurMusic[i - 1] = loadSound("Audio/lemur" + i + ".mp3");
   }
   for (let i = 1; i <= 15; i++) {
-    plainfinMusic[i - 1] = loadSound("../Audio/plainfin" + i + ".mp3");
+    plainfinMusic[i - 1] = loadSound("Audio/plainfin" + i + ".mp3");
   }
   for (let i = 1; i <= 15; i++) {
-    ratMusic[i - 1] = loadSound("../Audio/rat" + i + ".mp3");
+    ratMusic[i - 1] = loadSound("Audio/rat" + i + ".mp3");
   }
   for (let i = 1; i <= 15; i++) {
-    sealMusic[i - 1] = loadSound("../Audio/seal" + i + ".mp3");
+    sealMusic[i - 1] = loadSound("Audio/seal" + i + ".mp3");
   }
   for (let i = 1; i <= 15; i++) {
-    treehopperMusic[i - 1] = loadSound("../Audio/treehopper" + i + ".mp3");
+    treehopperMusic[i - 1] = loadSound("Audio/treehopper" + i + ".mp3");
   }
   for (let i = 1; i <= 15; i++) {
-    walrusMusic[i - 1] = loadSound("../Audio/walrus" + i + ".mp3");
+    walrusMusic[i - 1] = loadSound("Audio/walrus" + i + ".mp3");
   }
   for (let i = 1; i <= 15; i++) {
-    whaleMusic[i - 1] = loadSound("../Audio/whale" + i + ".mp3");
+    whaleMusic[i - 1] = loadSound("Audio/whale" + i + ".mp3");
   }
 }
 
