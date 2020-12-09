@@ -471,7 +471,7 @@ function preload() {
     batMusic[i - 1] = loadSound("../Audio/bat" + i + ".mp3");
   }
   for (let i = 1; i <= 15; i++) {
-    capercaillieMusic[i - 1] = loadSound("../Audio/capercaillie" + i + ".mp3");
+    capercaillieMusic[i - 1] = loadSound("../Audio/cap" + i + ".mp3");
   }
   for (let i = 1; i <= 15; i++) {
     dolphinMusic[i - 1] = loadSound("../Audio/dolphin" + i + ".mp3");
@@ -486,7 +486,7 @@ function preload() {
     frogMusic[i - 1] = loadSound("../Audio/frog" + i + ".mp3");
   }
   for (let i = 1; i <= 15; i++) {
-    kauaiooMusic[i - 1] = loadSound("../Audio/kauaioo" + i + ".mp3");
+    kauaiooMusic[i - 1] = loadSound("../Audio/kau" + i + ".mp3");
   }
   for (let i = 1; i <= 15; i++) {
     lemurMusic[i - 1] = loadSound("../Audio/lemur" + i + ".mp3");
