@@ -522,11 +522,6 @@ function setup() {
   audioIn = new p5.AudioIn();
 
   w = width / 64;
-
-  // let isTrue = Object.keys(soundTriggered).some(
-  //   (item) => !soundTriggered[item]
-  // );
-  // console.log(isTrue);
 }
 
 let yposition = 200;
