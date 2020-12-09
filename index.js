@@ -23,12 +23,6 @@ let user = io.of("/user");
 //listening for users to connect
 mod.on("connection", (socket) => {
   console.log("mod socket connected : " + socket.id);
-
-  socket.on("freqData", (data) => {
-    // console.log(data.freq);
-
-    user.emit("freqData", data);
-  });
 });
 
 let p5letters1 = [];
@@ -74,7 +68,7 @@ user.on("connection", (socket) => {
       animal: data.animal,
     };
 
-    // console.log(msgObj);
+    console.log(data.animal);
     user.emit("msgObj", msgObj);
     socket.broadcast.emit("letterSounds", letterSounds);
     // console.log(p5letters1);

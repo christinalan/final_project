@@ -9,7 +9,7 @@ canvas {
   width: 50%;
   height: 50%;
   z-index: 1;
-  outline: rgb(0, 255, 115) 3px solid;
+  outline: black 1px solid;
 }
 
 #chat-canvas {
@@ -35,7 +35,7 @@ canvas {
   height: 100%;
   padding-left: 5px;
   overflow: auto;
-  outline: rgb(0, 255, 115) 1px solid;
+  outline: black 1px solid;
   color: white;
   background-color: black;
 }
