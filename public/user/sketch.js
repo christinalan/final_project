@@ -525,7 +525,6 @@ function setup() {
   freqAnalyzer = new p5.FFT(0, 64);
   amplitude = new p5.Amplitude();
   audioIn = new p5.AudioIn();
-  console.log(audioIn.getSources());
 
   w = width / 64;
 
@@ -548,170 +547,22 @@ function draw() {
   fromCol = color(50, 250, 155);
   toCol = color(50, 100, 200);
 
-  if (soundTriggered.armadilloTr == true) {
-    toCol = color(newColor);
-    let noHex = newColor.substring(1);
-    // console.log(noHex);
-    p5Color = noHex.split("");
-    // console.log(p5Color);
-    let newHex = shuffle(p5Color);
-    // console.log(newHex);
-    fromColor = color("#" + newHex);
-    // toColor = color(100, 300, 50);
-  }
+  for (var key in soundTriggered) {
+    if (soundTriggered.hasOwnProperty(key) == true) {
+      // console.log(key + ": " + soundTriggered[key]);
+      if (soundTriggered[key] == true) {
+        // console.log("true !!");
 
-  if (soundTriggered.batTr == true) {
-    toCol = color(newColor);
-    let noHex = newColor.substring(1);
-    // console.log(noHex);
-    p5Color = noHex.split("");
-    // console.log(p5Color);
-    let newHex = shuffle(p5Color);
-    // console.log(newHex);
-    fromColor = color("#" + newHex);
-  }
-
-  if (soundTriggered.caperTr == true) {
-    toCol = color(newColor);
-    let noHex = newColor.substring(1);
-    // console.log(noHex);
-    p5Color = noHex.split("");
-    // console.log(p5Color);
-    let newHex = shuffle(p5Color);
-    // console.log(newHex);
-    fromColor = color("#" + newHex);
-  }
-
-  if (soundTriggered.dolphinTr == true) {
-    toCol = color(newColor);
-    let noHex = newColor.substring(1);
-    // console.log(noHex);
-    p5Color = noHex.split("");
-    // console.log(p5Color);
-    let newHex = shuffle(p5Color);
-    // console.log(newHex);
-    fromColor = color("#" + newHex);
-  }
-
-  if (soundTriggered.elephantTr == true) {
-    toCol = color(newColor);
-    let noHex = newColor.substring(1);
-    // console.log(noHex);
-    p5Color = noHex.split("");
-    // console.log(p5Color);
-    let newHex = shuffle(p5Color);
-    // console.log(newHex);
-    fromColor = color("#" + newHex);
-  }
-
-  if (soundTriggered.elkTr == true) {
-    toCol = color(newColor);
-    let noHex = newColor.substring(1);
-    // console.log(noHex);
-    p5Color = noHex.split("");
-    // console.log(p5Color);
-    let newHex = shuffle(p5Color);
-    // console.log(newHex);
-    fromColor = color("#" + newHex);
-  }
-
-  if (soundTriggered.frogTr == true) {
-    toCol = color(newColor);
-    let noHex = newColor.substring(1);
-    // console.log(noHex);
-    p5Color = noHex.split("");
-    // console.log(p5Color);
-    let newHex = shuffle(p5Color);
-    // console.log(newHex);
-    fromColor = color("#" + newHex);
-  }
-
-  if (soundTriggered.kauaiTr == true) {
-    toCol = color(newColor);
-    let noHex = newColor.substring(1);
-    // console.log(noHex);
-    p5Color = noHex.split("");
-    // console.log(p5Color);
-    let newHex = shuffle(p5Color);
-    // console.log(newHex);
-    fromColor = color("#" + newHex);
-  }
-
-  if (soundTriggered.lemurTr == true) {
-    toCol = color(newColor);
-    let noHex = newColor.substring(1);
-    // console.log(noHex);
-    p5Color = noHex.split("");
-    // console.log(p5Color);
-    let newHex = shuffle(p5Color);
-    // console.log(newHex);
-    fromColor = color("#" + newHex);
-  }
-
-  if (soundTriggered.fishTr == true) {
-    toCol = color(newColor);
-    let noHex = newColor.substring(1);
-    // console.log(noHex);
-    p5Color = noHex.split("");
-    // console.log(p5Color);
-    let newHex = shuffle(p5Color);
-    // console.log(newHex);
-    fromColor = color("#" + newHex);
-  }
-
-  if (soundTriggered.ratTr == true) {
-    toCol = color(newColor);
-    let noHex = newColor.substring(1);
-    // console.log(noHex);
-    p5Color = noHex.split("");
-    // console.log(p5Color);
-    let newHex = shuffle(p5Color);
-    // console.log(newHex);
-    fromColor = color("#" + newHex);
-  }
-
-  if (soundTriggered.sealTr == true) {
-    toCol = color(newColor);
-    let noHex = newColor.substring(1);
-    // console.log(noHex);
-    p5Color = noHex.split("");
-    // console.log(p5Color);
-    let newHex = shuffle(p5Color);
-    // console.log(newHex);
-    fromColor = color("#" + newHex);
-  }
-
-  if (soundTriggered.treeTr == true) {
-    toCol = color(newColor);
-    let noHex = newColor.substring(1);
-    // console.log(noHex);
-    p5Color = noHex.split("");
-    // console.log(p5Color);
-    let newHex = shuffle(p5Color);
-    // console.log(newHex);
-    fromColor = color("#" + newHex);
-  }
-
-  if (soundTriggered.walrusTr == true) {
-    toCol = color(newColor);
-    let noHex = newColor.substring(1);
-    // console.log(noHex);
-    p5Color = noHex.split("");
-    // console.log(p5Color);
-    let newHex = shuffle(p5Color);
-    // console.log(newHex);
-    fromColor = color("#" + newHex);
-  }
-
-  if (soundTriggered.whale == true) {
-    toCol = color(newColor);
-    let noHex = newColor.substring(1);
-    // console.log(noHex);
-    p5Color = noHex.split("");
-    // console.log(p5Color);
-    let newHex = shuffle(p5Color);
-    // console.log(newHex);
-    fromColor = color("#" + newHex);
+        toCol = color(newColor);
+        let noHex = newColor.substring(1);
+        // console.log(noHex);
+        p5Color = noHex.split("");
+        // console.log(p5Color);
+        let newHex = shuffle(p5Color);
+        // console.log(newHex);
+        fromColor = color("#" + newHex);
+      }
+    }
   }
 
   noStroke();
