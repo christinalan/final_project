@@ -126,114 +126,124 @@ window.addEventListener("load", () => {
   dropdown.addEventListener("change", function (e) {
     changeColor();
     if (e.target.value == "armadillo") {
-      soundTriggered.armadilloTr = true;
       Object.keys(soundTriggered).forEach((item) => {
         item != "armadilloTr" ? soundTriggered[item] : false;
+        soundTriggered.armadilloTr = true;
       });
       console.log(soundTriggered.armadilloTr);
-      // soundtriggered1 = false;
-      // soundtriggered2 = false;
+      console.log(soundTriggered.whaleTr);
       selectedAnimal = animals[0];
     } else if (e.target.value == "bat") {
-      soundTriggered.batTr = true;
       Object.keys(soundTriggered).forEach((item) => {
-        item != "batTr" ? soundTriggered[item] : false;
+        soundTriggered[item] = false;
+        soundTriggered.batTr = true;
       });
       console.log(soundTriggered.batTr);
+      console.log(soundTriggered.armadilloTr);
       selectedAnimal = animals[1];
     } else if (e.target.value == "capercaillie") {
-      soundTriggered.caperTr = true;
       Object.keys(soundTriggered).forEach((item) => {
-        item != "caperTr" ? soundTriggered[item] : false;
+        soundTriggered[item] = false;
       });
+      soundTriggered.caperTr = true;
       console.log(soundTriggered.caperTr);
+      console.log(soundTriggered.armadilloTr);
       selectedAnimal = animals[2];
     } else if (e.target.value == "dolphin") {
-      soundTriggered.dolphinTr = true;
       Object.keys(soundTriggered).forEach((item) => {
-        item != "dolphinTr" ? soundTriggered[item] : false;
+        soundTriggered[item] = false;
       });
+      soundTriggered.dolphinTr = true;
       console.log(soundTriggered.dolphinTr);
+      console.log(soundTriggered.armadilloTr);
       selectedAnimal = animals[3];
     } else if (e.target.value == "elephant") {
-      soundTriggered.elephantTr = true;
       Object.keys(soundTriggered).forEach((item) => {
-        item != "elephantTr" ? soundTriggered[item] : false;
+        soundTriggered[item] = false;
       });
+      soundTriggered.elephantTr = true;
       console.log(soundTriggered.elephantTr);
+      console.log(soundTriggered.armadilloTr);
       selectedAnimal = animals[4];
     } else if (e.target.value == "elk") {
-      soundTriggered.elkTr = true;
       Object.keys(soundTriggered).forEach((item) => {
-        item != "elkTr" ? soundTriggered[item] : false;
+        soundTriggered[item] = false;
       });
+      soundTriggered.elkTr = true;
       console.log(soundTriggered.elkTr);
       selectedAnimal = animals[5];
     } else if (e.target.value == "frog") {
-      soundTriggered.frogTr = true;
       Object.keys(soundTriggered).forEach((item) => {
-        item != "frogTr" ? soundTriggered[item] : false;
+        soundTriggered[item] = false;
       });
+      soundTriggered.frogTr = true;
       console.log(soundTriggered.frogTr);
+      console.log(soundTriggered.armadilloTr);
       selectedAnimal = animals[6];
     } else if (e.target.value == "kauai oo") {
-      soundTriggered.kauaiTr = true;
       Object.keys(soundTriggered).forEach((item) => {
-        item != "kauaiTr" ? soundTriggered[item] : false;
+        soundTriggered[item] = false;
       });
+      soundTriggered.kauaiTr = true;
       console.log(soundTriggered.kauaiTr);
+      console.log(soundTriggered.armadilloTr);
       selectedAnimal = animals[7];
     } else if (e.target.value == "lemur") {
-      soundTriggered.lemurTr = true;
       Object.keys(soundTriggered).forEach((item) => {
-        item != "lemurTr" ? soundTriggered[item] : false;
+        soundTriggered[item] = false;
       });
+      soundTriggered.lemurTr = true;
       console.log(soundTriggered.lemurTr);
+      console.log(soundTriggered.armadilloTr);
       selectedAnimal = animals[8];
     } else if (e.target.value == "midshipman fish") {
-      soundTriggered.fishTr = true;
       Object.keys(soundTriggered).forEach((item) => {
-        item != "fishTr" ? soundTriggered[item] : false;
+        soundTriggered[item] = false;
       });
+      soundTriggered.fishTr = true;
       console.log(soundTriggered.fishTr);
+      console.log(soundTriggered.armadilloTr);
       selectedAnimal = animals[9];
     } else if (e.target.value == "rat") {
-      soundTriggered.ratTr = true;
       Object.keys(soundTriggered).forEach((item) => {
-        item != "ratTr" ? soundTriggered[item] : false;
+        soundTriggered[item] = false;
       });
+      soundTriggered.ratTr = true;
       console.log(soundTriggered.ratTr);
+      console.log(soundTriggered.armadilloTr);
       selectedAnimal = animals[10];
     } else if (e.target.value == "seal") {
-      soundTriggered.sealTr = true;
       Object.keys(soundTriggered).forEach((item) => {
-        item != "sealTr" ? soundTriggered[item] : false;
+        soundTriggered[item] = false;
       });
+      soundTriggered.sealTr = true;
       console.log(soundTriggered.sealTr);
+      console.log(soundTriggered.armadilloTr);
       selectedAnimal = animals[11];
     } else if (e.target.value == "treehopper") {
-      soundTriggered.treeTr = true;
       Object.keys(soundTriggered).forEach((item) => {
-        item != "treeTr" ? soundTriggered[item] : false;
+        soundTriggered[item] = false;
       });
+      soundTriggered.treeTr = true;
       console.log(soundTriggered.treeTr);
+      console.log(soundTriggered.armadilloTr);
       selectedAnimal = animals[12];
     } else if (e.target.value == "walrus") {
+      Object.keys(soundTriggered).forEach((item) => {
+        soundTriggered[item] = false;
+      });
       soundTriggered.walrusTr = true;
-      Object.keys(soundTriggered).forEach((item) => {
-        item != "walrusTr" ? soundTriggered[item] : false;
-      });
       console.log(soundTriggered.walrusTr);
+      console.log(soundTriggered.armadilloTr);
       selectedAnimal = animals[13];
-      // changeColor1();
     } else if (e.target.value == "whale") {
-      soundTriggered.whaleTr = true;
       Object.keys(soundTriggered).forEach((item) => {
-        item != "whaleTr" ? soundTriggered[item] : false;
+        soundTriggered[item] = false;
       });
+      soundTriggered.whaleTr = true;
       console.log(soundTriggered.whaleTr);
+      console.log(soundTriggered.armadilloTr);
       selectedAnimal = animals[14];
-      // changeColor2();
     }
   });
 
@@ -437,6 +447,7 @@ let singleArmadilloNote,
   singleWalrusNote,
   singleWhaleNote;
 
+let singleNote;
 let newBatSound;
 let newTreeSound;
 // global variables for p5 Sketch
@@ -590,6 +601,24 @@ function draw() {
 function playSounds() {
   let noteIndex = Math.round((mouseX + divX / 2) / divX) - 1;
 
+  let allMusic = [
+    armadilloMusic,
+    batMusic,
+    capercaillieMusic,
+    dolphinMusic,
+    elephantMusic,
+    elkMusic,
+    frogMusic,
+    kauaiooMusic,
+    lemurMusic,
+    plainfinMusic,
+    ratMusic,
+    sealMusic,
+    treehopperMusic,
+    walrusMusic,
+    whaleMusic,
+  ];
+
   singleArmadilloNote = armadilloMusic[noteIndex];
 
   singleBatNote = batMusic[noteIndex];
@@ -621,291 +650,131 @@ function playSounds() {
   singleWhaleNote = whaleMusic[noteIndex];
 
   if (soundTriggered.armadilloTr == true) {
-    singleArmadilloNote.setVolume(1);
+    singleArmadilloNote = armadilloMusic[noteIndex];
     singleArmadilloNote.play();
-    singleBatNote.setVolume(0);
-    singleCapNote.setVolume(0);
-    singleDolphinNote.setVolume(0);
-    singleEleNote.setVolume(0);
-    singleElkNote.setVolume(0);
-    singleFrogNote.setVolume(0);
-    singleKNote.setVolume(0);
-    singleLemurNote.setVolume(0);
-    singleFishNote.setVolume(0);
-    singleRatNote.setVolume(0);
-    singleSealNote.setVolume(0);
-    singleTreeNote.setVolume(0);
-    singleWalrusNote.setVolume(0);
-    singleWhaleNote.setVolume(0);
   }
 
   if (soundTriggered.batTr == true) {
-    singleBatNote.setVolume(1);
+    singleBatNote = batMusic[noteIndex];
     singleBatNote.play();
-    singleArmadilloNote.setVolume(0);
-    singleCapNote.setVolume(0);
-    singleDolphinNote.setVolume(0);
-    singleEleNote.setVolume(0);
-    singleElkNote.setVolume(0);
-    singleFrogNote.setVolume(0);
-    singleKNote.setVolume(0);
-    singleLemurNote.setVolume(0);
-    singleFishNote.setVolume(0);
-    singleRatNote.setVolume(0);
-    singleSealNote.setVolume(0);
-    singleTreeNote.setVolume(0);
-    singleWalrusNote.setVolume(0);
-    singleWhaleNote.setVolume(0);
   }
 
   if (soundTriggered.caperTr == true) {
-    singleCapNote.setVolume(1);
+    singleCapNote = capercaillieMusic[noteIndex];
     singleCapNote.play();
-    singleArmadilloNote.setVolume(0);
-    singleBatNote.setVolume(0);
-    singleDolphinNote.setVolume(0);
-    singleEleNote.setVolume(0);
-    singleElkNote.setVolume(0);
-    singleFrogNote.setVolume(0);
-    singleKNote.setVolume(0);
-    singleLemurNote.setVolume(0);
-    singleFishNote.setVolume(0);
-    singleRatNote.setVolume(0);
-    singleSealNote.setVolume(0);
-    singleTreeNote.setVolume(0);
-    singleWalrusNote.setVolume(0);
-    singleWhaleNote.setVolume(0);
   }
 
   if (soundTriggered.dolphinTr == true) {
-    singleDolphinNote.setVolume(1);
+    singleDolphinNote = dolphinMusic[noteIndex];
     singleDolphinNote.play();
-    singleArmadilloNote.setVolume(0);
-    singleBatNote.setVolume(0);
-    singleCapNote.setVolume(0);
-    singleEleNote.setVolume(0);
-    singleElkNote.setVolume(0);
-    singleFrogNote.setVolume(0);
-    singleKNote.setVolume(0);
-    singleLemurNote.setVolume(0);
-    singleFishNote.setVolume(0);
-    singleRatNote.setVolume(0);
-    singleSealNote.setVolume(0);
-    singleTreeNote.setVolume(0);
-    singleWalrusNote.setVolume(0);
-    singleWhaleNote.setVolume(0);
   }
 
   if (soundTriggered.elephantTr == true) {
-    singleEleNote.setVolume(1);
+    singleEleNote = elephantMusic[noteIndex];
     singleEleNote.play();
-    singleArmadilloNote.setVolume(0);
-    singleBatNote.setVolume(0);
-    singleCapNote.setVolume(0);
-    singleDolphinNote.setVolume(0);
-    singleElkNote.setVolume(0);
-    singleFrogNote.setVolume(0);
-    singleKNote.setVolume(0);
-    singleLemurNote.setVolume(0);
-    singleFishNote.setVolume(0);
-    singleRatNote.setVolume(0);
-    singleSealNote.setVolume(0);
-    singleTreeNote.setVolume(0);
-    singleWalrusNote.setVolume(0);
-    singleWhaleNote.setVolume(0);
   }
 
   if (soundTriggered.elkTr == true) {
-    singleElkNote.setVolume(1);
+    singleElkNote = elkMusic[noteIndex];
     singleElkNote.play();
-    singleArmadilloNote.setVolume(0);
-    singleBatNote.setVolume(0);
-    singleCapNote.setVolume(0);
-    singleDolphinNote.setVolume(0);
-    singleEleNote.setVolume(0);
-    singleFrogNote.setVolume(0);
-    singleKNote.setVolume(0);
-    singleLemurNote.setVolume(0);
-    singleFishNote.setVolume(0);
-    singleRatNote.setVolume(0);
-    singleSealNote.setVolume(0);
-    singleTreeNote.setVolume(0);
-    singleWalrusNote.setVolume(0);
-    singleWhaleNote.setVolume(0);
   }
 
   if (soundTriggered.frogTr == true) {
-    singleFrogNote.setVolume(1);
+    singleFrogNote = frogMusic[noteIndex];
     singleFrogNote.play();
-    singleArmadilloNote.setVolume(0);
-    singleBatNote.setVolume(0);
-    singleCapNote.setVolume(0);
-    singleDolphinNote.setVolume(0);
-    singleEleNote.setVolume(0);
-    singleElkNote.setVolume(0);
-    singleKNote.setVolume(0);
-    singleLemurNote.setVolume(0);
-    singleFishNote.setVolume(0);
-    singleRatNote.setVolume(0);
-    singleSealNote.setVolume(0);
-    singleTreeNote.setVolume(0);
-    singleWalrusNote.setVolume(0);
-    singleWhaleNote.setVolume(0);
   }
 
   if (soundTriggered.kauaiTr == true) {
-    singleKNote.setVolume(1);
+    singleKNote = kauaiooMusic[noteIndex];
     singleKNote.play();
-    singleArmadilloNote.setVolume(0);
-    singleBatNote.setVolume(0);
-    singleCapNote.setVolume(0);
-    singleDolphinNote.setVolume(0);
-    singleEleNote.setVolume(0);
-    singleElkNote.setVolume(0);
-    singleFrogNote.setVolume(0);
-    singleLemurNote.setVolume(0);
-    singleFishNote.setVolume(0);
-    singleRatNote.setVolume(0);
-    singleSealNote.setVolume(0);
-    singleTreeNote.setVolume(0);
-    singleWalrusNote.setVolume(0);
-    singleWhaleNote.setVolume(0);
   }
 
   if (soundTriggered.lemurTr == true) {
-    singleLemurNote.setVolume(1);
+    singleLemurNote = lemurMusic[noteIndex];
     singleLemurNote.play();
-    singleArmadilloNote.setVolume(0);
-    singleBatNote.setVolume(0);
-    singleCapNote.setVolume(0);
-    singleDolphinNote.setVolume(0);
-    singleEleNote.setVolume(0);
-    singleElkNote.setVolume(0);
-    singleFrogNote.setVolume(0);
-    singleKNote.setVolume(0);
-    singleFishNote.setVolume(0);
-    singleRatNote.setVolume(0);
-    singleSealNote.setVolume(0);
-    singleTreeNote.setVolume(0);
-    singleWalrusNote.setVolume(0);
-    singleWhaleNote.setVolume(0);
   }
 
   if (soundTriggered.fishTr == true) {
-    singleFishNote.setVolume(1);
+    singleFishNote = plainfinMusic[noteIndex];
     singleFishNote.play();
-    singleArmadilloNote.setVolume(0);
-    singleBatNote.setVolume(0);
-    singleCapNote.setVolume(0);
-    singleDolphinNote.setVolume(0);
-    singleEleNote.setVolume(0);
-    singleElkNote.setVolume(0);
-    singleFrogNote.setVolume(0);
-    singleKNote.setVolume(0);
-    singleLemurNote.setVolume(0);
-    singleRatNote.setVolume(0);
-    singleSealNote.setVolume(0);
-    singleTreeNote.setVolume(0);
-    singleWalrusNote.setVolume(0);
-    singleWhaleNote.setVolume(0);
   }
 
   if (soundTriggered.ratTr == true) {
-    singleRatNote.setVolume(1);
+    singleRatNote = ratMusic[noteIndex];
     singleRatNote.play();
-    singleArmadilloNote.setVolume(0);
-    singleBatNote.setVolume(0);
-    singleCapNote.setVolume(0);
-    singleDolphinNote.setVolume(0);
-    singleEleNote.setVolume(0);
-    singleElkNote.setVolume(0);
-    singleFrogNote.setVolume(0);
-    singleKNote.setVolume(0);
-    singleLemurNote.setVolume(0);
-    singleFishNote.setVolume(0);
-    singleSealNote.setVolume(0);
-    singleTreeNote.setVolume(0);
-    singleWalrusNote.setVolume(0);
-    singleWhaleNote.setVolume(0);
   }
 
   if (soundTriggered.sealTr == true) {
-    singleSealNote.setVolume(1);
+    singleSealNote = sealMusic[noteIndex];
     singleSealNote.play();
-    singleArmadilloNote.setVolume(0);
-    singleBatNote.setVolume(0);
-    singleCapNote.setVolume(0);
-    singleDolphinNote.setVolume(0);
-    singleEleNote.setVolume(0);
-    singleElkNote.setVolume(0);
-    singleFrogNote.setVolume(0);
-    singleKNote.setVolume(0);
-    singleLemurNote.setVolume(0);
-    singleFishNote.setVolume(0);
-    singleRatNote.setVolume(0);
-    singleTreeNote.setVolume(0);
-    singleWalrusNote.setVolume(0);
-    singleWhaleNote.setVolume(0);
   }
 
   if (soundTriggered.treeTr == true) {
-    singleTreeNote.setVolume(1);
+    singleTreeNote = treehopperMusic[noteIndex];
     singleTreeNote.play();
-    singleArmadilloNote.setVolume(0);
-    singleBatNote.setVolume(0);
-    singleCapNote.setVolume(0);
-    singleDolphinNote.setVolume(0);
-    singleEleNote.setVolume(0);
-    singleElkNote.setVolume(0);
-    singleFrogNote.setVolume(0);
-    singleKNote.setVolume(0);
-    singleLemurNote.setVolume(0);
-    singleFishNote.setVolume(0);
-    singleRatNote.setVolume(0);
-    singleSealNote.setVolume(0);
-    singleWalrusNote.setVolume(0);
-    singleWhaleNote.setVolume(0);
   }
 
   if (soundTriggered.walrusTr == true) {
-    singleWalrusNote.setVolume(1);
+    singleWalrusNote = walrusMusic[noteIndex];
     singleWalrusNote.play();
-    singleArmadilloNote.setVolume(0);
-    singleBatNote.setVolume(0);
-    singleCapNote.setVolume(0);
-    singleDolphinNote.setVolume(0);
-    singleEleNote.setVolume(0);
-    singleElkNote.setVolume(0);
-    singleFrogNote.setVolume(0);
-    singleKNote.setVolume(0);
-    singleLemurNote.setVolume(0);
-    singleFishNote.setVolume(0);
-    singleRatNote.setVolume(0);
-    singleSealNote.setVolume(0);
-    singleTreeNote.setVolume(0);
-    singleWhaleNote.setVolume(0);
   }
 
   if (soundTriggered.whaleTr == true) {
-    singleWhaleNote.setVolume(1);
+    singleWhaleNote = whaleMusic[noteIndex];
     singleWhaleNote.play();
-    singleArmadilloNote.setVolume(0);
-    singleBatNote.setVolume(0);
-    singleCapNote.setVolume(0);
-    singleDolphinNote.setVolume(0);
-    singleEleNote.setVolume(0);
-    singleElkNote.setVolume(0);
-    singleFrogNote.setVolume(0);
-    singleKNote.setVolume(0);
-    singleLemurNote.setVolume(0);
-    singleFishNote.setVolume(0);
-    singleRatNote.setVolume(0);
-    singleSealNote.setVolume(0);
-    singleTreeNote.setVolume(0);
-    singleWalrusNote.setVolume(0);
   }
-}
 
-function mouseClicked() {
-  clicked = !clicked;
+  // for (let i = 0; i < allMusic.length; i++) {
+  //   singleNote = allMusic[i][noteIndex];
+  //   if (soundTriggered.armadilloTr == true) {
+  //     singleNote = allMusic[0][noteIndex];
+  //     console.log(soundTriggered.armadilloTr);
+  //     console.log(singleNote);
+  //     // Object.keys(soundTriggered).forEach((item) => {
+  //     //   item != "armadilloTr" ? soundTriggered[item] : false;
+  //     //   console.log(soundTriggered.batTr);
+  //     // });
+  //   }
+  //   if (soundTriggered.batTr == true) {
+  //     singleNote = allMusic[1][noteIndex];
+  //     // Object.keys(soundTriggered).forEach((item) => {
+  //     //   item != "batTr" ? soundTriggered[item] : false;
+  //     // });
+  //   }
+  //   if (soundTriggered.caperTr == true) {
+  //     singleNote = allMusic[2][noteIndex];
+  //   }
+  // }
+
+  // Object.keys(soundTriggered).forEach((item) => {
+  //   if ((soundTriggered[item] = true)) {
+  //     singleNote.play();
+  //   }
+  //   if ((soundTriggered[item] = false)) {
+  //     singleNote.setVolume(0);
+  //     singleNote.stop();
+  //     console.log(soundTriggered.batTr);
+  //   }
+  // });
+
+  // if (soundTriggered.armadilloTr == true) {
+  //   console.log(singleNote);
+  //   singleNote.play();
+  //   singleArmadilloNote.setVolume(1);
+  //   singleArmadilloNote.play();
+  //   singleBatNote.setVolume(0);
+  //   singleCapNote.setVolume(0);
+  //   singleDolphinNote.setVolume(0);
+  //   singleEleNote.setVolume(0);
+  //   singleElkNote.setVolume(0);
+  //   singleFrogNote.setVolume(0);
+  //   singleKNote.setVolume(0);
+  //   singleLemurNote.setVolume(0);
+  //   singleFishNote.setVolume(0);
+  //   singleRatNote.setVolume(0);
+  //   singleSealNote.setVolume(0);
+  //   singleTreeNote.setVolume(0);
+  //   singleWalrusNote.setVolume(0);
+  //   singleWhaleNote.setVolume(0);
+  // }
 }
