@@ -601,24 +601,6 @@ function draw() {
 function playSounds() {
   let noteIndex = Math.round((mouseX + divX / 2) / divX) - 1;
 
-  let allMusic = [
-    armadilloMusic,
-    batMusic,
-    capercaillieMusic,
-    dolphinMusic,
-    elephantMusic,
-    elkMusic,
-    frogMusic,
-    kauaiooMusic,
-    lemurMusic,
-    plainfinMusic,
-    ratMusic,
-    sealMusic,
-    treehopperMusic,
-    walrusMusic,
-    whaleMusic,
-  ];
-
   singleArmadilloNote = armadilloMusic[noteIndex];
 
   singleBatNote = batMusic[noteIndex];
