@@ -24,6 +24,8 @@ let numberLetters1 = [];
 let p5Letter1, singleLetter1;
 let letterToNum1;
 let viewers = [];
+let newMsg;
+let hearClicked = false;
 
 //listening for users to connect
 io.sockets.on("connection", (socket) => {
@@ -55,11 +57,17 @@ io.sockets.on("connection", (socket) => {
       });
     }
 
-    console.log(numberLetters1);
+    // console.log(numberLetters1);
 
     let msgObj = {
       name: data.name,
       message: data.message,
+    };
+
+    newMsg = {
+      name: data.name,
+      message: data.message,
+      color: data.color,
     };
 
     let hearColor = {
@@ -71,14 +79,27 @@ io.sockets.on("connection", (socket) => {
       animal: data.animal,
     };
 
-    console.log(data.color);
-    io.sockets.emit("msgObj", msgObj);
+    // io.emit("msgObj", msgObj);
+    socket.emit("msgObj", msgObj);
+
     socket.broadcast.emit("hearColor", hearColor);
     socket.broadcast.emit("letterSounds", letterSounds);
     // console.log(p5letters1);
     p5letters1 = [];
     numberLetters1 = [];
     // user.emit("letters", data.firstLetters);
+  });
+
+  socket.on("bool", (data) => {
+    hearClicked = true;
+    socket.emit("bool", data);
+
+    if (!hearClicked) {
+      return;
+    } else {
+      console.log(newMsg);
+      socket.emit("sentMsg", newMsg);
+    }
   });
 
   //getting bat sound

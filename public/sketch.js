@@ -58,6 +58,7 @@ let playThis = [];
 let p5Letter, singleLetter, letterToNum;
 let yesAudio = false;
 let hearClicked = false;
+let hearIsTrue;
 let dataColor;
 
 let nameInput = document.getElementById("input-name");
@@ -71,6 +72,7 @@ let newColor, hearColor;
 let hearbtn = document.getElementById("hear-button");
 
 //the chat box element ID
+let receivedMsg, msgEl;
 let chatBox = document.getElementById("chat-box-msgs");
 
 //variables for the Instructions window
@@ -131,9 +133,9 @@ window.addEventListener("load", () => {
   });
 
   socket.on("msgObj", (data) => {
-    let receivedMsg = data.name + ": " + data.message;
+    receivedMsg = data.name + ": " + data.message;
     // console.log(receivedMsg);
-    let msgEl = document.createElement("p");
+    msgEl = document.createElement("p");
     msgEl.innerHTML = receivedMsg;
 
     chatBox.appendChild(msgEl);
@@ -142,9 +144,9 @@ window.addEventListener("load", () => {
 
   //listening for the letters from the server and converting them right away?
   socket.on("letterSounds", (data) => {
-    console.log(data.animal);
+    // console.log(data.animal);
     selectedAnimal = data.animal;
-    console.log(data.letters);
+    // console.log(data.letters);
     serverLetters = data.letters;
 
     for (let i = 0; i < serverLetters.length; i++) {
@@ -239,6 +241,30 @@ window.addEventListener("load", () => {
     setUpQueue();
 
     hearClicked = true;
+    socket.emit("bool", hearClicked);
+  });
+
+  socket.on("bool", (data) => {
+    console.log(data);
+    hearIsTrue = true;
+    // console.log(hearIsTrue);
+  });
+
+  socket.on("sentMsg", (data) => {
+    console.log(data);
+
+    if (!hearIsTrue) {
+      return;
+    } else {
+      // chatBox.style.color = data.color;
+      receivedMsg = data.name + ": " + data.message;
+
+      msgEl = document.createElement("p");
+      msgEl.innerHTML = receivedMsg;
+
+      chatBox.appendChild(msgEl);
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }
   });
 
   //changing color accordingly to dropdown selection
@@ -272,24 +298,24 @@ window.addEventListener("load", () => {
         item != "armadilloTr" ? soundTriggered[item] : false;
         soundTriggered.armadilloTr = true;
       });
-      console.log(soundTriggered.armadilloTr);
-      console.log(soundTriggered.whaleTr);
+      // console.log(soundTriggered.armadilloTr);
+      // console.log(soundTriggered.whaleTr);
       selectedAnimal = animals[0];
     } else if (e.target.value == "bat") {
       Object.keys(soundTriggered).forEach((item) => {
         soundTriggered[item] = false;
         soundTriggered.batTr = true;
       });
-      console.log(soundTriggered.batTr);
-      console.log(soundTriggered.armadilloTr);
+      // console.log(soundTriggered.batTr);
+      // console.log(soundTriggered.armadilloTr);
       selectedAnimal = animals[1];
     } else if (e.target.value == "capercaillie") {
       Object.keys(soundTriggered).forEach((item) => {
         soundTriggered[item] = false;
       });
       soundTriggered.caperTr = true;
-      console.log(soundTriggered.caperTr);
-      console.log(soundTriggered.armadilloTr);
+      // console.log(soundTriggered.caperTr);
+      // console.log(soundTriggered.armadilloTr);
       selectedAnimal = animals[2];
     } else if (e.target.value == "dolphin") {
       Object.keys(soundTriggered).forEach((item) => {
