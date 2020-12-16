@@ -12,6 +12,9 @@ canvas {
   outline: black 1px solid;
 }
 
+a {
+  color: rgb(174, 255, 43);
+}
 #chat-canvas {
   display: flex;
   flex-direction: row;
@@ -64,15 +67,6 @@ p {
   height: 10%;
   cursor: zoom-in;
   border-radius: 40px;
-}
-
-.play-button {
-  margin-top: 20px;
-  transform: translateX(170px);
-  cursor: pointer;
-  padding: 5px;
-  background-color: red;
-  border-radius: 20px;
 }
 
 .select {
@@ -132,6 +126,14 @@ p {
   cursor: pointer;
   border-radius: 20px;
   padding: 10px;
+}
+
+#viewer-count {
+  float: right;
+  margin-right: -8%;
+  margin-top: 3%;
+  color: gray;
+  font-size: 10px;
 }
 
 .modal {

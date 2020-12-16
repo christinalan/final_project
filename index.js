@@ -23,10 +23,15 @@ let p5letters1 = [];
 let numberLetters1 = [];
 let p5Letter1, singleLetter1;
 let letterToNum1;
+let viewers = [];
 
 //listening for users to connect
 io.sockets.on("connection", (socket) => {
   console.log("mod socket connected : " + socket.id);
+  viewers.push(socket.id);
+  let viewerCount = viewers.length;
+
+  io.sockets.emit("viewers", viewerCount);
 
   //getting first letters message to server
   socket.on("msg", (data) => {
@@ -57,13 +62,18 @@ io.sockets.on("connection", (socket) => {
       message: data.message,
     };
 
+    let hearColor = {
+      color: data.color,
+    };
+
     let letterSounds = {
       letters: numberLetters1,
       animal: data.animal,
     };
 
-    console.log(data.animal);
+    console.log(data.color);
     io.sockets.emit("msgObj", msgObj);
+    socket.broadcast.emit("hearColor", hearColor);
     socket.broadcast.emit("letterSounds", letterSounds);
     // console.log(p5letters1);
     p5letters1 = [];

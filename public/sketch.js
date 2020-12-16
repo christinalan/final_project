@@ -2,12 +2,11 @@
 let socket = io();
 
 socket.on("connect", () => {
-  console.log("connected");
+  console.log(socket.id + " has connected");
 });
 
 //global socket variables
 let playing, clicked;
-let toggleButton;
 let hearButton;
 let animals = [
   "armadillo",
@@ -58,6 +57,8 @@ let audioPlaying = 0;
 let playThis = [];
 let p5Letter, singleLetter, letterToNum;
 let yesAudio = false;
+let hearClicked = false;
+let dataColor;
 
 let nameInput = document.getElementById("input-name");
 let msgInput = document.getElementById("input-chat");
@@ -66,16 +67,18 @@ let curName, curMsg, letterGroup;
 let canvas0 = document.getElementById("chat-canvas");
 let textInput = document.getElementById("chat-box-msgs");
 let randomColor = Math.floor(Math.random() * 16777215).toString(16);
-let newColor;
+let newColor, hearColor;
+let hearbtn = document.getElementById("hear-button");
 
 //the chat box element ID
 let chatBox = document.getElementById("chat-box-msgs");
-let textMessages = document.getElementsByTagName("P");
 
 //variables for the Instructions window
 let instructions = document.getElementById("instructions");
 let modal = document.getElementById("info-modal");
 let infoSpan = document.getElementById("info-span");
+
+let viewerBox = document.getElementById("viewer-count");
 
 window.addEventListener("load", () => {
   //modal stuff
@@ -86,6 +89,16 @@ window.addEventListener("load", () => {
   infoSpan.onclick = function () {
     modal.style.display = "none";
   };
+
+  //viewer count
+  socket.on("viewers", (data) => {
+    // console.log(data);
+
+    let showCount = document.createElement("p");
+    showCount.innerHTML = data;
+
+    // viewerBox.appendChild(showCount);
+  });
 
   // animal dropdown
   let dropdown = document.getElementById("select-animal");
@@ -100,161 +113,10 @@ window.addEventListener("load", () => {
   }
   dropdown.selectedIndex = 0;
 
-  //changing color accordingly to dropdown selection
-  function createRandomColor() {
-    let hexParts = "0123456789ABCDEF";
-    let color = "#";
-    for (let i = 0; i < 6; i++) {
-      color += hexParts[Math.floor(Math.random() * 16)];
-    }
-    return color;
-  }
-
-  function changeColor() {
-    newColor = createRandomColor();
-    chatBox.style.color = newColor;
-    let canvascolor = document.getElementsByTagName("CANVAS")[0];
-    canvascolor.style.outlineColor = newColor;
-    let drpdwncolor = document.getElementById("select-animal");
-    drpdwncolor.style.backgroundColor = newColor;
-    let hearbtn = document.getElementById("hear-button");
-    hearbtn.style.backgroundColor = newColor;
-    return newColor;
-  }
-
-  //change of dropdown
-  dropdown.addEventListener("change", function (e) {
-    changeColor();
-    if (e.target.value == "armadillo") {
-      Object.keys(soundTriggered).forEach((item) => {
-        item != "armadilloTr" ? soundTriggered[item] : false;
-        soundTriggered.armadilloTr = true;
-      });
-      console.log(soundTriggered.armadilloTr);
-      console.log(soundTriggered.whaleTr);
-      selectedAnimal = animals[0];
-    } else if (e.target.value == "bat") {
-      Object.keys(soundTriggered).forEach((item) => {
-        soundTriggered[item] = false;
-        soundTriggered.batTr = true;
-      });
-      console.log(soundTriggered.batTr);
-      console.log(soundTriggered.armadilloTr);
-      selectedAnimal = animals[1];
-    } else if (e.target.value == "capercaillie") {
-      Object.keys(soundTriggered).forEach((item) => {
-        soundTriggered[item] = false;
-      });
-      soundTriggered.caperTr = true;
-      console.log(soundTriggered.caperTr);
-      console.log(soundTriggered.armadilloTr);
-      selectedAnimal = animals[2];
-    } else if (e.target.value == "dolphin") {
-      Object.keys(soundTriggered).forEach((item) => {
-        soundTriggered[item] = false;
-      });
-      soundTriggered.dolphinTr = true;
-      console.log(soundTriggered.dolphinTr);
-      console.log(soundTriggered.armadilloTr);
-      selectedAnimal = animals[3];
-    } else if (e.target.value == "elephant") {
-      Object.keys(soundTriggered).forEach((item) => {
-        soundTriggered[item] = false;
-      });
-      soundTriggered.elephantTr = true;
-      console.log(soundTriggered.elephantTr);
-      console.log(soundTriggered.armadilloTr);
-      selectedAnimal = animals[4];
-    } else if (e.target.value == "elk") {
-      Object.keys(soundTriggered).forEach((item) => {
-        soundTriggered[item] = false;
-      });
-      soundTriggered.elkTr = true;
-      console.log(soundTriggered.elkTr);
-      selectedAnimal = animals[5];
-    } else if (e.target.value == "frog") {
-      Object.keys(soundTriggered).forEach((item) => {
-        soundTriggered[item] = false;
-      });
-      soundTriggered.frogTr = true;
-      console.log(soundTriggered.frogTr);
-      console.log(soundTriggered.armadilloTr);
-      selectedAnimal = animals[6];
-    } else if (e.target.value == "kauai oo") {
-      Object.keys(soundTriggered).forEach((item) => {
-        soundTriggered[item] = false;
-      });
-      soundTriggered.kauaiTr = true;
-      console.log(soundTriggered.kauaiTr);
-      console.log(soundTriggered.armadilloTr);
-      selectedAnimal = animals[7];
-    } else if (e.target.value == "lemur") {
-      Object.keys(soundTriggered).forEach((item) => {
-        soundTriggered[item] = false;
-      });
-      soundTriggered.lemurTr = true;
-      console.log(soundTriggered.lemurTr);
-      console.log(soundTriggered.armadilloTr);
-      selectedAnimal = animals[8];
-    } else if (e.target.value == "midshipman fish") {
-      Object.keys(soundTriggered).forEach((item) => {
-        soundTriggered[item] = false;
-      });
-      soundTriggered.fishTr = true;
-      console.log(soundTriggered.fishTr);
-      console.log(soundTriggered.armadilloTr);
-      selectedAnimal = animals[9];
-    } else if (e.target.value == "rat") {
-      Object.keys(soundTriggered).forEach((item) => {
-        soundTriggered[item] = false;
-      });
-      soundTriggered.ratTr = true;
-      console.log(soundTriggered.ratTr);
-      console.log(soundTriggered.armadilloTr);
-      selectedAnimal = animals[10];
-    } else if (e.target.value == "seal") {
-      Object.keys(soundTriggered).forEach((item) => {
-        soundTriggered[item] = false;
-      });
-      soundTriggered.sealTr = true;
-      console.log(soundTriggered.sealTr);
-      console.log(soundTriggered.armadilloTr);
-      selectedAnimal = animals[11];
-    } else if (e.target.value == "treehopper") {
-      Object.keys(soundTriggered).forEach((item) => {
-        soundTriggered[item] = false;
-      });
-      soundTriggered.treeTr = true;
-      console.log(soundTriggered.treeTr);
-      console.log(soundTriggered.armadilloTr);
-      selectedAnimal = animals[12];
-    } else if (e.target.value == "walrus") {
-      Object.keys(soundTriggered).forEach((item) => {
-        soundTriggered[item] = false;
-      });
-      soundTriggered.walrusTr = true;
-      console.log(soundTriggered.walrusTr);
-      console.log(soundTriggered.armadilloTr);
-      selectedAnimal = animals[13];
-    } else if (e.target.value == "whale") {
-      Object.keys(soundTriggered).forEach((item) => {
-        soundTriggered[item] = false;
-      });
-      soundTriggered.whaleTr = true;
-      console.log(soundTriggered.whaleTr);
-      console.log(soundTriggered.armadilloTr);
-      selectedAnimal = animals[14];
-    }
-  });
-
-  function clear() {
-    document.getElementById("input-chat").value = "";
-  }
-
   letterGroup = "";
   sendButton.addEventListener("click", () => {
     letterGroup = msgInput.value.match(/\b(\w)/g);
-    console.log(letterGroup);
+    // console.log(letterGroup);
     curMsg = msgInput.value;
     curName = nameInput.value;
     let msgObj = {
@@ -262,6 +124,7 @@ window.addEventListener("load", () => {
       message: curMsg,
       firstLetters: letterGroup,
       animal: selectedAnimal,
+      color: newColor,
     };
     socket.emit("msg", msgObj);
     clear();
@@ -364,7 +227,7 @@ window.addEventListener("load", () => {
       console.log(queue);
       console.log(src);
       playThis[i] = loadSound(src, soundSuccess, soundError, soundWaiting);
-      console.log(playThis);
+      // console.log(playThis);
     }
     src = "";
     queue = [];
@@ -374,7 +237,161 @@ window.addEventListener("load", () => {
   hearButton.addEventListener("click", () => {
     //can only play after the sounds are loaded
     setUpQueue();
+
+    hearClicked = true;
   });
+
+  //changing color accordingly to dropdown selection
+  function createRandomColor() {
+    let hexParts = "0123456789ABCDEF";
+    let color = "#";
+    for (let i = 0; i < 6; i++) {
+      color += hexParts[Math.floor(Math.random() * 16)];
+    }
+    return color;
+  }
+
+  function changeColor() {
+    newColor = createRandomColor();
+    chatBox.style.color = newColor;
+    let canvascolor = document.getElementsByTagName("CANVAS")[0];
+    canvascolor.style.outlineColor = newColor;
+    let drpdwncolor = document.getElementById("select-animal");
+    drpdwncolor.style.backgroundColor = newColor;
+
+    hearbtn.style.backgroundColor = newColor;
+
+    return newColor;
+  }
+
+  //change of dropdown
+  dropdown.addEventListener("change", function (e) {
+    changeColor();
+    if (e.target.value == "armadillo") {
+      Object.keys(soundTriggered).forEach((item) => {
+        item != "armadilloTr" ? soundTriggered[item] : false;
+        soundTriggered.armadilloTr = true;
+      });
+      console.log(soundTriggered.armadilloTr);
+      console.log(soundTriggered.whaleTr);
+      selectedAnimal = animals[0];
+    } else if (e.target.value == "bat") {
+      Object.keys(soundTriggered).forEach((item) => {
+        soundTriggered[item] = false;
+        soundTriggered.batTr = true;
+      });
+      console.log(soundTriggered.batTr);
+      console.log(soundTriggered.armadilloTr);
+      selectedAnimal = animals[1];
+    } else if (e.target.value == "capercaillie") {
+      Object.keys(soundTriggered).forEach((item) => {
+        soundTriggered[item] = false;
+      });
+      soundTriggered.caperTr = true;
+      console.log(soundTriggered.caperTr);
+      console.log(soundTriggered.armadilloTr);
+      selectedAnimal = animals[2];
+    } else if (e.target.value == "dolphin") {
+      Object.keys(soundTriggered).forEach((item) => {
+        soundTriggered[item] = false;
+      });
+      soundTriggered.dolphinTr = true;
+      // console.log(soundTriggered.dolphinTr);
+      // console.log(soundTriggered.armadilloTr);
+      selectedAnimal = animals[3];
+    } else if (e.target.value == "elephant") {
+      Object.keys(soundTriggered).forEach((item) => {
+        soundTriggered[item] = false;
+      });
+      soundTriggered.elephantTr = true;
+      // console.log(soundTriggered.elephantTr);
+      // console.log(soundTriggered.armadilloTr);
+      selectedAnimal = animals[4];
+    } else if (e.target.value == "elk") {
+      Object.keys(soundTriggered).forEach((item) => {
+        soundTriggered[item] = false;
+      });
+      soundTriggered.elkTr = true;
+      console.log(soundTriggered.elkTr);
+      selectedAnimal = animals[5];
+    } else if (e.target.value == "frog") {
+      Object.keys(soundTriggered).forEach((item) => {
+        soundTriggered[item] = false;
+      });
+      soundTriggered.frogTr = true;
+      console.log(soundTriggered.frogTr);
+      console.log(soundTriggered.armadilloTr);
+      selectedAnimal = animals[6];
+    } else if (e.target.value == "kauai oo") {
+      Object.keys(soundTriggered).forEach((item) => {
+        soundTriggered[item] = false;
+      });
+      soundTriggered.kauaiTr = true;
+      console.log(soundTriggered.kauaiTr);
+      console.log(soundTriggered.armadilloTr);
+      selectedAnimal = animals[7];
+    } else if (e.target.value == "lemur") {
+      Object.keys(soundTriggered).forEach((item) => {
+        soundTriggered[item] = false;
+      });
+      soundTriggered.lemurTr = true;
+      console.log(soundTriggered.lemurTr);
+      console.log(soundTriggered.armadilloTr);
+      selectedAnimal = animals[8];
+    } else if (e.target.value == "midshipman fish") {
+      Object.keys(soundTriggered).forEach((item) => {
+        soundTriggered[item] = false;
+      });
+      soundTriggered.fishTr = true;
+      console.log(soundTriggered.fishTr);
+      console.log(soundTriggered.armadilloTr);
+      selectedAnimal = animals[9];
+    } else if (e.target.value == "rat") {
+      Object.keys(soundTriggered).forEach((item) => {
+        soundTriggered[item] = false;
+      });
+      soundTriggered.ratTr = true;
+      console.log(soundTriggered.ratTr);
+      console.log(soundTriggered.armadilloTr);
+      selectedAnimal = animals[10];
+    } else if (e.target.value == "seal") {
+      Object.keys(soundTriggered).forEach((item) => {
+        soundTriggered[item] = false;
+      });
+      soundTriggered.sealTr = true;
+      console.log(soundTriggered.sealTr);
+      console.log(soundTriggered.armadilloTr);
+      selectedAnimal = animals[11];
+    } else if (e.target.value == "treehopper") {
+      Object.keys(soundTriggered).forEach((item) => {
+        soundTriggered[item] = false;
+      });
+      soundTriggered.treeTr = true;
+      console.log(soundTriggered.treeTr);
+      console.log(soundTriggered.armadilloTr);
+      selectedAnimal = animals[12];
+    } else if (e.target.value == "walrus") {
+      Object.keys(soundTriggered).forEach((item) => {
+        soundTriggered[item] = false;
+      });
+      soundTriggered.walrusTr = true;
+      console.log(soundTriggered.walrusTr);
+      console.log(soundTriggered.armadilloTr);
+      selectedAnimal = animals[13];
+    } else if (e.target.value == "whale") {
+      Object.keys(soundTriggered).forEach((item) => {
+        soundTriggered[item] = false;
+      });
+      soundTriggered.whaleTr = true;
+      console.log(soundTriggered.whaleTr);
+      console.log(soundTriggered.armadilloTr);
+      selectedAnimal = animals[14];
+    }
+  });
+
+  function clear() {
+    document.getElementById("input-chat").value = "";
+  }
 
   function setUpQueue() {
     if (audioPlaying == 1 || playThis.length == 0) return;
@@ -411,6 +428,28 @@ window.addEventListener("load", () => {
   function soundWaiting() {
     console.log("Waiting for sound...");
   }
+
+  socket.on("hearColor", (data) => {
+    dataColor = data.color;
+    let currentColor = hearbtn.style.backgroundColor;
+
+    let blinkCol = setInterval(() => {
+      hearbtn.style.backgroundColor = dataColor;
+    }, 250);
+
+    let blinkCol2 = setInterval(() => {
+      hearbtn.style.backgroundColor = currentColor;
+    }, 500);
+
+    hearButton.onclick = function () {
+      hearbtn.style.backgroundColor = currentColor;
+      clearInterval(blinkCol);
+    };
+
+    dropdown.onchange = function () {
+      clearInterval(blinkCol2);
+    };
+  });
 });
 
 let level;
