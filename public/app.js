@@ -65,7 +65,7 @@ let nameInput = document.getElementById("input-name");
 let msgInput = document.getElementById("input-chat");
 let sendButton = document.getElementById("send-name");
 let curName, curMsg, letterGroup;
-let canvas0 = document.getElementById("chat-canvas");
+let canvas = document.getElementById("chat-canvas");
 let textInput = document.getElementById("chat-box-msgs");
 let randomColor = Math.floor(Math.random() * 16777215).toString(16);
 let newColor, hearColor;
@@ -82,6 +82,10 @@ let infoSpan = document.getElementById("info-span");
 
 let viewerBox = document.getElementById("viewer-count");
 
+//variables for the recording
+let chunks = [];
+
+//loading function, modal and socket connection
 window.addEventListener("load", () => {
   //modal stuff
   instructions.onclick = function () {
@@ -226,8 +230,8 @@ window.addEventListener("load", () => {
     //after queue array is created, playThis will load the audio files from src
     for (let i = 0; i < queue.length; i++) {
       src = queue[i].url;
-      console.log(queue);
-      console.log(src);
+      // console.log(queue);
+      // console.log(src);
       playThis[i] = loadSound(src, soundSuccess, soundError, soundWaiting);
       // console.log(playThis);
     }
@@ -245,13 +249,11 @@ window.addEventListener("load", () => {
   });
 
   socket.on("bool", (data) => {
-    console.log(data);
     hearIsTrue = true;
     // console.log(hearIsTrue);
   });
 
   socket.on("sentMsg", (data) => {
-    console.log(data);
 
     if (!hearIsTrue) {
       return;
@@ -515,6 +517,7 @@ let singleArmadilloNote,
 let singleNote;
 let newBatSound;
 let newTreeSound;
+
 // global variables for p5 Sketch
 let cnv;
 let mouseFreq;
@@ -534,6 +537,7 @@ let p5Color;
 let width, height;
 let divX, divY;
 
+//preload all the sounds
 function preload() {
   for (let i = 1; i <= 15; i++) {
     armadilloMusic[i - 1] = loadSound("/Audio/armadillo" + i + ".mp3");
@@ -582,6 +586,7 @@ function preload() {
   }
 }
 
+//Function that creates the visual canvas
 function setup() {
   width = window.innerWidth / 2;
   height = (2 * window.innerHeight) / 3;
@@ -604,6 +609,7 @@ let yposition = 200;
 let speed = 0.01;
 let antiGravity = 0.01;
 
+//function for generating visuals
 function draw() {
   background(0);
 
@@ -663,6 +669,7 @@ function draw() {
   }
 }
 
+//function for playing the music
 function playSounds() {
   let noteIndex = Math.round((mouseX + divX / 2) / divX) - 1;
 
@@ -824,4 +831,69 @@ function playSounds() {
   //   singleWalrusNote.setVolume(0);
   //   singleWhaleNote.setVolume(0);
   // }
+}
+
+const record = document.getElementById('record-button')
+let recording = false;
+let audio = document.createElement('audio');
+let deleteButton = document.createElement("button");
+deleteButton.classList.add("delete-button", "record-container")
+audio.classList.add("recorded-clip")
+audio.setAttribute("controls", "");
+deleteButton.innerHTML = "Delete";
+let deleted = false;
+//recording Audio (using webAudio)
+if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+  navigator.mediaDevices.getUserMedia(
+    {
+      audio: true,
+    }
+  ).then((stream) => {
+    const mediaRecorder = new MediaRecorder(stream);
+    record.addEventListener("click", () => {
+      console.log(chunks);
+      recording = !recording;
+      if (recording) {
+        mediaRecorder.start();
+        console.log("recording has started");
+        record.style.background = "#e50000"
+        record.textContent = "Recording"
+  
+      } else {
+        mediaRecorder.stop();
+        console.log("recording has stopped")
+        record.style.backgroundColor = "black"
+        record.style.color = "rgb(174, 255, 43)"
+        record.textContent = "Record"
+      }
+    })
+
+    mediaRecorder.addEventListener("stop", (e) => {  
+      const logContainer = document.getElementById('log')
+
+        logContainer.appendChild(audio);
+        logContainer.appendChild(deleteButton);
+
+        const blob = new Blob(chunks, {type: "audio/ogg: codecs=opus"});
+        chunks = [];
+        const audioURL = window.URL.createObjectURL(blob);
+        audio.src = audioURL
+
+    })
+
+    deleteButton.addEventListener('click', (e) => {
+      let evtTgt = e.target;
+      evtTgt.parentNode.removeChild(evtTgt.parentNode.firstChild)
+      evtTgt.parentNode.removeChild(evtTgt)
+    })
+
+    mediaRecorder.addEventListener("dataavailable", (e) => {
+      chunks.push(e.data)
+    })
+
+  }).catch((err) => {
+    console.error(`The following getUserMedia error occurred: ${err}`)
+  })
+} else {
+  console.log("getUserMedia is not supported on your browser")
 }

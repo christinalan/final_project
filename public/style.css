@@ -15,6 +15,7 @@ canvas {
 a {
   color: rgb(174, 255, 43);
 }
+
 #chat-canvas {
   display: flex;
   flex-direction: row;
@@ -50,8 +51,10 @@ p {
 .buttons {
   display: flex;
   flex-direction: row;
+  gap: 10px;
   height: 100%;
   z-index: 1;
+  width: 25%;
 }
 
 .button {
@@ -60,13 +63,18 @@ p {
   outline: none;
 }
 
-.hear-button {
+.record-button, .hear-button {
   background-color: rgb(174, 255, 43);
-  transform: translateX(900px) translateY(25px);
+  transform: translateX(800px) translateY(25px);
   padding: 5px;
   height: 10%;
-  cursor: zoom-in;
+  cursor: pointer;
   border-radius: 40px;
+}
+
+.record-button {
+  background-color: black;
+  color:rgb(174, 255, 43);
 }
 
 .select {
@@ -182,7 +190,6 @@ p {
   z-index: 0;
   background-color: rgb(174, 255, 43);
   height: 10%;
-  cursor: zoom-in;
   border-radius: 40px;
   font-family: monospace;
   padding: 5px;
@@ -194,6 +201,28 @@ p {
   align-items: center;
 }
 
+/* styling audio log */
+.log {
+  margin: 0px 50px;
+}
+
+.record-container {
+  display: flex;
+  justify-self: center;
+  margin-top: 5px;
+}
+
+.recorded-clip {
+  width: 20%;
+}
+
+.delete-button {
+  font-family: monospace;
+  margin-left: 10px;
+  background-color:rgb(174, 255, 43);
+  border-radius: 10px;
+}
+
 @media all and (max-width: 900px) {
   #chat-canvas {
     display: flex;
@@ -203,7 +232,8 @@ p {
   canvas {
     margin-top: 75%;
   }
-  .hear-button {
+
+  .record-button, .hear-button {
     transform: translateX(250px) translateY(500px);
   }
 }
