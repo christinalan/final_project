@@ -7,7 +7,6 @@ socket.on("connect", () => {
 
 //global socket variables
 let playing, clicked;
-let hearButton;
 let animals = [
   "armadillo",
   "bat",
@@ -44,11 +43,8 @@ let soundTriggered = {
   walrusTr: false,
   whaleTr: false,
 };
-// let soundtriggered, soundtriggered1, soundtriggered2;
-let queue1 = [];
-let src1;
-let selectedAnimal1, serverLetters1;
 
+// variables for mapping letters to audio snippets
 let p5Letters = [];
 let numberLetters = []; // queue of audio messages
 let queue = [];
@@ -61,6 +57,7 @@ let hearClicked = false;
 let hearIsTrue;
 let dataColor;
 
+//html elements
 let nameInput = document.getElementById("input-name");
 let msgInput = document.getElementById("input-chat");
 let sendButton = document.getElementById("send-name");
@@ -69,7 +66,7 @@ let canvas = document.getElementById("chat-canvas");
 let textInput = document.getElementById("chat-box-msgs");
 let randomColor = Math.floor(Math.random() * 16777215).toString(16);
 let newColor, hearColor;
-let hearbtn = document.getElementById("hear-button");
+let hearButton = document.getElementById("hear-button");
 
 //the chat box element ID
 let receivedMsg, msgEl;
@@ -79,8 +76,6 @@ let chatBox = document.getElementById("chat-box-msgs");
 let instructions = document.getElementById("instructions");
 let modal = document.getElementById("info-modal");
 let infoSpan = document.getElementById("info-span");
-
-let viewerBox = document.getElementById("viewer-count");
 
 //variables for the recording
 let chunks = [];
@@ -96,20 +91,19 @@ window.addEventListener("load", () => {
     modal.style.display = "none";
   };
 
-  //viewer count
+  //viewer count (not used currently)
   socket.on("viewers", (data) => {
     // console.log(data);
 
     let showCount = document.createElement("p");
     showCount.innerHTML = data;
-
     // viewerBox.appendChild(showCount);
   });
 
   // animal dropdown
   let dropdown = document.getElementById("select-animal");
   let defaultoption = document.createElement("option");
-  defaultoption.text = "select animal";
+  defaultoption.text = "Select Animal";
   dropdown.add(defaultoption);
 
   for (let i = 0; i < animals.length; i++) {
@@ -146,71 +140,58 @@ window.addEventListener("load", () => {
     chatBox.scrollTop = chatBox.scrollHeight;
   });
 
-  //listening for the letters from the server and converting them right away?
+  //listening for the letters from the server and converting them on the server side 
   socket.on("letterSounds", (data) => {
     // console.log(data.animal);
     selectedAnimal = data.animal;
-    // console.log(data.letters);
     serverLetters = data.letters;
 
     for (let i = 0; i < serverLetters.length; i++) {
       if (selectedAnimal == "armadillo") {
-        console.log(selectedAnimal);
         queue.push(armadilloMusic[serverLetters[i]]);
       }
 
       if (selectedAnimal == "bat") {
-        console.log(selectedAnimal);
         queue.push(batMusic[serverLetters[i]]);
       }
 
       if (selectedAnimal == "capercaillie") {
-        console.log(selectedAnimal);
         queue.push(capercaillieMusic[serverLetters[i]]);
       }
 
       if (selectedAnimal == "dolphin") {
-        console.log(selectedAnimal);
         queue.push(dolphinMusic[serverLetters[i]]);
       }
 
       if (selectedAnimal == "elephant") {
-        console.log(selectedAnimal);
         queue.push(elephantMusic[serverLetters[i]]);
       }
 
       if (selectedAnimal == "elk") {
-        console.log(selectedAnimal);
         queue.push(elkMusic[serverLetters[i]]);
       }
 
       if (selectedAnimal == "frog") {
-        console.log(selectedAnimal);
         queue.push(frogMusic[serverLetters[i]]);
       }
 
       if (selectedAnimal == "kauai oo") {
-        console.log(selectedAnimal);
         queue.push(kauaiooMusic[serverLetters[i]]);
       }
 
       if (selectedAnimal == "lemur") {
-        console.log(selectedAnimal);
         queue.push(lemurMusic[serverLetters[i]]);
       }
 
       if (selectedAnimal == "midshipman fish") {
-        console.log(selectedAnimal);
         queue.push(plainfinMusic[serverLetters[i]]);
       }
 
       if (selectedAnimal == "rat") {
-        console.log(selectedAnimal);
         queue.push(ratMusic[serverLetters[i]]);
       }
 
       if (selectedAnimal == "seal") {
-        console.log(selectedAnimal);
         queue.push(sealMusic[serverLetters[i]]);
       }
 
@@ -233,28 +214,26 @@ window.addEventListener("load", () => {
       // console.log(queue);
       // console.log(src);
       playThis[i] = loadSound(src, soundSuccess, soundError, soundWaiting);
-      // console.log(playThis);
     }
     src = "";
     queue = [];
   });
 
-  hearButton = document.getElementById("hear-button");
   hearButton.addEventListener("click", () => {
     //can only play after the sounds are loaded
     setUpQueue();
 
+    //send to server that messages are being requested
     hearClicked = true;
     socket.emit("bool", hearClicked);
   });
 
-  socket.on("bool", (data) => {
-    hearIsTrue = true;
-    // console.log(hearIsTrue);
-  });
+  // socket.on("bool", (data) => {
+  //   hearIsTrue = true;
+  // });
 
+  //receiving message from server and adding to the chatbox
   socket.on("sentMsg", (data) => {
-
     if (!hearIsTrue) {
       return;
     } else {
@@ -269,161 +248,8 @@ window.addEventListener("load", () => {
     }
   });
 
-  //changing color accordingly to dropdown selection
-  function createRandomColor() {
-    let hexParts = "0123456789ABCDEF";
-    let color = "#";
-    for (let i = 0; i < 6; i++) {
-      color += hexParts[Math.floor(Math.random() * 16)];
-    }
-    return color;
-  }
-
-  function changeColor() {
-    newColor = createRandomColor();
-    chatBox.style.color = newColor;
-    let canvascolor = document.getElementsByTagName("CANVAS")[0];
-    canvascolor.style.outlineColor = newColor;
-    let drpdwncolor = document.getElementById("select-animal");
-    drpdwncolor.style.backgroundColor = newColor;
-
-    hearbtn.style.backgroundColor = newColor;
-
-    return newColor;
-  }
-
-  //change of dropdown
-  dropdown.addEventListener("change", function (e) {
-    changeColor();
-    if (e.target.value == "armadillo") {
-      Object.keys(soundTriggered).forEach((item) => {
-        item != "armadilloTr" ? soundTriggered[item] : false;
-        soundTriggered.armadilloTr = true;
-      });
-      // console.log(soundTriggered.armadilloTr);
-      // console.log(soundTriggered.whaleTr);
-      selectedAnimal = animals[0];
-    } else if (e.target.value == "bat") {
-      Object.keys(soundTriggered).forEach((item) => {
-        soundTriggered[item] = false;
-        soundTriggered.batTr = true;
-      });
-      // console.log(soundTriggered.batTr);
-      // console.log(soundTriggered.armadilloTr);
-      selectedAnimal = animals[1];
-    } else if (e.target.value == "capercaillie") {
-      Object.keys(soundTriggered).forEach((item) => {
-        soundTriggered[item] = false;
-      });
-      soundTriggered.caperTr = true;
-      // console.log(soundTriggered.caperTr);
-      // console.log(soundTriggered.armadilloTr);
-      selectedAnimal = animals[2];
-    } else if (e.target.value == "dolphin") {
-      Object.keys(soundTriggered).forEach((item) => {
-        soundTriggered[item] = false;
-      });
-      soundTriggered.dolphinTr = true;
-      // console.log(soundTriggered.dolphinTr);
-      // console.log(soundTriggered.armadilloTr);
-      selectedAnimal = animals[3];
-    } else if (e.target.value == "elephant") {
-      Object.keys(soundTriggered).forEach((item) => {
-        soundTriggered[item] = false;
-      });
-      soundTriggered.elephantTr = true;
-      // console.log(soundTriggered.elephantTr);
-      // console.log(soundTriggered.armadilloTr);
-      selectedAnimal = animals[4];
-    } else if (e.target.value == "elk") {
-      Object.keys(soundTriggered).forEach((item) => {
-        soundTriggered[item] = false;
-      });
-      soundTriggered.elkTr = true;
-      console.log(soundTriggered.elkTr);
-      selectedAnimal = animals[5];
-    } else if (e.target.value == "frog") {
-      Object.keys(soundTriggered).forEach((item) => {
-        soundTriggered[item] = false;
-      });
-      soundTriggered.frogTr = true;
-      console.log(soundTriggered.frogTr);
-      console.log(soundTriggered.armadilloTr);
-      selectedAnimal = animals[6];
-    } else if (e.target.value == "kauai oo") {
-      Object.keys(soundTriggered).forEach((item) => {
-        soundTriggered[item] = false;
-      });
-      soundTriggered.kauaiTr = true;
-      console.log(soundTriggered.kauaiTr);
-      console.log(soundTriggered.armadilloTr);
-      selectedAnimal = animals[7];
-    } else if (e.target.value == "lemur") {
-      Object.keys(soundTriggered).forEach((item) => {
-        soundTriggered[item] = false;
-      });
-      soundTriggered.lemurTr = true;
-      console.log(soundTriggered.lemurTr);
-      console.log(soundTriggered.armadilloTr);
-      selectedAnimal = animals[8];
-    } else if (e.target.value == "midshipman fish") {
-      Object.keys(soundTriggered).forEach((item) => {
-        soundTriggered[item] = false;
-      });
-      soundTriggered.fishTr = true;
-      console.log(soundTriggered.fishTr);
-      console.log(soundTriggered.armadilloTr);
-      selectedAnimal = animals[9];
-    } else if (e.target.value == "rat") {
-      Object.keys(soundTriggered).forEach((item) => {
-        soundTriggered[item] = false;
-      });
-      soundTriggered.ratTr = true;
-      console.log(soundTriggered.ratTr);
-      console.log(soundTriggered.armadilloTr);
-      selectedAnimal = animals[10];
-    } else if (e.target.value == "seal") {
-      Object.keys(soundTriggered).forEach((item) => {
-        soundTriggered[item] = false;
-      });
-      soundTriggered.sealTr = true;
-      console.log(soundTriggered.sealTr);
-      console.log(soundTriggered.armadilloTr);
-      selectedAnimal = animals[11];
-    } else if (e.target.value == "treehopper") {
-      Object.keys(soundTriggered).forEach((item) => {
-        soundTriggered[item] = false;
-      });
-      soundTriggered.treeTr = true;
-      console.log(soundTriggered.treeTr);
-      console.log(soundTriggered.armadilloTr);
-      selectedAnimal = animals[12];
-    } else if (e.target.value == "walrus") {
-      Object.keys(soundTriggered).forEach((item) => {
-        soundTriggered[item] = false;
-      });
-      soundTriggered.walrusTr = true;
-      console.log(soundTriggered.walrusTr);
-      console.log(soundTriggered.armadilloTr);
-      selectedAnimal = animals[13];
-    } else if (e.target.value == "whale") {
-      Object.keys(soundTriggered).forEach((item) => {
-        soundTriggered[item] = false;
-      });
-      soundTriggered.whaleTr = true;
-      console.log(soundTriggered.whaleTr);
-      console.log(soundTriggered.armadilloTr);
-      selectedAnimal = animals[14];
-    }
-  });
-
-  function clear() {
-    document.getElementById("input-chat").value = "";
-  }
-
   function setUpQueue() {
     if (audioPlaying == 1 || playThis.length == 0) return;
-    // console.log(playThis);
     playQueue();
   }
 
@@ -445,6 +271,7 @@ window.addEventListener("load", () => {
     yesAudio = true;
   }
 
+  //FUNCTIONS FOR NOTIFYING STATUS OF SOUND
   function soundSuccess(resp) {
     console.log("Sound is ready!");
     // alert("sound is ready");
@@ -457,20 +284,146 @@ window.addEventListener("load", () => {
     console.log("Waiting for sound...");
   }
 
+  //DROPDOWN COLOR AND ANIMAL CHANGES
+  //changing color accordingly to dropdown selection
+  function createRandomColor() {
+    let hexParts = "0123456789ABCDEF";
+    let color = "#";
+    for (let i = 0; i < 6; i++) {
+      color += hexParts[Math.floor(Math.random() * 16)];
+    }
+    return color;
+  }
+
+  function changeColor() {
+    newColor = createRandomColor();
+    chatBox.style.color = newColor;
+    let canvascolor = document.getElementsByTagName("CANVAS")[0];
+    canvascolor.style.outlineColor = newColor;
+    let drpdwncolor = document.getElementById("select-animal");
+    drpdwncolor.style.backgroundColor = newColor;
+
+    return newColor;
+  }
+
+  //change of dropdown
+  dropdown.addEventListener("change", function (e) {
+    changeColor();
+    if (e.target.value == "armadillo") {
+      Object.keys(soundTriggered).forEach((item) => {
+        //set all the other sounds not selected to false
+        item != "armadilloTr" ? soundTriggered[item] : false;
+        soundTriggered.armadilloTr = true;
+      });
+      selectedAnimal = animals[0];
+    } else if (e.target.value == "bat") {
+      Object.keys(soundTriggered).forEach((item) => {
+        soundTriggered[item] = false;
+        soundTriggered.batTr = true;
+      });
+      selectedAnimal = animals[1];
+    } else if (e.target.value == "capercaillie") {
+      Object.keys(soundTriggered).forEach((item) => {
+        soundTriggered[item] = false;
+      });
+      soundTriggered.caperTr = true;
+      selectedAnimal = animals[2];
+    } else if (e.target.value == "dolphin") {
+      Object.keys(soundTriggered).forEach((item) => {
+        soundTriggered[item] = false;
+      });
+      soundTriggered.dolphinTr = true;
+      selectedAnimal = animals[3];
+    } else if (e.target.value == "elephant") {
+      Object.keys(soundTriggered).forEach((item) => {
+        soundTriggered[item] = false;
+      });
+      soundTriggered.elephantTr = true;
+      selectedAnimal = animals[4];
+    } else if (e.target.value == "elk") {
+      Object.keys(soundTriggered).forEach((item) => {
+        soundTriggered[item] = false;
+      });
+      soundTriggered.elkTr = true;
+      selectedAnimal = animals[5];
+    } else if (e.target.value == "frog") {
+      Object.keys(soundTriggered).forEach((item) => {
+        soundTriggered[item] = false;
+      });
+      soundTriggered.frogTr = true;
+      selectedAnimal = animals[6];
+    } else if (e.target.value == "kauai oo") {
+      Object.keys(soundTriggered).forEach((item) => {
+        soundTriggered[item] = false;
+      });
+      soundTriggered.kauaiTr = true;
+      selectedAnimal = animals[7];
+    } else if (e.target.value == "lemur") {
+      Object.keys(soundTriggered).forEach((item) => {
+        soundTriggered[item] = false;
+      });
+      soundTriggered.lemurTr = true;
+      selectedAnimal = animals[8];
+    } else if (e.target.value == "midshipman fish") {
+      Object.keys(soundTriggered).forEach((item) => {
+        soundTriggered[item] = false;
+      });
+      soundTriggered.fishTr = true;
+      selectedAnimal = animals[9];
+    } else if (e.target.value == "rat") {
+      Object.keys(soundTriggered).forEach((item) => {
+        soundTriggered[item] = false;
+      });
+      soundTriggered.ratTr = true;
+      selectedAnimal = animals[10];
+    } else if (e.target.value == "seal") {
+      Object.keys(soundTriggered).forEach((item) => {
+        soundTriggered[item] = false;
+      });
+      soundTriggered.sealTr = true;
+      selectedAnimal = animals[11];
+    } else if (e.target.value == "treehopper") {
+      Object.keys(soundTriggered).forEach((item) => {
+        soundTriggered[item] = false;
+      });
+      soundTriggered.treeTr = true;
+      selectedAnimal = animals[12];
+    } else if (e.target.value == "walrus") {
+      Object.keys(soundTriggered).forEach((item) => {
+        soundTriggered[item] = false;
+      });
+      soundTriggered.walrusTr = true;
+      selectedAnimal = animals[13];
+    } else if (e.target.value == "whale") {
+      Object.keys(soundTriggered).forEach((item) => {
+        soundTriggered[item] = false;
+      });
+      soundTriggered.whaleTr = true;
+      selectedAnimal = animals[14];
+    }
+  });
+
+  function clear() {
+    document.getElementById("input-chat").value = "";
+  }
+
+
+  //FUNCTIONS THAT USE THE BOOLEAN HEAR-MESSAGES DATA
   socket.on("hearColor", (data) => {
     dataColor = data.color;
-    let currentColor = hearbtn.style.backgroundColor;
+    let currentColor = hearButton.style.backgroundColor;
 
+    //BLINKING FUNCTIONS TO LET THE USER KNOW A MESSAGE HAS BEEN SENT
     let blinkCol = setInterval(() => {
-      hearbtn.style.backgroundColor = dataColor;
+      hearButton.style.backgroundColor = dataColor;
     }, 250);
 
     let blinkCol2 = setInterval(() => {
-      hearbtn.style.backgroundColor = currentColor;
+      hearButton.style.backgroundColor = currentColor;
     }, 500);
 
     hearButton.onclick = function () {
-      hearbtn.style.backgroundColor = currentColor;
+      hearButton.style.backgroundColor = currentColor;
       clearInterval(blinkCol);
     };
 
@@ -481,7 +434,6 @@ window.addEventListener("load", () => {
 });
 
 let level;
-
 let armadilloMusic = [];
 let batMusic = [];
 let capercaillieMusic = [];
@@ -515,8 +467,6 @@ let singleArmadilloNote,
   singleWhaleNote;
 
 let singleNote;
-let newBatSound;
-let newTreeSound;
 
 // global variables for p5 Sketch
 let cnv;
@@ -537,7 +487,84 @@ let p5Color;
 let width, height;
 let divX, divY;
 
-//preload all the sounds
+
+//Function that creates the visual canvas
+function setup() {
+  width = window.innerWidth / 2;
+  height = (2 * window.innerHeight) / 3;
+  canvas = createCanvas(width, height);
+  canvas.parent("chat-canvas");
+  divX = width / 15;
+
+  canvas.mousePressed(playSounds);
+  background(0);
+
+  analyzer = new p5.FFT();
+  freqAnalyzer = new p5.FFT(0, 64);
+  amplitude = new p5.Amplitude();
+  audioIn = new p5.AudioIn();
+
+  w = width / 64;
+}
+
+let yposition = 200;
+let speed = 0.01;
+let antiGravity = 0.01;
+
+//function for generating visuals
+function draw() {
+  background(0);
+
+  waveFreq = freqAnalyzer.analyze();
+  level = amplitude.getLevel();
+
+  fromCol = color(50, 250, 155);
+  toCol = color(50, 100, 200);
+
+  for (var key in soundTriggered) {
+    if (soundTriggered.hasOwnProperty(key) == true) {
+      // console.log(key + ": " + soundTriggered[key]);
+      if (soundTriggered[key] == true) {
+        toCol = color(newColor);
+        let noHex = newColor.substring(1);
+        p5Color = noHex.split("");
+        let newHex = shuffle(p5Color);
+        fromColor = color("#" + newHex);
+      }
+    }
+  }
+
+  noStroke();
+  for (let i = 0; i < waveFreq.length; i++) {
+    let amp = waveFreq[i];
+    let x = map(amp, 0, 200, height, 0);
+    let y = map(i, 0, 200, height / 2, 0);
+    let c = constrain(freqAnalyzer.getEnergy(i), 0, 255);
+    let l = map(c, 0, 255, 0, 1);
+    let col = lerpColor(fromCol, toCol, l);
+    fill(col);
+    rect(x, yposition + y, i / 2, amp);
+
+    if (amp > 0) {
+      push();
+      stroke(col);
+      line(x, yposition + y, 0, height / i);
+      pop();
+    }
+
+    yposition -= speed;
+
+    if (yposition < -height / 2) {
+      yposition = height - 200;
+      background(0);
+    }
+  }
+  if (yposition <= height) {
+    waveFreq.splice(0, 1);
+  }
+}
+
+//PRELOAD SOUNDS
 function preload() {
   for (let i = 1; i <= 15; i++) {
     armadilloMusic[i - 1] = loadSound("/Audio/armadillo" + i + ".mp3");
@@ -586,90 +613,7 @@ function preload() {
   }
 }
 
-//Function that creates the visual canvas
-function setup() {
-  width = window.innerWidth / 2;
-  height = (2 * window.innerHeight) / 3;
-  canvas = createCanvas(width, height);
-  canvas.parent("chat-canvas");
-  divX = width / 15;
-
-  canvas.mousePressed(playSounds);
-  background(0);
-
-  analyzer = new p5.FFT();
-  freqAnalyzer = new p5.FFT(0, 64);
-  amplitude = new p5.Amplitude();
-  audioIn = new p5.AudioIn();
-
-  w = width / 64;
-}
-
-let yposition = 200;
-let speed = 0.01;
-let antiGravity = 0.01;
-
-//function for generating visuals
-function draw() {
-  background(0);
-
-  waveFreq = freqAnalyzer.analyze();
-  level = amplitude.getLevel();
-
-  fromCol = color(50, 250, 155);
-  toCol = color(50, 100, 200);
-
-  for (var key in soundTriggered) {
-    if (soundTriggered.hasOwnProperty(key) == true) {
-      // console.log(key + ": " + soundTriggered[key]);
-      if (soundTriggered[key] == true) {
-        // console.log("true !!");
-
-        toCol = color(newColor);
-        let noHex = newColor.substring(1);
-        // console.log(noHex);
-        p5Color = noHex.split("");
-        // console.log(p5Color);
-        let newHex = shuffle(p5Color);
-        // console.log(newHex);
-        fromColor = color("#" + newHex);
-      }
-    }
-  }
-
-  noStroke();
-  for (let i = 0; i < waveFreq.length; i++) {
-    let amp = waveFreq[i];
-    let x = map(amp, 0, 200, height, 0);
-    // let x = map(i, 0, waveFreq.length, 0, width);
-    let y = map(i, 0, 200, height / 2, 0);
-    let c = constrain(freqAnalyzer.getEnergy(i), 0, 255);
-    let l = map(c, 0, 255, 0, 1);
-    let col = lerpColor(fromCol, toCol, l);
-    fill(col);
-    rect(x, yposition + y, i / 2, amp);
-
-    if (amp > 0) {
-      push();
-      stroke(col);
-      line(x, yposition + y, 0, height / i);
-      pop();
-    }
-
-    yposition -= speed;
-    // speed -= antiGravity;
-
-    if (yposition < -height / 2) {
-      yposition = height - 200;
-      background(0);
-    }
-  }
-  if (yposition <= height) {
-    waveFreq.splice(0, 1);
-  }
-}
-
-//function for playing the music
+//function for playing the music (testing the sounds on the canvas)
 function playSounds() {
   let noteIndex = Math.round((mouseX + divX / 2) / divX) - 1;
 
@@ -778,61 +722,10 @@ function playSounds() {
     singleWhaleNote.play();
   }
 
-  // for (let i = 0; i < allMusic.length; i++) {
-  //   singleNote = allMusic[i][noteIndex];
-  //   if (soundTriggered.armadilloTr == true) {
-  //     singleNote = allMusic[0][noteIndex];
-  //     console.log(soundTriggered.armadilloTr);
-  //     console.log(singleNote);
-  //     // Object.keys(soundTriggered).forEach((item) => {
-  //     //   item != "armadilloTr" ? soundTriggered[item] : false;
-  //     //   console.log(soundTriggered.batTr);
-  //     // });
-  //   }
-  //   if (soundTriggered.batTr == true) {
-  //     singleNote = allMusic[1][noteIndex];
-  //     // Object.keys(soundTriggered).forEach((item) => {
-  //     //   item != "batTr" ? soundTriggered[item] : false;
-  //     // });
-  //   }
-  //   if (soundTriggered.caperTr == true) {
-  //     singleNote = allMusic[2][noteIndex];
-  //   }
-  // }
-
-  // Object.keys(soundTriggered).forEach((item) => {
-  //   if ((soundTriggered[item] = true)) {
-  //     singleNote.play();
-  //   }
-  //   if ((soundTriggered[item] = false)) {
-  //     singleNote.setVolume(0);
-  //     singleNote.stop();
-  //     console.log(soundTriggered.batTr);
-  //   }
-  // });
-
-  // if (soundTriggered.armadilloTr == true) {
-  //   console.log(singleNote);
-  //   singleNote.play();
-  //   singleArmadilloNote.setVolume(1);
-  //   singleArmadilloNote.play();
-  //   singleBatNote.setVolume(0);
-  //   singleCapNote.setVolume(0);
-  //   singleDolphinNote.setVolume(0);
-  //   singleEleNote.setVolume(0);
-  //   singleElkNote.setVolume(0);
-  //   singleFrogNote.setVolume(0);
-  //   singleKNote.setVolume(0);
-  //   singleLemurNote.setVolume(0);
-  //   singleFishNote.setVolume(0);
-  //   singleRatNote.setVolume(0);
-  //   singleSealNote.setVolume(0);
-  //   singleTreeNote.setVolume(0);
-  //   singleWalrusNote.setVolume(0);
-  //   singleWhaleNote.setVolume(0);
-  // }
 }
 
+
+//EVERYTHING BELOW IS FOR RECORDING SOUND ON THE PAGE
 const record = document.getElementById('record-button')
 let recording = false;
 let audio = document.createElement('audio');

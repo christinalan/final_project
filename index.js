@@ -19,10 +19,10 @@ io.listen(server);
 //different nameSpaces
 // let user = io.of("/user");
 
-let p5letters1 = [];
-let numberLetters1 = [];
-let p5Letter1, singleLetter1;
-let letterToNum1;
+let p5letters = [];
+let numberLetters = [];
+let p5Letter, singleLetter;
+let letterToNum;
 let viewers = [];
 let newMsg;
 let hearClicked = false;
@@ -39,21 +39,21 @@ io.sockets.on("connection", (socket) => {
   socket.on("msg", (data) => {
     // console.log(data);
 
-    p5letters1.push(data.firstLetters);
+    p5letters.push(data.firstLetters);
     // console.log(p5letters1);
 
-    for (let i = 0; i < p5letters1.length; i++) {
-      p5Letter1 = p5letters1[i];
-      p5Letter1.forEach((e) => {
-        singleLetter1 = e;
-        letterToNum1 = singleLetter1.charCodeAt(0) - 97;
-        if (letterToNum1 >= 13) {
-          letterToNum1 = Math.round(singleLetter1.charCodeAt(0) - 111);
+    for (let i = 0; i < p5letters.length; i++) {
+      p5Letter = p5letters[i];
+      p5Letter.forEach((e) => {
+        singleLetter = e;
+        letterToNum = singleLetter.charCodeAt(0) - 97;
+        if (letterToNum >= 13) {
+          letterToNum = Math.round(singleLetter.charCodeAt(0) - 111);
         }
-        if (letterToNum1 < 0) {
-          letterToNum1 = Math.round((letterToNum1 * -1) / 3);
+        if (letterToNum < 0) {
+          letterToNum = Math.round((letterToNum * -1) / 3);
         }
-        numberLetters1.push(letterToNum1);
+        numberLetters.push(letterToNum);
       });
     }
 
@@ -75,7 +75,7 @@ io.sockets.on("connection", (socket) => {
     };
 
     let letterSounds = {
-      letters: numberLetters1,
+      letters: numberLetters,
       animal: data.animal,
     };
 
@@ -84,9 +84,9 @@ io.sockets.on("connection", (socket) => {
 
     socket.broadcast.emit("hearColor", hearColor);
     socket.broadcast.emit("letterSounds", letterSounds);
-    // console.log(p5letters1);
-    p5letters1 = [];
-    numberLetters1 = [];
+
+    p5letters = [];
+    numberLetters = [];
     // user.emit("letters", data.firstLetters);
   });
 
@@ -103,27 +103,27 @@ io.sockets.on("connection", (socket) => {
   });
 
   //getting bat sound
-  socket.on("animalSounds", (data) => {
-    // let dataSound = data.sound;
-    let dataURL = data.soundURL.url;
-    console.log(dataURL);
+  // socket.on("animalSounds", (data) => {
+  //   // let dataSound = data.sound;
+  //   let dataURL = data.soundURL.url;
+  //   console.log(dataURL);
 
-    socket.broadcast.emit("dataSound", dataURL);
-  });
+  //   socket.broadcast.emit("dataSound", dataURL);
+  // });
 
-  socket.on("animalSounds1", (data) => {
-    // let dataSound = data.sound;
-    let dataURL1 = data.soundURL.url;
-    console.log(dataURL1);
+  // socket.on("animalSounds1", (data) => {
+  //   // let dataSound = data.sound;
+  //   let dataURL1 = data.soundURL.url;
+  //   console.log(dataURL1);
 
-    socket.broadcast.emit("dataSound", dataURL1);
-  });
+  //   socket.broadcast.emit("dataSound", dataURL1);
+  // });
 
-  socket.on("animalSounds2", (data) => {
-    // let dataSound = data.sound;
-    let dataURL2 = data.soundURL.url;
-    console.log(dataURL2);
+  // socket.on("animalSounds2", (data) => {
+  //   // let dataSound = data.sound;
+  //   let dataURL2 = data.soundURL.url;
+  //   console.log(dataURL2);
 
-    socket.broadcast.emit("dataSound", dataURL2);
-  });
+  //   socket.broadcast.emit("dataSound", dataURL2);
+  // });
 });
