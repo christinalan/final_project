@@ -735,8 +735,15 @@ audio.classList.add("recorded-clip")
 audio.setAttribute("controls", "");
 deleteButton.innerHTML = "Delete";
 let deleted = false;
+
 //recording Audio (using webAudio)
 if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+  //this is just to see which devices are available
+  navigator.mediaDevices.enumerateDevices().then((devices) => {
+    console.log(devices)
+
+  })
+
   navigator.mediaDevices.getUserMedia(
     {
       audio: true,
@@ -744,7 +751,6 @@ if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
   ).then((stream) => {
     const mediaRecorder = new MediaRecorder(stream);
     record.addEventListener("click", () => {
-      console.log(chunks);
       recording = !recording;
       if (recording) {
         mediaRecorder.start();
@@ -761,14 +767,25 @@ if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
       }
     })
 
+    let blobArray = [];
+
     mediaRecorder.addEventListener("stop", (e) => {  
       const logContainer = document.getElementById('log')
 
         logContainer.appendChild(audio);
         logContainer.appendChild(deleteButton);
 
+        //store each separate recording blob into an array, have the actual audio clip  loop over the stored clips in the array
         const blob = new Blob(chunks, {type: "audio/ogg: codecs=opus"});
-        chunks = [];
+        blobArray.push(blob)
+        console.log(blobArray);
+        // chunks = [];
+
+        for (blobPiece of blobArray) {
+          const newAudioURL = window.URL.createObjectURL(blobPiece)
+          console.log(newAudioURL)
+        }
+
         const audioURL = window.URL.createObjectURL(blob);
         audio.src = audioURL
 
